@@ -1,0 +1,53 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head class="bgHead">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="~/Content/Images/volante.png" />
+    <title>@ViewBag.Title | Pallo Design</title>
+
+   
+    @Scripts.Render("~/Scripts/jquery")
+    @Scripts.Render("~/Scripts/jqueryui")
+    @Scripts.Render("~/Scripts/bootstrap")
+    @Scripts.Render("~/Scripts/jqueryval")
+    @Scripts.Render("~/Scripts/jqueryform")
+    @Scripts.Render("~/Scripts/dt")
+    @Scripts.Render("~/Scripts/jquerydatetimepicker")
+
+    @Styles.Render("~/Content/reset")
+    @Styles.Render("~/Content/bootstrap")
+    @Styles.Render("~/Content/Custom/customcss")
+    @Styles.Render("~/Content/jqueryui/themes/base/css")
+    @Styles.Render("~/Content/datetimepicker")    
+    @Styles.Render("~/Content/dt")
+    @Scripts.Render("~/Scripts/modernizr")
+    @Scripts.Render("~/Scripts/momentjs")   
+
+    @Styles.Render("~/Content/swal")
+    @Scripts.Render("~/Scripts/swal")
+
+</head>
+<body>
+    <div>
+        @{ Html.RenderPartial("_Menu");  }
+
+        @{ Html.RenderPartial("_Mensajes"); }
+
+        <div class="contenido">
+            <div class="row">
+                <div class="col-md-1">
+                </div>
+                <div class="col-md-10">
+                    @RenderBody()
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+        </div>
+        
+        @RenderSection("scripts", required: false)
+    </div>
+</body>
+</html>

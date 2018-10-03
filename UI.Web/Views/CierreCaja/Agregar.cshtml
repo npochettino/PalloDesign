@@ -1,0 +1,111 @@
+﻿    @model UI.Web.ViewModels.CierreCaja.CierreCajaAgregarViewModel
+@{
+    ViewBag.Title = "Agregar";
+}
+
+<div class="cabecera" style="margin-bottom: 20px;">
+    Nuevo Cierre de Caja
+</div>
+
+<div class="row form-group">
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.FechaCierre, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-3">
+        @Html.TextBoxFor(model => model.FechaCierre, "{0:dd/MM/yyyy}", new { @class = "form-control datetimepicker fecha",id="fechaCierre", @maxlength = 10 })
+    </div>
+    <div class="col-md-2">
+        @Html.LabelFor(model => model.TurnoID, htmlAttributes: new { @class = "control-label" })
+    </div>
+    <div class="col-md-3">
+        @Html.DropDownListFor(model => model.TurnoID, new SelectList(ViewBag.Turnos, "Id", "Nombre"), "- Todos -", htmlAttributes: new { @class = "form-control", id= "ddlTurnos" })
+        @Html.HiddenFor(model => model.TurnoID)
+    </div>
+    <div class="col-md-2">
+
+    </div>
+</div>
+<hr />
+<div class="cabecera" style="margin-bottom: 20px;">
+    Cierres
+</div>
+
+<div id="divCierres">
+    @{
+        if (Model.Cierres.Count > 0)
+        {
+            Html.RenderPartial("_CierreCajaTurno", Model.Cierres);
+        }
+        else
+        {
+            <h4>Seleccione un turno y una fecha para calcular el cierre.</h4>
+        }
+    }
+</div>
+<div class="alert alert-danger" data-dismiss="alert"><b>NOTA:</b> En el Total en Caja el monto por ventas con tarjetas no son tenidas en cuenta.</div>
+@*Botón Volver*@
+<div class="row">
+    <div class="form-group col-md-12">
+        <a href="@Url.Action("Index", "CierreCaja")" class="btn btn-primary">Volver</a>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.fecha').datetimepicker({
+            lang: 'es',
+            i18n: {
+                de: {
+                    months: [
+                     'Enero', 'Febrero', 'Marzo', 'Abril',
+                     'Mayo', 'Junio', 'Julio', 'Agosto',
+                     'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
+                    ],
+                    dayOfWeek: [
+                     "Do", "Lu", "Ma", "Mi",
+                     "Ju", "Vi", "Sa",
+                    ]
+                }
+            },
+            closeOnDateSelect: true,
+            timepicker: false,
+            format: 'd/m/Y'
+        });
+
+    });
+
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        function CalcularCierre()
+        {
+            var strSelected = "";
+            strSelected = $("#ddlTurnos").val();
+            if (strSelected == "") {
+                strSelected = 0;
+            }
+            fechaSelected = $("#fechaCierre").val();
+            var iurl = '@Url.Action("/Agregar")'
+            var urlCompleta = iurl + "?turnoID=" + strSelected + "&fechaCierre=" + fechaSelected;
+            $.ajax({
+                url: urlCompleta,
+                contentType: 'application/html; charset=utf-8',
+                type: 'POST',
+                dataType: 'html'
+            })
+            .success(function (result) {
+                $('#divCierres').html(result);
+            });
+        }
+
+        $("#fechaCierre").change(function () {
+            CalcularCierre();
+        });
+
+          $("#ddlTurnos").change(function () {
+              CalcularCierre();
+          });
+      });
+</script>

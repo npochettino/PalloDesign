@@ -1,0 +1,445 @@
+﻿@model UI.Web.ViewModels.Ventas.ReportePorRubroViewModel
+@{
+    ViewBag.Title = "Reporte Por Rubro";
+}
+<script src="~/Scripts/jquery-2.1.4.js"></script>
+<script src="~/Scripts/HighCharts/highcharts.js"></script>
+<script src="~/Scripts/HighCharts/highcharts-3d.js"></script>
+<link href="~/Content/jquery.datetimepicker.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.datetimepicker.js"></script>
+<script src="~/Scripts/DataTables/jquery.dataTables.js"></script>
+<link href="~/Content/DataTables/css/jquery.dataTables.css" rel="stylesheet" />
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#resumen').DataTable({
+                "sDom":
+                    '<"toolbar">frtip',
+                stateSave: false,
+                "language":
+                {
+                    "url": '@Url.Content("~/Content/JSON/Spanish.json")'
+                },
+                paging: false,
+                "columnDefs":
+                    [{
+                        bSortable: false,
+                        aTargets: [-1]
+                    }],
+                "initComplete":
+                    function (settings, json) {
+                        $("div.toolbar").html(
+                            '');
+                    }
+            })
+        }
+        );
+    </script>
+}
+
+
+
+<h2>Reporte Por Rubro</h2>
+
+<div style="text-align:center">
+
+    <div>
+        @using (Html.BeginForm("ReportePorRubro", "Ventas", FormMethod.Post, new { id = "form-turnos", @class = "formulario form-horizontal" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="row form-inline">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <h4>Desde:</h4>
+                        </div>
+                        <div class="col-md-2">
+                            @Html.TextBoxFor(model => model.FechaDesde, "{0:dd/MM/yyyy}", new { @class = "form-control datetimepicker desde", @maxlength = 10, @style = "width:100px" })
+                        </div>
+                        <div class="col-md-1">
+                            <h4>Hasta:</h4>
+                        </div>
+                        <div class="col-md-2">
+                            @Html.TextBoxFor(model => model.FechaHasta, "{0:dd/MM/yyyy}", new { @class = "form-control datetimepicker hasta", @maxlength = 10, @style = "width:100px" })
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" id="btnReporte" class="btn btn-primary" aria-label="Left Align">
+                                <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+                                Generar Reporte
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+
+            <div class="cuerpoReporte">
+                @{
+                    if (Model.Detalles.Count > 0)
+                    {
+                        <div class="grilla-listados">
+                            <table id="resumen" class="table table-bordered table-condensed table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align:center">Rubro</th>
+                                        <th style="text-align:center">Cantidad</th>
+                                        <th style="text-align:center">Porcentaje</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach (var item in Model.Detalles)
+                                    {
+                                        <tr>
+                                            <td>@item.Nombre</td>
+                                            <td>@item.Cantidad</td>
+                                            <td>@item.Porcentaje</td>
+                                        </tr>
+                                    }
+
+
+                                </tbody>
+
+                            </table>
+                        </div>
+
+                        <div id="rubros" style="height: 800px">
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            <h2>Todavía no hay ventas para las fechas seleccionadas.. </h2>
+                        </div>
+                    }
+                }
+            </div>
+
+
+                    }
+    </div>
+
+</div>
+<script>
+    $(function () {
+        $('.desde').datetimepicker({
+            lang: 'es',
+            i18n: {
+                de: {
+                    months: [
+                     'Enero', 'Febrero', 'Marzo', 'Abril',
+                     'Mayo', 'Junio', 'Julio', 'Agosto',
+                     'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
+                    ],
+                    dayOfWeek: [
+                     "Do", "Lu", "Ma", "Mi",
+                     "Ju", "Vi", "Sa",
+                    ]
+                }
+            },
+            closeOnDateSelect: true,
+            timepicker: false,
+            format: 'd/m/Y'
+        });
+        $('.hasta').datetimepicker({
+            closeOnDateSelect: true,
+            lang: 'es',
+            i18n: {
+                de: {
+                    months: [
+                     'Enero', 'Febrero', 'Marzo', 'Abril',
+                     'Mayo', 'Junio', 'Julio', 'Agosto',
+                     'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
+                    ],
+                    dayOfWeek: [
+                     "Do", "Lu", "Ma", "Mi",
+                     "Ju", "Vi", "Sa",
+                    ]
+                }
+            },
+            timepicker: false,
+            format: 'd/m/Y'
+        });
+    });
+</script>
+<script>
+    $(function () {
+        $('#rubros').highcharts({
+            chart: {
+                type: 'pie',
+                style: {
+                    fontSize: '35px'
+                },
+                options3d: {
+                    enabled: true,
+                    alpha: 45,
+                    beta: 0
+                }
+            },
+            title: {
+                text: 'Ventas x Rubros' //
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            legend: {
+                align: 'right',
+
+                verticalAlign: 'top',
+                layout: 'vertical',
+                x: 0,
+                y: 100,
+                itemStyle: {
+                    fontSize: '25px'
+                },
+                title: {
+                    style: { "fontWeight": "bold", "color": "#FFF" },
+                    text: 'Referencias:'
+                }
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    depth: 35,
+                    dataLabels: {
+                        enabled: true,
+                        format: "{point.percentage:.1f}%",
+                        style: { fontSize: '30px' }
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: 'Porcentaje',
+                data: [
+                    @{
+                        foreach (var m in Model.Detalles)
+                        {
+                            string opcion = "['" + m.Nombre + "'," + m.Cantidad + "],";
+                            //string opcion = "['" + m.Nombre + "],";
+                            @Html.Raw(opcion);
+
+                            }
+                        }
+                ]
+            }]
+        });
+    });
+
+
+    // Load the fonts
+    Highcharts.createElement('link', {
+        href: 'https://fonts.googleapis.com/css?family=Unica+One',
+        rel: 'stylesheet',
+        type: 'text/css'
+    }, null, document.getElementsByTagName('head')[0]);
+
+    Highcharts.theme = {
+        colors: ["#2b908f", "#90ee7e", "#f45b5b", "#7798BF", "#aaeeee", "#ff0066", "#eeaaee",
+           "#55BF3B", "#DF5353", "#7798BF", "#aaeeee"],
+        chart: {
+            backgroundColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
+                stops: [
+                   [0, '#322445'],
+                   [1, '#1F5B7F']
+
+                   //   [0, '#2a2a2b'],
+                   //[1, '#3e3e40']
+                ]
+            },
+            style: {
+                fontFamily: "'Unica One', sans-serif",
+                fontSize: '25px'
+            },
+            plotBorderColor: '#606063'
+        },
+        title: {
+            style: {
+                color: '#E0E0E3',
+                textTransform: 'uppercase',
+                fontSize: '35px'
+            }
+        },
+        subtitle: {
+            style: {
+                color: '#E0E0E3',
+                textTransform: 'uppercase'
+            }
+        },
+        xAxis: {
+            gridLineColor: '#707073',
+            labels: {
+                style: {
+                    color: '#E0E0E3'
+                }
+            },
+            lineColor: '#707073',
+            minorGridLineColor: '#505053',
+            tickColor: '#707073',
+            title: {
+                style: {
+                    color: '#A0A0A3'
+
+                }
+            }
+        },
+        yAxis: {
+            gridLineColor: '#707073',
+            labels: {
+                style: {
+                    color: '#E0E0E3'
+                }
+            },
+            lineColor: '#707073',
+            minorGridLineColor: '#505053',
+            tickColor: '#707073',
+            tickWidth: 1,
+            title: {
+                style: {
+                    color: '#A0A0A3'
+                }
+            }
+        },
+        tooltip: {
+            backgroundColor: 'rgba(0, 0, 0, 0.85)',
+            style: {
+                color: '#F0F0F0'
+            }
+        },
+        plotOptions: {
+            series: {
+                dataLabels: {
+                    color: '#B0B0B3'
+                },
+                marker: {
+                    lineColor: '#333'
+                }
+            },
+            boxplot: {
+                fillColor: '#505053'
+            },
+            candlestick: {
+                lineColor: 'white'
+            },
+            errorbar: {
+                color: 'white'
+            }
+        },
+        legend: {
+            itemStyle: {
+                color: '#E0E0E3'
+            },
+            itemHoverStyle: {
+                color: '#FFF'
+            },
+            itemHiddenStyle: {
+                color: '#606063'
+            }
+        },
+        credits: {
+            style: {
+                color: '#666'
+            }
+        },
+        labels: {
+            style: {
+                color: '#707073'
+            }
+        },
+
+        drilldown: {
+            activeAxisLabelStyle: {
+                color: '#F0F0F3'
+            },
+            activeDataLabelStyle: {
+                color: '#F0F0F3'
+            }
+        },
+
+        navigation: {
+            buttonOptions: {
+                symbolStroke: '#DDDDDD',
+                theme: {
+                    fill: '#505053'
+                }
+            }
+        },
+
+        // scroll charts
+        rangeSelector: {
+            buttonTheme: {
+                fill: '#505053',
+                stroke: '#000000',
+                style: {
+                    color: '#CCC'
+                },
+                states: {
+                    hover: {
+                        fill: '#707073',
+                        stroke: '#000000',
+                        style: {
+                            color: 'white'
+                        }
+                    },
+                    select: {
+                        fill: '#000003',
+                        stroke: '#000000',
+                        style: {
+                            color: 'white'
+                        }
+                    }
+                }
+            },
+            inputBoxBorderColor: '#505053',
+            inputStyle: {
+                backgroundColor: '#333',
+                color: 'silver'
+            },
+            labelStyle: {
+                color: 'silver'
+            }
+        },
+
+        navigator: {
+            handles: {
+                backgroundColor: '#666',
+                borderColor: '#AAA'
+            },
+            outlineColor: '#CCC',
+            maskFill: 'rgba(255,255,255,0.1)',
+            series: {
+                color: '#7798BF',
+                lineColor: '#A6C7ED'
+            },
+            xAxis: {
+                gridLineColor: '#505053'
+            }
+        },
+
+        scrollbar: {
+            barBackgroundColor: '#808083',
+            barBorderColor: '#808083',
+            buttonArrowColor: '#CCC',
+            buttonBackgroundColor: '#606063',
+            buttonBorderColor: '#606063',
+            rifleColor: '#FFF',
+            trackBackgroundColor: '#404043',
+            trackBorderColor: '#404043'
+        },
+
+        // special colors for some of the
+        legendBackgroundColor: 'rgba(0, 0, 0, 0.5)',
+        background2: '#505053',
+        dataLabelsColor: '#B0B0B3',
+        textColor: '#C0C0C0',
+        contrastTextColor: '#F0F0F3',
+        maskColor: 'rgba(255,255,255,0.3)'
+    };
+
+    // Apply the theme
+    Highcharts.setOptions(Highcharts.theme);
+</script>

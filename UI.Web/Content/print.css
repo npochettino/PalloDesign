@@ -1,0 +1,26 @@
+﻿body {
+}
+
+@media print {
+    .noPrint {
+        visibility: hidden;
+    }
+
+    .noPrint, .noPrint {
+        display: none !important;
+    }
+
+    #noPrint, #noPrint {
+        display: none !important;
+    }
+
+    #printDiv, #printDiv {
+        visibility: visible;
+    }
+
+    a[href]:after {
+        content: "";
+    }
+
+  
+}

@@ -1,0 +1,110 @@
+﻿@model UI.Web.ViewModels.Devoluciones.DevolucionAgregarViewModel
+@using UI.Web.Helpers;
+
+@{
+    ViewBag.Title = "Devolución";
+}
+
+<div class="cabecera" style="margin-bottom: 20px;">
+    Devolución
+</div>
+
+@using (Html.BeginForm("Agregar", "Devoluciones", FormMethod.Post, new { id = "form-venta" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.VentaID, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.VentaID, new { htmlAttributes = new { @class = "form-control", autofocus = "" } })
+                    @Html.ValidationMessageFor(model => Model.VentaID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <button type="submit" id="btnBuscarVenta" value="btnBuscarVenta" name="action:BuscarVenta" class="btn btn-success" title="Buscar Venta">
+            <i class="glyphicon glyphicon-search"></i> Buscar
+        </button>
+    </div>
+    <br />
+    <div class="row">
+        <table id="tabla-articulos" class="table table-bordered table-condensed table-responsive">
+            <thead>
+                <tr style="background-color:gainsboro; font-weight:bold">
+                    <th hidden></th>
+                    <th style="text-align:center;">Cant. a Devolver</th>
+                    <th style="text-align:center;">Vuelve al Stock?</th>
+                    <th style="text-align:center;">Artículo</th>
+                    <th style="text-align:center;">Código</th>
+                    <th style="text-align:center;">Cantidad Vendida</th>
+                    <th style="text-align:center;">Precio de Venta $</th>
+                    <th style="text-align:center;">Subtotal $</th>
+                </tr>
+            </thead>
+            <tbody style="background-color: #f9f9f9;">
+                @{
+                    try
+                    {
+                        for (int i = 0; i < Model.Items.Count; i++)
+                        {
+                            <tr>
+                                <td hidden>
+                                    @Html.TextBoxFor(item => Model.Items[i].ArticuloID)
+                                </td>
+
+                                <td hidden>
+                                    @Html.TextBoxFor(item => Model.Items[i].VentaItemID)
+                                </td>
+
+                                <td style="text-align:center; width:120px">
+                                    @Html.TextBoxFor(item => Model.Items[i].CantidadADevolver, new { @class = "form-control", @style = "background-color: transparent;width:100px" })
+                                    @Html.ValidationMessageFor(model => Model.Items[i].CantidadADevolver, "", new { @class = "text-danger" })
+                                </td>
+
+                                <td style="text-align:center; width:120px">
+                                    @Html.EditorFor(item => Model.Items[i].VuelveAlStock, new { @style = "border: 0px none; background-color: transparent;" })
+                                </td>
+
+                                <td style="text-align:center; width:300px">
+                                    @Html.TextBoxFor(item => Model.Items[i].NombreArticulo, new { @readonly = "", @style = "border: 0px none; background-color: transparent;" })
+                                </td>
+
+                                <td style="text-align:center; width:200px">
+                                    @Html.TextBoxFor(item => Model.Items[i].CodigoArticulo, new { @readonly = "", @style = "border: 0px none; background-color: transparent;width:120px;" })
+                                </td>
+                                <td style="text-align:center; width:170px">
+                                    @Html.TextBoxFor(item => Model.Items[i].CantidadVendida, new { @readonly = "", @style = "border: 0px none; background-color: transparent; width:20px;" })
+                                </td>
+                                <td style="text-align:center; width:170px">
+                                    @Html.DecimalFor(item => Model.Items[i].PrecioDeVenta, Model.Items[i].PrecioDeVenta, new { @readonly = "", @style = "border: 0px none; background-color: transparent;width:70px;" })
+                                </td>
+                                <td style="text-align:center; width:150px">
+                                    @Html.DecimalFor(item => Model.Items[i].Subtotal, Model.Items[i].Subtotal, new { @readonly = "", @style = "border: 0px none; background-color: transparent;width:70px;" })
+                                </td>
+                            </tr>
+                        }
+                    }
+                    catch
+                    {
+
+                    }
+
+                }
+
+
+
+            </tbody>
+        </table>
+    </div>
+                    if (Model.Items.Count != 0)
+                    {
+                        <button type="submit" id="btnConfirmarDevolucion" value="btnConfirmarDevolucion" name="action:ConfirmarDevolucion" class="btn btn-success" title="ConfirmarDevolucion">
+                            <i class="glyphicon glyphicon-ok"></i> Confirmar Devolucion
+                        </button>
+                        }
+
+                    }
+
+

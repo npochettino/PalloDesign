@@ -1,0 +1,109 @@
+﻿@model UI.Web.ViewModels.Proveedores.ProveedorIndexViewModel
+@{
+    ViewBag.Title = "Proveedores";
+}
+
+<script src="~/Scripts/jquery.datetimepicker.js"></script>
+<link href="~/Content/jquery.datetimepicker.css" rel="stylesheet" />
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#proveedores').DataTable({
+                "sDom":
+                    '<"toolbar">frtip',
+                stateSave: true,
+                "language":
+                {
+                    "url": '@Url.Content("~/Content/JSON/Spanish.json")'
+                },
+                "columnDefs":
+                    [{
+                        bSortable: false,
+                        aTargets: [-1]
+                    }],
+                "initComplete":
+                    function (settings, json) {
+                        $("div.toolbar").html(
+                            '<a href="@Url.Action("Agregar", "Proveedores")" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span> Agregar</a>');
+                    }
+            })
+        }
+        );
+    </script>
+}
+
+<div class="cabecera" style="margin-bottom: 20px;">
+    Proveedores
+</div>
+
+<div class="grilla-listados">
+    <table id="proveedores" class="table table-bordered table-condensed table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Razon Social</th>
+                <th>Apellido</th>
+                <th>Nombre</th>
+                <th>DNI</th>
+                <th>Telefono</th>
+                <th>E-Mail</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model.Proveedores)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.RazonSocial)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Apellido)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                    <td>@Html.DisplayFor(modelItem => item.DNI)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Telefono)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                    <td style="text-align:center">
+                        <a href="@Url.Action("Detalles", "Proveedores", new { id = item.Id })" class="btn btn-primary btn-xs">
+                            <span class="glyphicon glyphicon-eye-open"></span>
+                        </a>
+                        <a href="@Url.Action("Editar", "Proveedores", new { id = item.Id })" class="btn btn-primary btn-xs">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                        <a href="@Url.Action("Eliminar", "Proveedores", new { id = item.Id })" class="btn btn-danger btn-xs">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </a>
+                    </td>
+                </tr>
+            }
+
+
+        </tbody>
+
+    </table>
+</div>
+
+<script>
+    $(function () {
+        $('.datepicker').datetimepicker({
+            lang: 'es',
+            i18n: {
+                de: {
+                    months: [
+                     'Enero', 'Febrero', 'Marzo', 'Abril',
+                     'Mayo', 'Junio', 'Julio', 'Agosto',
+                     'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
+                    ],
+                    dayOfWeek: [
+                     "Do", "Lu", "Ma", "Mi",
+                     "Ju", "Vi", "Sa",
+                    ]
+                }
+            },
+            closeOnDateSelect: true,
+            timepicker: false,
+            // format: 'd/m/Y'
+            format: 'Y/m/d',
+
+        });
+
+    });
+</script>

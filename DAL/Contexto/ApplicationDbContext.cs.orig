@@ -1,0 +1,83 @@
+﻿using Modelos;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DAL.Contexto
+{
+    public class ApplicationDbContext : DbContext
+    {
+        public DbSet<Articulo> Articulos { get; set; }
+        public DbSet<CierreCaja> CierresCaja { get; set; }
+        public DbSet<Cliente> Clientes { get; set; }
+        public DbSet<Movimiento> Movimientos { get; set; }
+        public DbSet<FormaDePago> FormasDePago { get; set; }
+        public DbSet<HistoricoPrecio> HistoricosPrecios { get; set; }
+        public DbSet<Pago> Pagos { get; set; }
+        public DbSet<Proveedor> Proveedores { get; set; }
+        public DbSet<StockMovimiento> StockMovimientos { get; set; }
+        public DbSet<TipoMovimiento> TiposMovimientos { get; set; }
+        public DbSet<TipoHistoricoPrecio> TipoHistoricosPrecios { get; set; }
+        public DbSet<Venta> Ventas { get; set; }
+        public DbSet<VentaItem> VentaItems { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Configuracion> Configuraciones { get; set; }
+        public DbSet<Sucursal> Sucursales { get; set; }
+        public DbSet<Rubro> Rubros { get; set; }
+<<<<<<< Updated upstream
+        public DbSet<StockArticuloSucursal> StockArticulosSucursales { get; set; }
+        
+=======
+        public DbSet<StockArticuloSucursal> StocksArticuloSucursal { get; set; }
+
+>>>>>>> Stashed changes
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+            modelBuilder.Conventions.Remove<PluralizingEntitySetNameConvention>();
+
+            modelBuilder.Entity<Articulo>().ToTable("Articulos");
+            modelBuilder.Entity<CierreCaja>().ToTable("CierresCaja");
+            modelBuilder.Entity<Cliente>().ToTable("Clientes");
+            modelBuilder.Entity<Movimiento>().ToTable("Movimientos");
+            modelBuilder.Entity<FormaDePago>().ToTable("FormasDePago");
+            modelBuilder.Entity<HistoricoPrecio>().ToTable("HistoricosPrecios");
+            modelBuilder.Entity<Pago>().ToTable("Pagos");
+            modelBuilder.Entity<Proveedor>().ToTable("Proveedores");
+            modelBuilder.Entity<StockMovimiento>().ToTable("StockMovimientos");
+            modelBuilder.Entity<TipoMovimiento>().ToTable("TiposMovimientos");
+            modelBuilder.Entity<TipoHistoricoPrecio>().ToTable("TipoHistoricosPrecios");
+            modelBuilder.Entity<Venta>().ToTable("Ventas");
+            modelBuilder.Entity<VentaItem>().ToTable("VentaItems");
+            modelBuilder.Entity<Usuario>().ToTable("Usuarios");
+            modelBuilder.Entity<Configuracion>().ToTable("Configuraciones");
+            modelBuilder.Entity<Sucursal>().ToTable("Sucursales");
+            modelBuilder.Entity<Rubro>().ToTable("Rubros");
+<<<<<<< Updated upstream
+            modelBuilder.Entity<StockArticuloSucursal>().ToTable("StockArticulosSucursales");
+=======
+            modelBuilder.Entity<StockArticuloSucursal>().ToTable("StocksArticuloSucursal");
+>>>>>>> Stashed changes
+
+        }
+
+        private void FixEfProvider()
+        {
+            // The Entity Framework provider type 'System.Data.Entity.SqlServer.SqlProviderServices, EntityFramework.SqlServer'
+            // for the 'System.Data.SqlClient' ADO.NET provider could not be loaded. 
+            // Make sure the provider assembly is available to the running application. 
+            // See http://go.microsoft.com/fwlink/?LinkId=260882 for more information.
+
+            var instance = System.Data.Entity.SqlServer.SqlProviderServices.Instance;
+        }
+    }
+
+
+}

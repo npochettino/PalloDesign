@@ -1,0 +1,34 @@
+﻿@model UI.Web.ViewModels.Rubros.RubroEliminarViewModel
+    @{
+        ViewBag.Title = "Eliminar Rubro";
+    }
+
+    <div class="cabecera">
+        Eliminar Rubro
+    </div>
+
+    <div class="container">
+        <fieldset>
+            <legend>Información General</legend>
+            <dl class="dl-horizontal">
+                <dt>@Html.DisplayNameFor(model => model.Nombre)</dt>
+                <dd>@Html.DisplayFor(model => model.Nombre)</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>@Html.DisplayNameFor(model => model.Descripcion)</dt>
+                <dd>@Html.DisplayFor(model => model.Descripcion)</dd>
+            </dl>
+        </fieldset>
+        <div class="row">
+            <div class="form-group col-md-12">
+                @using (Html.BeginForm())
+            {
+                    @Html.AntiForgeryToken()
+
+                    <button type="submit" name="Delete" value="Delete" class="btn btn-primary">Eliminar</button>
+                    <a href="@Url.Action("Index", "Rubros")" class="btn btn-default">Volver</a>
+                }
+            </div>
+        </div>
+    </div>
+

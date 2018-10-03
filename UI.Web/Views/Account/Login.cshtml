@@ -1,0 +1,111 @@
+﻿@model UI.Web.ViewModels.Login.LoginViewModel
+
+
+@{
+    Layout = "~/Views/Shared/_LayoutVacio.cshtml";
+    ViewBag.Title = "Login";
+}
+
+<div class="col-md-4"></div>
+<div class="col-md-4" style="margin: 0 auto;">
+
+    <div style="margin-top: 150px; background-color:#FFF;text-align:center; border: 1px solid #004d8a;  border-radius: 10px 10px 10px 10px" class="">
+        <img src=@Url.Content("~/Content/Images/PalloDesign_Logo.png") height="100" alt="" class="" style="padding:3px 3px 3px 3px">
+        <div>
+            <form action="~/Account/Login" id="formLogin" method="post" name="formLogin">
+                <div class="form-group div-login-form" style="margin-top:15px">
+                    <table style="margin: 0 auto;">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="glyphicon glyphicon-user"></i>
+                                        </span>
+                                        <input autofocus="" class="form-control" id="NombreUsuario" name="NombreUsuario" placeholder="DNI" required="required" type="text" value="">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="glyphicon glyphicon-lock"></i>
+                                            </span>
+                                            <input autofocus="" class="form-control" id="Password" name="Password" placeholder="Password" required="required" type="password" value="">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="text-align:center" class="">
+                                        <button type="submit" id="btnSubmit" onclick="ShowEventPopup()" class="btn btn-default button-login">
+                                            Login
+                                            <i class="glyphicon glyphicon-chevron-right"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal fade" id="popupEventForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document" style="width:250px">
+                        <div class="modal-content" style="background-color: #FFF">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="myModalLabel" style="text-align:center;">Ingresando al sistema...</h4>
+                            </div>
+                            <div class="modal-body" style="text-align:center">
+                                @*<img src="/Content/Images/ajax-loader.GIF" alt="">*@
+                                <img src=@Url.Content("~/Content/Images/ajax-loader.GIF") alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div style="background-color: #01a04e; color:white; border-radius: 1px 1px 8px 8px; font-size:large;">
+            <a style="color:white" href="https://adweb.com.ar" target="_blank">ADWEB</a> 
+        </div>
+
+    </div>
+    <br />
+@if (ViewBag.Error != null)
+{
+    <div class="mensaje">
+        <div class="alert alert-dismissible alert-danger">
+            <span class="glyphicon glyphicon-remove-sign"></span>
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            @ViewBag.Error
+        </div>
+    </div>
+}
+</div>
+
+
+
+<div class="col-md-4"></div>
+@section AdditionalMeta{
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/Custom/customcss")
+    @Scripts.Render("~/Scripts/modernizr")
+}
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/jquery")
+    @Scripts.Render("~/Scripts/bootstrap")
+    @Scripts.Render("~/Scripts/jqueryval")
+}
+
+<script>
+
+    function ShowEventPopup() {
+        if ($("#NombreUsuario").val() != "" && $("#Password").val() != "")
+        {
+            $('#popupEventForm').modal('show');
+        }
+        
+    }
+</script>

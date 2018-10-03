@@ -1,0 +1,130 @@
+﻿@model UI.Web.ViewModels.Stock.StockIndexViewModel
+@using UI.Web.Helpers;
+@{
+    ViewBag.Title = "Stock";
+}
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#stock').DataTable({
+                "sDom":
+                    '<"toolbar">frtip',
+                stateSave: true,
+                "language":
+                {
+                    "url": '@Url.Content("~/Content/JSON/Spanish.json")'
+                },
+                "columnDefs":
+                    [{
+                        bSortable: false,
+                        aTargets: [-1]
+                    }],
+                "initComplete":
+                    function (settings, json) {
+                        $("div.toolbar").html(
+                            '@{ string RolActual = System.Web.HttpContext.Current.Session["RolActual"].ToString(); if (RolActual != "vendedor") { <a href="@Url.Action("Index", "StockMovimientos")" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-edit"></span> Movimientos</a>   <a href="@Url.Action("AsignarStock", "Stock")" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-calendar"></span> Asignar Stock</a> }
+                            }');
+                    }
+            })
+        }
+        );
+
+        function Filtro() {
+            location.reload();
+        }
+    </script>
+}
+<div class="cabecera" style="margin-bottom: 20px;">
+    Stock
+</div>
+@using (Html.BeginForm("Index", "Stock", FormMethod.Post, new { @class = "formulario form-horizontal", id = "formAlertas" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="panel panel-default">
+        <div class="panel-heading" style="background-color:gainsboro; font-weight:bold;">Filtro</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>
+                        @Html.CheckBoxFor(model => model.MostrarSoloAlertas, new { id = "alertas" })
+                        Mostrar sólo las alertas de Stock
+                        <button type="submit" style="visibility:hidden" id="btnAlertas" class="btn btn-primary" aria-label="Left Align">
+                            <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
+                            Filtrar
+                        </button>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="grilla-listados">
+    <table id="stock" class="table table-bordered table-condensed table-hover table-striped">
+        <thead>
+            <tr>
+                <th style="text-align:center">Articulo</th>
+                <th style="text-align:center">Precio Venta</th>
+                <th style="text-align:center">Stock Mínimo</th>
+                <th style="text-align:center">Stock Máximo</th>
+                @foreach (var suc in Model.Sucursales)
+                {
+                    <th style="text-align:center">@Html.DisplayFor(modelItem => suc.Nombre)</th>
+                }
+                <th style="text-align:center">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{ int cont = 0;}
+            @foreach (var item in Model.Articulos)
+            {
+                if (Model.MostrarSoloAlertas)
+                {
+                    if (!(Model.TotalesStock[cont] > item.StockMinimo * 1.2))
+                    {
+                        <tr style="text-align:center">
+                            <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                            <td>@Html.DisplayFor(modelItem => item.PrecioActualVenta)</td>
+                            <td>@Html.DisplayFor(modelItem => item.StockMinimo)</td>
+                            <td>@Html.DisplayFor(modelItem => item.StockMaximo)</td>
+                            @for (var i = 0; i < Model.Sucursales.Count; i++)
+                        {
+                                <td>@Html.DisplayFor(modelItem => item.Stock[i].StockActual)</td>
+                            }
+                            <td>@Html.DisplayStock(Model.TotalesStock[cont], item.StockMinimo)</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr style="text-align:center">
+                        <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                        <td>@Html.DisplayFor(modelItem => item.PrecioActualVenta)</td>
+                        <td>@Html.DisplayFor(modelItem => item.StockMinimo)</td>
+                        <td>@Html.DisplayFor(modelItem => item.StockMaximo)</td>
+                        @for (var i = 0; i < Model.Sucursales.Count; i++)
+                        {
+                            <td>@Html.DisplayFor(modelItem => item.Stock[i].StockActual)</td>
+                        }
+                        <td>@Html.DisplayStock(Model.TotalesStock[cont], item.StockMinimo)</td>
+                    </tr>
+                }
+                cont++;
+            }
+        </tbody>
+    </table>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#alertas").change(function () {
+            $("#btnAlertas").click();
+        });
+    });
+</script>

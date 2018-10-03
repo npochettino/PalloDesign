@@ -1,0 +1,40 @@
+﻿@model UI.Web.ViewModels.CierreCaja.CierreCajaDetallesViewModel
+@{
+    ViewBag.Title = "Detalles";
+}
+
+<div class="cabecera" style="margin-bottom: 20px;">
+    Detalles de Cierre
+</div>
+
+<div class="row form-group">
+    <div class="col-md-2">
+        <h4>  @Html.LabelFor(model => model.FechaCierre, htmlAttributes: new { @class = "control-label" })</h4>
+       
+    </div>
+    <div class="col-md-3">
+        <h4>@Model.FechaCierre.ToShortDateString()</h4>
+    </div>  
+    <div class="col-md-2">
+        <h4>  @Html.LabelFor(model => model.Sucursal, htmlAttributes: new { @class = "control-label" })</h4>
+
+    </div>
+    <div class="col-md-3">
+        <h4>@Html.DisplayFor(model => model.Sucursal)</h4>
+    </div>  
+</div>
+<div id="divCierres">
+    @{
+        if (Model.Cierres.Count > 0)
+        {
+            Html.RenderPartial("_CierreCajaTurno", Model.Cierres);
+        }
+        else
+        {
+            <h4>Se existen cierres que coincidan con la busqueda.</h4>
+        }
+    }
+</div>
+<div>
+    <a href="@Url.Action("Index", "CierreCaja")" class="btn btn-default">Volver</a>
+</div>

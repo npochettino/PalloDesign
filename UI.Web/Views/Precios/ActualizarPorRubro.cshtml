@@ -1,0 +1,84 @@
+﻿@model UI.Web.ViewModels.Precios.PrecioActualizarPorRubroViewModel
+@using UI.Web.Helpers;
+@{
+    ViewBag.Title = "Actualizar Precio Por Rubro";
+}
+
+<div class="cabecera">
+    Actualizar Precio Por Rubro
+</div>
+
+@using (Html.BeginForm("ActualizarPorRubro", "Precios", FormMethod.Post, new { @class = "formulario form-horizontal" , @id="frmActualizaPorRubro" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="container">
+        <fieldset>
+            @*<legend></legend>*@
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.RubroID, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DropDownListFor(model => model.RubroID, new SelectList(ViewBag.Rubros, "Id", "Nombre"), "Seleccionar...", htmlAttributes: new { @class = "form-control", autofocus = "" })
+                            @Html.ValidationMessageFor(model => model.RubroID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PorcentajeActualizacion, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @*@Html.TextBoxFor(model => model.PrecioActualCompra, new { @class = "form-control" })*@
+                            @Html.DecimalFor(model => model.PorcentajeActualizacion, Model.PorcentajeActualizacion, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.PorcentajeActualizacion, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+
+        @*Botones Aceptar y Cancelar*@
+        <div class="row">
+            <div class="form-group col-md-12">
+                @*<button type="submit" class="btn btn-primary">Aceptar</button>*@
+                <button type="button" class="btn btn-primary" onclick="OpenSweetAlert()">Aceptar</button>
+                <a href="@Url.Action("Index", "Articulos")" class="btn btn-default">Cancelar</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        function OpenSweetAlert() {
+
+            swal({
+                title: "¿Está seguro?",
+                text: "Se modificarán los precios de venta de TODOS los artículos del Rubro seleccionado",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                closeOnConfirm: false,
+                allowOutsideClick: true
+            }, function () {
+
+                //window.location = '@Url.Action("EliminarTodo", "Pedidos")/' + "?idRepartidor=" + id + "";
+                var theForm = document.forms['frmActualizaPorRubro'];
+                theForm.submit();
+
+            });
+
+        }
+
+    </script>
+}
+
+
+
+

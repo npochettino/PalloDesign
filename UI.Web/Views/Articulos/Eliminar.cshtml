@@ -1,0 +1,49 @@
+﻿@model UI.Web.ViewModels.Articulos.ArticuloEliminarViewModel
+@{
+    ViewBag.Title = "Eliminar Articulo";
+}
+
+<div class="cabecera">
+    Eliminar Artículo
+</div>
+
+<div class="container">
+    <fieldset>
+        <legend>Información General</legend>
+        <dl class="dl-horizontal">
+            <dt>@Html.DisplayNameFor(model => model.NombreRubro)</dt>
+            <dd>@Html.DisplayFor(model => model.NombreRubro)</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>@Html.DisplayNameFor(model => model.Nombre)</dt>
+            <dd>@Html.DisplayFor(model => model.Nombre)</dd>
+        </dl>
+    </fieldset>
+
+    <fieldset>
+        <legend>Stock</legend>
+        <dl class="dl-horizontal">
+            <dt>@Html.DisplayNameFor(model => model.StockMinimo)</dt>
+            <dd>@Html.DisplayFor(model => model.StockMinimo)</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>@Html.DisplayNameFor(model => model.StockMaximo)</dt>
+            <dd>@Html.DisplayFor(model => model.StockMaximo)</dd>
+        </dl>
+    </fieldset>
+
+    <div class="row">
+        <div class="form-group col-md-12">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <button type="submit" name="Delete" value="Delete" class="btn btn-primary">Eliminar</button>
+                <a href="@Url.Action("Index", "Articulos")" class="btn btn-default">Volver</a>
+            }
+        </div>
+    </div>
+</div>
+
+
+

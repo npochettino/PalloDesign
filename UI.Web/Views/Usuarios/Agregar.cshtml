@@ -1,0 +1,210 @@
+﻿@model UI.Web.ViewModels.Usuarios.UsuarioViewModel
+@{
+    ViewBag.Title = "Agregar Usuarios";
+}
+
+<div class="cabecera">
+    Agregar Usuarios
+</div>
+
+@using (Html.BeginForm("Agregar", "Usuarios", FormMethod.Post, new { @class = "formulario form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="container">
+        <fieldset>
+            <legend>Información General</legend>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Apellido, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.Apellido, new { htmlAttributes = new { @class = "form-control", autofocus = "" } })
+                            @Html.ValidationMessageFor(model => model.Apellido, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                            @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Información de Login</legend>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.DNI, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.DNI, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.DNI, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-6" })
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @type = "password" } })
+                            @*@Html.PasswordFor(model => model.Password, new { @class = "form-control" })*@
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.RepetirPassword, htmlAttributes: new { @class = "control-label col-md-6" })
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.RepetirPassword, new { htmlAttributes = new { @class = "form-control", @type = "password" } })
+                            @*@Html.PasswordFor(model => model.RepetirPassword, new { @class = "form-control" })*@
+                            @Html.ValidationMessageFor(model => model.RepetirPassword, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Roles</legend>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.RolIdFromVista, htmlAttributes: new { @class = "control-label col-md-4" })
+                                    <div class="col-md-8">
+                                        @Html.DropDownListFor(model => model.RolIdFromVista, new SelectList(ViewBag.Roles, "Id", "Nombre"), "Seleccionar...", htmlAttributes: new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.RolIdFromVista, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.SucursalIdFromVista, htmlAttributes: new { @class = "control-label col-md-4" })
+                                    <div class="col-md-8">
+                                        @Html.DropDownListFor(model => model.SucursalIdFromVista, new SelectList(ViewBag.Sucursales, "Id", "Nombre"), "Seleccionar...", htmlAttributes: new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.SucursalIdFromVista, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5">
+                            </div>
+                            <div class="col-md-7">
+                                <div class="form-group">
+                                    <button type="submit" id="btnAgregarRol" value="btnAgregarRol" name="action:AgregarRol" class="btn btn-success" title="Agregar Rol">
+                                        <i class="glyphicon glyphicon-plus-sign"></i>
+                                        Agregar Rol
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <table id="tabla-roles" class="table table-bordered table-condensed table-responsive">
+                            <thead>
+                                <tr style="background-color:gainsboro; font-weight:bold">
+                                    <th hidden></th>
+                                    <th>Rol</th>
+                                    <th>Sucursal</th>
+                                    <th style="text-align:center;"></th>
+                                </tr>
+                            </thead>
+                            <tbody style="background-color: #f9f9f9;">
+                                @for (int i = 0; i < Model.Roles.Count; i++)
+                {
+                                    <tr>
+                                        <td hidden>
+                                            @Html.TextBoxFor(item => Model.Roles[i].Id)
+                                        </td>
+                                        <td>
+                                            @Html.HiddenFor(item => Model.Roles[i].Rol.Id)
+                                            @Html.TextBoxFor(item => Model.Roles[i].Rol.Nombre, new { @readonly = "" })
+                                        </td>
+                                        <td style="text-align:center; width:20px">
+                                            @Html.HiddenFor(item => Model.Roles[i].Sucursal.Id)
+                                            @Html.TextBoxFor(item => Model.Roles[i].Sucursal.Nombre, new { @readonly = "" })
+                                        </td>
+                                        <td style="text-align:center">
+                                            <button type="submit" name="action:EliminarRol" id="btnEliminarRol" value="@Model.Roles[i].Id" onclick="Asignar(@Model.Roles[i].Rol.Id, @Model.Roles[i].Sucursal.Id)" class="btn btn-danger btn-xs">
+                                                <i class="glyphicon glyphicon glyphicon-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </fieldset>
+
+        @*Botones Aceptar y Cancelar*@
+
+        <div class="row">
+            <div class="form-group col-md-12">
+                <button type="submit" id="btnAgregarUsuario" value="btnAgregarUsuario" name="action:AgregarUsuario" class="btn btn-primary">Aceptar</button>
+                <a id="btnCancelar"onclick="OpenSweetAlert()" class="btn btn-default">Cancelar</a>
+            </div>
+        </div>
+
+        @if (Model.Roles.Count == 0)
+        {
+            <script>
+                document.getElementById("btnAgregarUsuario").disabled = true;
+            </script>
+        }
+
+
+
+    </div>
+}
+
+<script>
+    function Asignar(param1, param2) {
+        $("#RolIdFromVista").val("");
+        $("#RolIdFromVista").val(param1);
+        $("#SucursalIdFromVista").val("");
+        $("#SucursalIdFromVista").val(param2);
+    }
+</script>
+
+<script>
+
+    function OpenSweetAlert() {
+
+        swal({
+            title: "¿Está seguro?",
+            text: "Se perderán los Roles que no haya Guardado",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si",
+            cancelButtonText: "No",
+            closeOnConfirm: false,
+            allowOutsideClick: true
+        }, function () {
+
+            document.getElementById("btnCancelar").href = "@Url.Action("Index", "Usuarios")";            
+            document.getElementById("btnCancelar").click();
+
+        });
+
+    }
+
+</script>
+
+

@@ -1,0 +1,57 @@
+﻿@model UI.Web.ViewModels.Clientes.ClienteDetallesViewModel
+@{
+    ViewBag.Title = "Detalles Cliente";
+}
+
+<div class="cabecera">
+    Detalles Cliente
+</div>
+
+<div class="container">
+    <fieldset>
+        <legend>Información General</legend>
+        @*<dl class="dl-horizontal">
+            <dt>@Html.DisplayNameFor(model => model.RazonSocial)</dt>
+            <dd>@Html.DisplayFor(model => model.RazonSocial)</dd>
+        </dl>*@
+        <dl class="dl-horizontal">
+            <dt>@Html.DisplayNameFor(model => model.NombreCompleto)</dt>
+            <dd>@Html.DisplayFor(model => model.NombreCompleto)</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>@Html.DisplayNameFor(model => model.DNI)</dt>
+            <dd>@Html.DisplayFor(model => model.DNI)</dd>
+        </dl>
+    </fieldset>
+
+    <fieldset>
+        <legend>Domicilio</legend>
+        <dl class="dl-horizontal">
+            <dt>@Html.DisplayNameFor(model => model.DomicilioCompleto)</dt>
+            <dd>@Html.DisplayFor(model => model.DomicilioCompleto)</dd>
+        </dl>
+    </fieldset>
+
+    <fieldset>
+        <legend>Contacto</legend>
+        <dl class="dl-horizontal">
+            <dt>@Html.DisplayNameFor(model => model.Telefono)</dt>
+            <dd>@Html.DisplayFor(model => model.Telefono)</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>@Html.DisplayNameFor(model => model.Email)</dt>
+            <dd>@Html.DisplayFor(model => model.Email)</dd>
+        </dl>
+    </fieldset>
+
+    <div class="row">
+        <div class="form-group col-md-12">
+            <a href="@Url.Action("Index", "Clientes")" class="btn btn-default">Volver</a>
+        </div>
+    </div>
+</div>
+
+
+
+
+

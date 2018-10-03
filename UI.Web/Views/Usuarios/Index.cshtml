@@ -1,0 +1,73 @@
+﻿@model UI.Web.ViewModels.Usuarios.UsuarioIndexViewModel
+@{
+    ViewBag.Title = "Usuarios";
+}
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#usuarios').DataTable({
+                "sDom":
+                    '<"toolbar">frtip',
+                stateSave: true,
+                "language":
+                {
+                    "url": '@Url.Content("~/Content/JSON/Spanish.json")'
+                },
+                "columnDefs":
+                    [{
+                        bSortable: false,
+                        aTargets: [-1]
+                    }],
+                "initComplete":
+                    function (settings, json) {
+                        $("div.toolbar").html(
+                            '<a href="@Url.Action("Agregar", "Usuarios")" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span> Agregar</a>');
+                    }
+            })
+        }
+        );
+    </script>
+}
+
+<div class="cabecera" style="margin-bottom: 20px;">
+    Usuarios
+</div>
+
+<div class="grilla-listados">
+    <table id="usuarios" class="table table-bordered table-condensed table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Apellido</th>
+                <th>Nombre</th>
+                <th>DNI</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model.Usuarios)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Apellido)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                    <td>@Html.DisplayFor(modelItem => item.DNI)</td>
+                    <td style="text-align:center">
+                        @*<a href="@Url.Action("Detalles", "Usuarios", new { id = item.Id })" class="btn btn-primary btn-xs">
+                            <span class="glyphicon glyphicon-eye-open"></span>
+                        </a>*@
+                        <a href="@Url.Action("Editar", "Usuarios", new { id = item.Id })" class="btn btn-primary btn-xs">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                        <a href="@Url.Action("Eliminar", "Usuarios", new { id = item.Id })" class="btn btn-danger btn-xs">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </a>
+                    </td>
+                </tr>
+            }
+
+
+        </tbody>
+
+    </table>
+</div>

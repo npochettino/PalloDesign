@@ -1,0 +1,148 @@
+﻿@model List<UI.Web.ViewModels.Stock.LineaAsignarStockViewModel>
+@{ Html.RenderPartial("_Mensajes"); }
+@using (Html.BeginForm("AsignarStock", "Stock", FormMethod.Post, new { id = "form-venta" }))
+{
+
+    <table id="tabla-articulos" class="table table-bordered table-condensed table-responsive">
+        <thead>
+            <tr style="background-color:gainsboro; font-weight:bold">
+                <th hidden></th>
+                <th>Artículo</th>
+                <th>Código</th>
+                @foreach (var suc in (List<Modelos.Sucursal>)ViewBag.Sucursales)
+                {
+                    <th style="text-align:center">@Html.DisplayFor(model => suc.Nombre)</th>
+                }
+                <th style="text-align:center;"></th>
+
+            </tr>
+        </thead>
+        <tbody style="background-color: #f9f9f9;">
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td hidden>
+                        @Html.DisplayFor(model => Model[i].ArticuloID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => Model[i].Articulo.Nombre, new { @readonly = "" })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => Model[i].Articulo.Id, new { @readonly = "" })
+                    </td>
+                    @{
+                        foreach (var item in Model[i].StockArticuloSucursal)
+                        {
+                            @Html.HiddenFor(model => item.ArticuloID)
+                            @Html.HiddenFor(model => item.SucursalID)
+
+                            <td>
+                                <div class="form-inline">
+                                    @{
+                                        var agregar = "Agregar_" + @Html.Raw(item.ArticuloID.ToString()) + "_" + Html.Raw(item.SucursalID.ToString());
+                                    }
+                                    Actual: <b>(@Html.DisplayFor(model => item.StockActual, new { @class = "form-control" }))</b> / Agregar: @Html.TextBoxFor(model => item.StockAgregar, new { @class = "form-control validar", id = agregar, style = "width: 100px", required = "required", type = "number", placeholder = "0"})
+                                    @{
+                                        var actual = "Actual_" + @Html.Raw(item.ArticuloID.ToString()) + "_" + Html.Raw(item.SucursalID.ToString());
+                                    }
+                                    @Html.HiddenFor(model => item.StockActual, new { id = actual })
+                                </div>
+                            </td>
+                                        }
+                    }
+                    <td style="text-align:center">
+                        @*<button id="btnEliminarArticulo" value="@Model[i].ArticuloID" onclick="EliminarArticulo(@Model[i].ArticuloID)" class="btn btn-danger btn-xs">
+                            <i class="glyphicon glyphicon glyphicon-trash"></i>
+                        </button>*@
+                        <a href="#" onclick="EliminarArticulo(@Model[i].ArticuloID)"  class="btn btn-danger btn-xs"><i class="glyphicon glyphicon glyphicon-trash"></i></a> 
+
+                    </td>
+                </tr>
+                        }
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="form-group">
+
+            <button id="btnAsignar" value="AsignarStock" type="submit" class="btn btn-success" title="Asignar Stock">
+                <i class="glyphicon glyphicon-ok"></i> Asignar Stock
+            </button>
+
+        </div>
+    </div>
+}
+
+<script>
+    function EliminarArticulo(id) {      
+        var iurl = '@Url.Action("/EliminarArticulo")'
+        var urlCompleta = iurl + "?articuloID=" + id;
+        $.ajax({
+            url: urlCompleta,
+            contentType: 'application/html; charset=utf-8',
+            type: 'GET',
+            dataType: 'html'
+        })
+        .success(function (result) {
+            $('#TerminoBusquedaArticulo').val("");
+            $('#divArticulos').html(result);
+        });
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $("#btnAsignar").hide();
+        $(".validar").blur(function () {
+            var id = $(this).attr("id");
+            var valorAgregar = $(this).val();
+            var arr = id.split("_");
+         
+            var tipo = arr[0];
+            var art = arr[1];
+            var suc = arr[2];
+
+            var idActual = "Actual_" + art + "_" + "1";
+            var agregarActual = "Agregar_" + art + "_" + "1";
+
+            var elementActual = $(document.getElementById(idActual));
+            var elementAgregarActual = $(document.getElementById(agregarActual));
+
+            var stockActual = Number(elementActual.val()) + Number(elementAgregarActual.val());
+         
+            if (suc != 5)
+            {
+                var idAgregar = tipo + "_" + art;
+                var stringSearch = "[id*=" + idAgregar + "]";       
+                var sum = 0;              
+                $("[id*=" + idAgregar + "]").each(function (i, el) {              
+                    sum += Number($(this).val());
+                });
+                var total = sum - Number(elementAgregarActual.val());
+             
+                if (total > stockActual) {
+                    Mensaje();
+                    var campoActual = $(document.getElementById(id));
+                    campoActual.focus();
+                    $("#btnAsignar").hide();
+                }
+                else {
+                 
+                    var ag = Number(elementAgregarActual.val());
+                 
+                    if (total != 0 || ag != 0)
+                    {
+                        $("#btnAsignar").show();
+                    }
+                   
+                }
+            }
+          
+        });
+    });
+</script>
+<script>
+    function Mensaje()
+    {
+        swal("Oops...", "La cantidad de artículos a asignar supera el total en Stock.", "error");
+        return true;
+    }
+</script>

@@ -1,0 +1,96 @@
+﻿@model UI.Web.ViewModels.Articulos.ArticuloGenerarEtiquetasViewModel
+@using UI.Web.Helpers;
+@{
+    ViewBag.Title = "Generar Etiquetas";
+}
+
+<div class="cabecera">
+    Generar Etiquetas
+</div>
+
+@using (Html.BeginForm("GenerarEtiquetas", "Articulos", FormMethod.Post, new { @class = "formulario form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <dl class="dl-horizontal">
+        <dt>Artículo</dt>
+        <dd>@Html.DisplayFor(model => model.Nombre)</dd>
+        <dd>@Html.HiddenFor(model => model.Nombre)</dd>
+    </dl>
+
+    <dl class="dl-horizontal">
+        <dt>Nombre Etiqueta</dt>
+        <dd>@Html.DisplayFor(model => model.NombreEtiqueta)</dd>
+        <dd>@Html.HiddenFor(model => model.NombreEtiqueta)</dd>
+    </dl>
+
+    <dl class="dl-horizontal">
+        <dt>Código</dt>
+        <dd>@Html.DisplayFor(model => model.Codigo)</dd>
+        <dd>@Html.HiddenFor(model => model.Codigo)</dd>
+    </dl>
+
+    <dl class="dl-horizontal">
+        @*<dt>Etiqueta</dt>
+        <dd>
+            <div id="divImprimir" style="text-align:center; width:120px;">
+                <p style="margin: 0px 0px 0px 10px; font-size:12px;text-align:left"><strong>@Html.DisplayFor(model => model.NombreEtiqueta)</strong>  <br /></p>
+                <p style="margin: 0px 0px 0px 10px; font-size:12px;text-align:left"><strong>$@Html.DisplayFor(model => model.Precio)</strong>  <br /></p>
+                <img alt="" src='@Url.Action("Etiqueta", "Articulos", new { id = Model.Id })' width="90px" height="30px" style="margin-left:2px" />
+            </div>
+        </dd>*@
+        
+
+        @*Ajustes de Nico para la etiqueta*@
+        <dt>Etiqueta</dt>
+        <dd>
+            <div id="divImprimir" style="text-align:center; width:120px;">
+                <p style="margin: 0px 0px 0px 10px; font-size:9px;text-align:left"><strong>@Html.DisplayFor(model => model.NombreEtiqueta)</strong>  <br /></p>
+                <p style="margin: 0px 0px 0px 10px; font-size:9px;text-align:left"><strong>$@Html.DisplayFor(model => model.Precio)</strong>  <br /></p>
+                <img alt="" src='@Url.Action("Etiqueta", "Articulos", new { id = Model.Id })' width="90px" height="40px" style="margin-left:2px" />
+            </div>
+        </dd>
+    </dl>
+
+    @*<div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CantidadEtiquetas, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.CantidadEtiquetas, new { htmlAttributes = new { @class = "form-control", autofocus = "" } })
+                        @Html.ValidationMessageFor(model => model.CantidadEtiquetas, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>*@
+
+
+
+    @*Botones Aceptar y Cancelar*@
+    <div class="row">
+        <div class="form-group col-md-12">
+            <button type="submit" class="btn btn-primary" onclick="printDiv('divImprimir')">Imprimir</button>
+            <a href="@Url.Action("Index", "Articulos")" class="btn btn-default">Cancelar</a>
+        </div>
+    </div>
+
+}
+
+<script>
+    function printDiv(divName) {
+
+        var printContents = document.getElementById(divName).innerHTML;
+        var originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = printContents;
+
+        window.print();
+
+        document.body.innerHTML = originalContents;
+    }
+</script>
+
+
+
+

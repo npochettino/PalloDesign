@@ -1,0 +1,63 @@
+﻿
+
+<div class="cabecera">
+    Importar Artículos
+</div>
+@using (Html.BeginForm("Importar", "Articulos", FormMethod.Post, new { @class = "formulario form-horizontal", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="container">       
+        <table class="table">
+            <tr>
+                @*<td colspan="2"><a href="@Url.Action("Exportar", "Articulos")" class="btn btn-success">Descargar Modelo</a></td>*@
+                <td>
+                    <a href="@Url.Action("Exportar", "Articulos")" cla class="btn btn-warning btn-sm"><i class="glyphicon glyphicon-export"></i> Exportar Modelo </a>
+                </td>
+            </tr>
+
+            <tr style="margin-top:15px">
+                <td>
+                    <label class="control-label" style="font-size:large; vertical-align:middle; padding-right:15px">
+                        Archivo .xlsx:
+                    </label>
+                </td>
+                <td>
+                    <div class="col-md-10">
+                        <input type="file" id="archivo" name="upload" />
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+        <br />
+
+
+        <div class="row">
+            <div class="form-group col-md-12">
+                <button type="submit" onclick="ModalPopup()" class="btn btn-primary">Importar</button>
+                <a href="@Url.Action("Index", "Articulos")" class="btn btn-default">Cancelar</a>
+            </div>
+        </div>
+    </div>
+}
+@*glyphicon glyphicon-import*@
+<div class="modal fade" id="modaLoader" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width:250px">
+        <div class="modal-content" style="background-color: #FFF">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel" style="text-align:center;">Importando Precios...</h4>
+            </div>
+            <div class="modal-body" style="text-align:center">
+
+                <img src="~/Content/Images/ajax-loader.GIF" />
+                @*<img src="~/Content/Img/bike.gif" width="200px" alt="" />*@
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    function ModalPopup() {
+        $('#modaLoader').modal('show');
+    }
+</script>

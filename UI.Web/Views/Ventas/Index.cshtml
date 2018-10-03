@@ -1,0 +1,210 @@
+﻿@model UI.Web.ViewModels.Ventas.VentasIndexViewModel
+
+
+@{
+    ViewBag.Title = "Lista de Ventas";
+}
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#ventas').DataTable({
+                "sDom":
+                    '<"toolbar">frtip',
+                stateSave: true,
+                "language":
+                {
+                    "url": '@Url.Content("~/Content/JSON/Spanish.json")',
+                    "infoEmpty": "No existen registros que coincidan con las búsqueda."
+                },
+                "columnDefs":
+                    [{
+                        bSortable: false,
+                        aTargets: [-1]
+                    }],
+                "initComplete":
+                    function (settings, json) {
+                        $("div.toolbar").html(
+                            '<a href="@Url.Action("Agregar", "Ventas")" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span> Nueva Venta</a>');
+                    }
+            })
+        }
+        );
+    </script>
+}
+
+<div class="cabecera" style="margin-bottom: 20px;">
+    Lista de Ventas
+</div>
+@using (Html.BeginForm("Index", "Ventas", FormMethod.Post, new { id = "form-turnos", @class = "formulario form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+    <div class="row form-inline">
+        <div class="col-md-12">
+            <div class="col-md-2">
+                <h4>Desde:</h4>
+            </div>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.FechaDesde, "{0:dd/MM/yyyy}", new { @class = "form-control datetimepicker desde", @maxlength = 10 })
+            </div>
+            <div class="col-md-2">
+                <h4>Hasta:</h4>
+            </div>
+            <div class="col-md-3">
+                @Html.TextBoxFor(model => model.FechaHasta, "{0:dd/MM/yyyy}", new { @class = "form-control datetimepicker hasta", @maxlength = 10 })
+            </div>
+
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </div>
+        </div>
+    </div>
+    <hr />
+
+    <div class="grilla-listados">
+        <table id="ventas" class="table table-bordered table-condensed table-hover table-striped">
+            <thead>
+                <tr>
+                    <th class="centrado">Nro.</th>
+                    <th>Cliente</th>
+                    <th>Total</th>
+                    <th>Fecha</th>
+                    <th class="centrado">Cant. Art.</th>
+                    <th>Vendedor</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model.Ventas)
+                {
+                    <tr>
+                        <td class="centrado">@Html.DisplayFor(modelItem => item.Id)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Cliente.NombreCompleto)</td>
+                        @*<td>$@Html.DisplayFor(modelItem => item.Total)</td>*@
+                        <td>$@Html.DisplayFor(modelItem => item.TotalVenta)</td>
+                        <td>@Html.DisplayFor(modelItem => item.FechaVenta)</td>
+                        <td class="centrado">@Html.DisplayFor(modelItem => item.CantidadItems)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Vendedor.NombreCompleto)</td>
+                        <td style="text-align:center">
+                            <a href="@Url.Action("Detalles", "Ventas", new { id = item.Id })" class="btn btn-primary btn-xs">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                            </a>
+                            @*<a href="@Url.Action("Editar", "Ventas", new { id = item.Id })" class="btn btn-primary btn-xs">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                </a>
+                                <a href="@Url.Action("Eliminar", "Ventas", new { id = item.Id })" class="btn btn-danger btn-xs">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a>*@
+                        </td>
+                    </tr>
+                }
+
+
+            </tbody>
+
+        </table>
+    </div>
+
+    <hr />
+    <div class="row form-inline">
+        <b> Total Facturado: </b>$@Html.TextBoxFor(model => model.Total, new { @class = "form-control", @readonly = "readonly", @disabled = "disabled" })
+    </div>
+
+    @*<div>
+            <a class="btn btn-primary btn-xs" href="@Url.Action("ExportarExcel", "Ventas", new { desde = @model.FechaDesde, hasta = @model.FechaHesde })">
+                <i class="glyphicon glyphicon-export"></i>
+                Exportar
+            </a>
+        </div>*@
+}
+
+<script>
+    $(function () {
+        $('.desde').datetimepicker({
+            lang: 'es',
+            i18n: {
+                de: {
+                    months: [
+                     'Enero', 'Febrero', 'Marzo', 'Abril',
+                     'Mayo', 'Junio', 'Julio', 'Agosto',
+                     'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
+                    ],
+                    dayOfWeek: [
+                     "Do", "Lu", "Ma", "Mi",
+                     "Ju", "Vi", "Sa",
+                    ]
+                }
+            },
+            closeOnDateSelect: true,
+            timepicker: false,
+            format: 'd/m/Y'
+        });
+        $('.hasta').datetimepicker({
+            closeOnDateSelect: true,
+            lang: 'es',
+            i18n: {
+                de: {
+                    months: [
+                     'Enero', 'Febrero', 'Marzo', 'Abril',
+                     'Mayo', 'Junio', 'Julio', 'Agosto',
+                     'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
+                    ],
+                    dayOfWeek: [
+                     "Do", "Lu", "Ma", "Mi",
+                     "Ju", "Vi", "Sa",
+                    ]
+                }
+            },
+            timepicker: false,
+            format: 'd/m/Y'
+        });
+    });
+
+
+    function OpenSweetAlert(ventaId, desde, hasta) {
+        var id = ventaId;
+
+        var fechadesde = '@Model.FechaDesde';
+        var fechahasta = '@Model.FechaHasta)';
+
+
+        event.preventDefault();
+
+        swal({
+            title: "¿Está seguro?",
+            text: "¿Desea anular la venta?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si, anular Venta",
+            cancelButtonText: "No",
+            closeOnConfirm: false,
+            allowOutsideClick: true
+        }, function () {
+
+            event.preventDefault();
+            swal({
+                title: "OK!",
+                text: "Venta anulada correctamente.",
+                type: "success",
+                showCancelButton: false,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Ok!",
+                cancelButtonText: "No",
+                closeOnConfirm: true,
+                allowOutsideClick: true
+            }, function (isConfirm) {
+
+
+                //window.location = "/Ventas/AnularVenta/" + id + "?desde=" +fechadesde +"&hasta=" +fechahasta+"";
+                window.location = '@Url.Action("AnularVenta", "Ventas")/' + id + "?desde=" + fechadesde + "&hasta=" + fechahasta + "";
+
+            });
+
+        });
+    }
+</script>
+
+

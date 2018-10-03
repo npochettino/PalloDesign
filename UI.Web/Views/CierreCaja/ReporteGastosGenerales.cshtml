@@ -1,0 +1,136 @@
+﻿@model UI.Web.ViewModels.CierreCaja.ReporteGastosGeneralesViewModel
+@{
+    ViewBag.Title = "Reporte Gastos Generales";
+}
+
+<h2>Reporte Gastos Generales</h2>
+
+@using (Html.BeginForm("ReporteGastosGenerales", "CierreCaja", FormMethod.Post, new { id = "form-turnos", @class = "formulario form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+    <div class="row form-inline">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-1">
+                    <h4>Desde:</h4>
+                </div>
+                <div class="col-md-2">
+                    @Html.TextBoxFor(model => model.FechaDesde, "{0:dd/MM/yyyy}", new { @class = "form-control datetimepicker desde", @maxlength = 10, @style = "width:100px" })
+                </div>
+                <div class="col-md-1">
+                    <h4>Hasta:</h4>
+                </div>
+                <div class="col-md-2">
+                    @Html.TextBoxFor(model => model.FechaHasta, "{0:dd/MM/yyyy}", new { @class = "form-control datetimepicker hasta", @maxlength = 10, @style = "width:100px" })
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" id="btnReporte" class="btn btn-primary" aria-label="Left Align">
+                        <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+                        Generar Reporte
+                    </button>
+                </div>
+            </div>            
+        </div>
+    </div>
+    <hr />
+
+    <div class="grilla-listados">
+        <table id="ventas" class="table table-bordered table-condensed table-hover table-striped">
+            <thead>
+                <tr>
+                    <th style="text-align:center">Fecha</th>
+                    <th>Gastos</th>
+                    <th>Sueldos</th>
+                    <th>Ventas</th>
+                    <th>Tarjetas</th>                    
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model.Detalle)
+                {
+                    <tr>
+                        <td style="text-align:center">@item.Fecha.ToShortDateString()</td>
+                        <td>@Html.DisplayFor(modelItem => item.TotalGastos)</td>
+                        <td>@Html.DisplayFor(modelItem => item.TotalSueldos)</td>
+                        <td>@Html.DisplayFor(modelItem => item.TotalVentasEfectivo)</td>
+                        <td>@Html.DisplayFor(modelItem => item.TotalIngresosPorTarjeta)</td>                       
+                    </tr>
+                }
+
+
+            </tbody>
+            <tfoot style="background-color:aqua">
+                <tr>
+                    <td style="text-align:right"><b>Subtotal: </b></td>
+                    <td>@Html.DisplayFor(model => model.TotalesGastos)</td>
+                    <td>@Html.DisplayFor(model => model.TotalesSueldos)</td>
+                    <td>@Html.DisplayFor(model => model.TotalesVentas)</td>
+                    <td>@Html.DisplayFor(model => model.TotalesTarjetas)</td>      
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <hr />
+    <div class="row form-inline" style="text-align:center">
+        <h3>  <b> Total: </b>$@Html.DisplayFor(model => model.TotalesTotal, new { @class = "form-control" })</h3>
+    </div>
+
+
+}
+@using (Html.BeginForm("ReporteGastosGeneralesPrint", "CierreCaja", FormMethod.Post, new { @class = "formulario form-horizontal" }))
+{   
+    @Html.HiddenFor(model => model.FechaDesde)
+    @Html.HiddenFor(model => model.FechaHasta)
+    <div class="row noPrint">
+        <div class="form-group col-md-12">
+            <button type="submit" name="Imprimir" value="Imprimir" class="btn btn-success"><span class="glyphicon glyphicon-print"></span> Vista Previa </button>
+            <a href="@Url.Action("Index", "Articulos")" class="btn btn-default">Volver</a>
+        </div>
+    </div>
+}
+
+<script>
+    $(function () {
+        $('.desde').datetimepicker({
+            lang: 'es',
+            i18n: {
+                de: {
+                    months: [
+                     'Enero', 'Febrero', 'Marzo', 'Abril',
+                     'Mayo', 'Junio', 'Julio', 'Agosto',
+                     'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
+                    ],
+                    dayOfWeek: [
+                     "Do", "Lu", "Ma", "Mi",
+                     "Ju", "Vi", "Sa",
+                    ]
+                }
+            },
+            closeOnDateSelect: true,
+            timepicker: false,
+            format: 'd/m/Y'
+        });
+        $('.hasta').datetimepicker({
+            closeOnDateSelect: true,
+            lang: 'es',
+            i18n: {
+                de: {
+                    months: [
+                     'Enero', 'Febrero', 'Marzo', 'Abril',
+                     'Mayo', 'Junio', 'Julio', 'Agosto',
+                     'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
+                    ],
+                    dayOfWeek: [
+                     "Do", "Lu", "Ma", "Mi",
+                     "Ju", "Vi", "Sa",
+                    ]
+                }
+            },
+            timepicker: false,
+            format: 'd/m/Y'
+        });
+    });
+</script>

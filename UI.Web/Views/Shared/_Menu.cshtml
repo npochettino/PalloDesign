@@ -1,0 +1,201 @@
+﻿<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="@Url.Action("Agregar", "Ventas")">
+                @*<img src="~/Content/Images/pallodesign_logo.png" height="50" alt="" />*@
+                Pallo Design
+            </a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            @{
+                string RolActual = System.Web.HttpContext.Current.Session["RolActual"].ToString();
+                if (RolActual == "administrador")
+                {
+                    <ul class="nav navbar-nav" id="barraMenu">
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ventas<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="@Url.Action("Agregar", "Ventas")">Nueva Venta</a></li>
+                                <li><a href="@Url.Action("Index", "Ventas")">Lista Ventas</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="@Url.Action("Agregar", "Devoluciones")">Devolución</a></li>
+                                <li><a href="@Url.Action("Index", "DevolucionesSinTicket")">Nota de Crédito</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="@Url.Action("Index", "Stock")">Stock</a></li>
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Caja<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="@Url.Action("Index", "CierreCaja")">Cierres de Caja</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="@Url.Action("Index", "MovimientosEfectivo")">Movimiento Efectivo</a></li>
+                                <li><a href="@Url.Action("Index", "TiposMovimientosEfectivo")">Tipos  de Movimiento Efectivo</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="@Url.Action("Index", "Sueldos")">Liquidación de Sueldo</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="@Url.Action("Index", "Articulos")">Articulos</a></li>
+                                <li><a href="@Url.Action("Index", "Rubros")">Rubros</a></li>
+                                <li><a href="@Url.Action("Importar", "Articulos")">Importar Articulos desde Excel</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="@Url.Action("Index", "Clientes")">Clientes</a></li>
+                                <li><a href="@Url.Action("Index", "Proveedores")">Proveedores</a></li>
+                                @*<li><a href="@Url.Action("Index", "Sucursales")">Sucursales</a></li>*@
+                                <li><a href="@Url.Action("Index", "Usuarios")">Usuarios</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="@Url.Action("CambiarClave", "Usuarios")">Cambiar Contraseña</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="@Url.Action("Reporte", "Articulos")"> Artículos </a></li>
+                                <li><a href="@Url.Action("ReportePorVendedor", "Ventas")"> Ventas x Vendedor </a></li>
+                                <li><a href="@Url.Action("ReporteGastosGenerales", "CierreCaja")"> Total Gastos </a></li>
+                                <li><a href="@Url.Action("ReporteGanancias", "CierreCaja")"> Ganancias </a></li>
+                                <li><a href="@Url.Action("ReportePorRubro", "Ventas")"> Ventas x Rubro </a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                }
+
+
+                else if (RolActual == "adm. de stock")
+                {
+                    <ul class="nav navbar-nav" id="barraMenu">
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ventas<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="@Url.Action("Agregar", "Ventas")">Nueva Venta</a></li>
+                                @*<li><a href="@Url.Action("Index", "Ventas")">Lista Ventas</a></li>*@
+                                <li role="separator" class="divider"></li>
+                                <li><a href="@Url.Action("Agregar", "Devoluciones")">Devolución</a></li>
+                                <li><a href="@Url.Action("Index", "DevolucionesSinTicket")">Nota de Crédito</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="@Url.Action("Index", "Stock")">Stock</a></li>
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Caja<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="@Url.Action("Index", "CierreCaja")">Cierres de Caja</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="@Url.Action("Index", "MovimientosEfectivo")">Movimiento Efectivo</a></li>
+                                <li><a href="@Url.Action("Index", "TiposMovimientosEfectivo")">Tipos  de Movimiento Efectivo</a></li>
+                                <li role="separator" class="divider"></li>
+                                @*<li><a href="@Url.Action("Index", "Sueldos")">Liquidación de Sueldo</a></li>*@
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="@Url.Action("Index", "Articulos")">Articulos</a></li>
+                                <li><a href="@Url.Action("Index", "Rubros")">Rubros</a></li>
+                                <li><a href="@Url.Action("Importar", "Articulos")">Importar Articulos desde Excel</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="@Url.Action("Index", "Clientes")">Clientes</a></li>
+                                <li><a href="@Url.Action("Index", "Proveedores")">Proveedores</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="@Url.Action("CambiarClave", "Usuarios")">Cambiar Contraseña</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                }
+
+                else if (RolActual == "responsable")
+                {
+                    <ul class="nav navbar-nav" id="barraMenu">
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ventas<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="@Url.Action("Agregar", "Ventas")">Nueva Venta</a></li>
+                                @*<li><a href="@Url.Action("Index", "Ventas")">Lista Ventas</a></li>*@
+                                <li role="separator" class="divider"></li>
+                                <li><a href="@Url.Action("Agregar", "Devoluciones")">Devolución</a></li>
+                                <li><a href="@Url.Action("Index", "DevolucionesSinTicket")">Nota de Crédito</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="@Url.Action("Index", "Stock")">Stock</a></li>
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Caja<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="@Url.Action("Index", "CierreCaja")">Cierres de Caja</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="@Url.Action("Index", "Sueldos")">Liquidación de Sueldo</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                @*<li><a href="@Url.Action("Index", "Articulos")">Articulos</a></li>*@
+                                <li><a href="@Url.Action("Index", "Rubros")">Rubros</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="@Url.Action("Index", "Clientes")">Clientes</a></li>
+                                <li><a href="@Url.Action("Index", "Proveedores")">Proveedores</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="@Url.Action("CambiarClave", "Usuarios")">Cambiar Contraseña</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                }
+                else // Vendedor
+                {
+                    <ul class="nav navbar-nav" id="barraMenu">
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ventas<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="@Url.Action("Agregar", "Ventas")">Nueva Venta</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="@Url.Action("Agregar", "Devoluciones")">Devolución</a></li>
+                                <li><a href="@Url.Action("Index", "DevolucionesSinTicket")">Nota de Crédito</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="@Url.Action("Index", "Stock")">Stock</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Caja<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="@Url.Action("Index", "CierreCaja")">Cierres de Caja</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="@Url.Action("Agregar", "MovimientosEfectivo")">Nuevo Movimiento Efectivo</a></li>
+                                @*<li role="separator" class="divider"></li>
+                                    <li><a href="@Url.Action("Index", "Sueldos")">Liquidación de Sueldo</a></li>*@
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="@Url.Action("Index", "Clientes")">Clientes</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="@Url.Action("CambiarClave", "Usuarios")">Cambiar Contraseña</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                }
+
+            }
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="@Url.Action("SeleccionarSucursal", "Home")">Cambiar Sucursal</a></li>
+                <li><a href="@Url.Action("Logout", "Account")">Cerrar Sesión</a></li>
+            </ul>
+            <p class="navbar-text navbar-right">Usr: @System.Web.HttpContext.Current.Session["DatosUsuario"] @System.Web.HttpContext.Current.Session["DatosSucursalActual"]</p>
+        </div>
+    </div>
+</nav>

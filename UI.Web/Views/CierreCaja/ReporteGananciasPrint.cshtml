@@ -1,0 +1,158 @@
+﻿@model UI.Web.ViewModels.CierreCaja.ReporteGananciasViewModel
+@{
+    Layout = "~/Views/Shared/_LayoutVacio.cshtml";
+}
+
+
+@{
+    ViewBag.Title = "Reporte Ganancias";
+}
+
+
+@section scripts{
+    <script>
+        $(function () {
+            var content_height = 800;	// the height of the content, discluding the header/footer 1060
+            var page = 1;
+            var finalPage = 1;
+
+            // the beginning page number to show in the footer
+            function buildNewsletter() {
+                if ($('#newsletterContent').contents().length > 0) {
+                    // when we need to add a new page, use a jq object for a template
+                    // or use a long HTML string, whatever your preference
+                    $page = $("#page_template").clone().addClass("page").css("display", "block");
+
+                    // fun stuff, like adding page numbers to the footer
+
+                    $page.find(".footer span").append(page);
+                    $("body").append($page);
+                    page++;
+
+                    // here is the columnizer magic
+                    $('#newsletterContent').columnize({
+                        columns: 1,
+                        target: ".page:last .content",
+                        overflow: {
+                            height: content_height,
+                            id: "#newsletterContent",
+                            doneFunc: function () {
+                                buildNewsletter();
+                            }
+                        }
+                    });
+                }
+                else {
+
+                    $(".paginas").append(" de " + (page - 1));
+                }
+            }
+
+            setTimeout(buildNewsletter, 0);
+
+        });
+    </script>
+}
+
+<script src="~/Scripts/jquery-2.1.4.js"></script>
+<script src="~/Scripts/jquery.columnizer.js"></script>
+<link href="~/Content/print.css" rel="stylesheet" type="text/css" media="print" />
+
+<div class="cabecera" style="text-align:center">
+    Ganancias
+</div>
+
+<div class="container">
+    <div id="page_template" class="wrapper" style="border:0 solid red; width:100%; height:900px; display:none; page-break-after: auto">
+        <div id="header" class="header dontsplit" style="border:0 dashed green; height:55px">
+            <table style="margin: 0 auto">
+                <tr>
+                    <td>
+                        @Model.CabeceraReporte
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <div id="content" class="content" style="border: 0 dashed blue; font-size:9pt;height:800px;">
+
+        </div>
+        <div id="footer" class="footer dontsplit" style="border:0 solid black; height:20px; text-align:center">
+            <span style="text-align:center" class="paginas">Pág: </span>
+        </div>
+    </div>
+
+</div>
+
+<div id="newsletterContent" style="display:none;">
+
+    @{
+        <table style="margin: 0 auto">
+            <tr>
+                <td>
+                    <button type="button" style="text-align:center" class="noPrint" name="Imprimir" value="Imprimir" onClick="window.print()"> Imprimir </button>
+                </td>
+                <td>
+                    <a href="@Url.Action("ReporteGanancias", "CierreCaja")" class="noPrint"> Volver </a>
+                </td>
+            </tr>
+        </table>
+
+        <div class="grilla-listados">
+            <table id="detalle" style="margin: 0 auto;border-collapse: collapse; width:100%;" class="table table-bordered">
+                <caption><h4>Detalles</h4></caption>
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Tipo</th>
+                        <th>$</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model.Detalles)
+                    {
+                        <tr>
+                            <td style="text-align:center">@d.Fecha.ToShortDateString()</td>
+                            <td style="text-align:center">@Html.DisplayFor(modelItem => d.Tipo)</td>
+                            <td style="text-align:center">@Html.DisplayFor(modelItem => d.Importe)</td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+        <hr />
+        <div class="grilla-listados">
+            <table id="resumen" style="background-color:aqua; margin: 0 auto;border-collapse: collapse; width:100%;" class="table table-bordered">
+                <caption><h4>Resumen</h4></caption>
+                <thead>
+                    <tr>
+                        <th>Gastos</th>
+                        <th>Sueldos</th>
+                        <th>Ventas</th>
+                        <th>Tarjetas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align:center">@Html.DisplayFor(model => Model.Resumen.TotalGastos)</td>
+                        <td style="text-align:center">@Html.DisplayFor(model => Model.Resumen.TotalSueldos)</td>
+                        <td style="text-align:center">@Html.DisplayFor(model => Model.Resumen.TotalVentasEfectivo)</td>
+                        <td style="text-align:center">@Html.DisplayFor(model => Model.Resumen.TotalIngresosPorTarjeta)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <hr />
+        <div class="row form-inline" style="text-align:center">
+            <h3>  <b> Total: </b>$@Html.DisplayFor(model => Model.Resumen.TotalesTotal, new { @class = "form-control" })</h3>
+           
+        </div>
+    }
+
+
+
+
+</div>
+

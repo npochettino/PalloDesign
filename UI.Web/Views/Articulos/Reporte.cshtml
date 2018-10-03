@@ -1,0 +1,118 @@
+﻿@model UI.Web.ViewModels.Articulos.ReporteViewModel
+@{
+    ViewBag.Title = "Reporte Artículos";
+}
+
+<link href="~/Content/print.css" rel="stylesheet" type="text/css" media="print" />
+
+
+<div class="cabecera">
+    Reporte Artículos
+</div>
+
+<div class="container">
+    @using (Html.BeginForm("ExportarReporte", "Articulos", FormMethod.Post, new { @class = "formulario form-horizontal" }))
+    {
+        <div class="panel panel-default noPrint">
+            <div class="panel-heading" style="background-color:gainsboro; font-weight:bold;">Selección de Sucursales</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <div style="display:inline-block;" class="col-md-4">
+                            @{
+
+                                for (int i = 0; i < Model.Sucursales.Count; i++)
+                                {
+                                    <div style="display:inline-block;">
+                                        @Html.EditorFor(model => model.Sucursales[i].Checked)
+                                        @Html.HiddenFor(model => model.Sucursales[i].Sucursal.Id)
+                                    </div>
+                                    <div style="display:inline-block;">
+                                        @Html.DisplayFor(model => model.Sucursales[i].Sucursal.Nombre, new { @class = "label-form" })
+                                    </div><br />
+                                }
+
+                            }
+                        </div>
+                        <div class="col-md-4">
+                            @Html.CheckBoxFor(model => model.StockCero, new { id = "stockCero" }) Mostrar Artículos sin Stock?
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" id="btnReporte" class="btn btn-primary" aria-label="Left Align">
+                                <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+                                Generar Reporte
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                                }
+    <div class="printDiv">
+        @{
+
+            if (Model.Articulos.Count > 0)
+            {
+                <div class="grilla-listados">
+                    <table id="articulos" class="table table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th colspan="4"></th>
+                                <th colspan="3" style="text-align:center"> Stock </th>
+                            </tr>
+                            <tr>
+                                <th  style="text-align:center">Sucursal</th>
+                                <th  style="text-align:center">Nombre</th>
+                                <th  style="text-align:center">Rubro</th>
+                                <th  style="text-align:center">Precio</th>
+                                                              
+                                <th  style="text-align:center">Mínimo</th>
+                                <th  style="text-align:center">Máximo</th>
+                                <th  style="text-align:center">Actual</th>
+                            
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Articulos)
+                            {
+                                <tr>
+                                    <td style="text-align:center" width="100px">@Html.DisplayFor(modelItem => item.Sucursal.Nombre)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Articulo.Nombre)</td>
+                                    <td  style="text-align:center" width="120px">@Html.DisplayFor(modelItem => item.Articulo.Rubro.Nombre)</td>
+                                    <td  style="text-align:center" width="120px">@Html.DisplayFor(modelItem => item.Articulo.PrecioActualVenta)</td>
+                                    <td  style="text-align:center"  width="80px">@Html.DisplayFor(modelItem => item.Articulo.StockMinimo)</td>
+                                    <td  style="text-align:center"  width="80px">@Html.DisplayFor(modelItem => item.Articulo.StockMaximo)</td>
+                                    <td  style="text-align:center"  width="80px">@Html.DisplayFor(modelItem => item.StockActual)</td>
+                                    @*<td style="text-align:center">                                    
+                                        <a href="@Url.Action("GenerarEtiquetas", "Articulos", new { id = item.Id })" class="btn btn-primary btn-xs">
+                                            <span class="glyphicon glyphicon-tag"></span>
+                                        </a>
+                                        <a href="@Url.Action("Editar", "Articulos", new { id = item.Id })" class="btn btn-primary btn-xs">
+                                            <span class="glyphicon glyphicon-pencil"></span>
+                                        </a>
+                                        <a href="@Url.Action("Eliminar", "Articulos", new { id = item.Id })" class="btn btn-danger btn-xs">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </a>
+                                    </td>*@
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            }
+        }
+    </div>
+
+@using (Html.BeginForm("ExportarReporte", "Articulos", FormMethod.Post, new { @class = "formulario form-horizontal" }))
+{
+    <div class="row noPrint">
+        <div class="form-group col-md-12">
+            @*<button type="submit" name="Imprimir" value="Imprimir" class="btn btn-success"><span class="glyphicon glyphicon-print"></span> Imprimir </button>*@
+            <a href="@Url.Action("Index", "Articulos")" class="btn btn-default">Volver</a>
+        </div>
+    </div>
+}
+</div>

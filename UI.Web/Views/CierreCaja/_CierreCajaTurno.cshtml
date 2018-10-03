@@ -1,0 +1,92 @@
+﻿@model List<Modelos.CierreCaja>
+<div class="row">
+    <div class="grilla-listados">
+        <table id="cierres" class="table table-bordered table-condensed table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>Turno</th>
+                    <th>Fecha</th>
+                    <th>Ventas</th>
+                    <th>Proveedores</th>
+                    <th>Sueldos</th>
+                    <th>Varios</th>
+                    <th>Saldo</th>
+                    <th>Total en Caja</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{ decimal TotalCajaTotales = 0;}
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Turno.Nombre</td>
+                        <td>@item.FechaCierreCaja.ToShortDateString()</td>
+                        <td>$@Html.DisplayFor(modelItem => item.TotalVentas)</td>
+                        <td>$@Html.DisplayFor(modelItem => item.TotalProveedores)</td>
+                        <td>$@Html.DisplayFor(modelItem => item.TotalSueldos)</td>
+                        <td>@Html.DisplayFor(modelItem => item.TotalVarios)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Saldo)</td>
+                        <td>@Html.DisplayFor(modelItem => item.TotalCaja)</td>
+                        <td style="text-align:center">
+                            @{
+                                TotalCajaTotales = item.TotalCaja;
+
+                                if (item.Id == 0)
+                                {
+                                    <a href="@Url.Action("Guardar", "CierreCaja", new { fechaCierre = item.FechaCierreCaja, turnoID = item.TurnoID })" title="Realizar Cierre" class="btn btn-primary btn-xs">
+                                        <span class="glyphicon glyphicon-save"></span>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a id="btnRecalcular" href="@Url.Action("Recalcular", "CierreCaja", new { cierreID = item.Id })" onclick="OpenSweetAlert(@item.Id)" title="Recalcular Cierre" class="btn btn-warning btn-xs">
+                                        <span class="glyphicon glyphicon-refresh"></span>
+                                    </a>
+                                }
+                            }
+                        </td>
+                    </tr>
+                                }
+
+
+            </tbody>
+            <tfoot>
+                <tr style="background-color:ActiveCaption; ">
+                    <td colspan="2" style="text-align:center; font-weight:bold;vertical-align:middle">Totales: </td>
+                    @{
+                        <td style="text-align:center; font-weight:bold;vertical-align:middle">$@Model.Sum(a => a.TotalVentas)</td>
+                        <td style="text-align:center; font-weight:bold;vertical-align:middle">$@Model.Sum(a => a.TotalProveedores)</td>
+                        <td style="text-align:center; font-weight:bold;vertical-align:middle">$@Model.Sum(a => a.TotalSueldos)</td>
+                        <td style="text-align:center; font-weight:bold;vertical-align:middle">$@Model.Sum(a => a.TotalVarios)</td>
+                        <td colspan="3" style="text-align:center; font-weight:bold"><h4>$@TotalCajaTotales</h4></td>
+                    }
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<script>
+
+    function OpenSweetAlert(id) {
+
+        event.preventDefault();
+
+        swal({
+            title: "¿Está seguro?",
+            text: "Se recalcularán todos los totales del cierre de caja",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si, eliminar",
+            cancelButtonText: "No",
+            closeOnConfirm: false,
+            allowOutsideClick: true
+        }, function () {
+
+            window.location = '@Url.Action("Recalcular", "CierreCaja")/' + "?cierreId=" + id;
+
+        });
+    };   
+
+</script>

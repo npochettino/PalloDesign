@@ -1,0 +1,277 @@
+﻿@model UI.Web.ViewModels.Stock.AsignarStockViewModel
+@using UI.Web.Helpers;
+
+@{
+    ViewBag.Title = "Asignar Stock";
+}
+
+@section Scripts{
+
+<script>
+        // AUTOCOMPLETADO ARTICULOS
+        $(function () {
+
+            $("html,body").css("overflow", "auto"); // Impide que el body modifique su tamaño al tipear en el textbox
+            $("#TerminoBusquedaArticulo").autocomplete({
+                // El source del autocomplete es una acción de controlador
+                source: function (request, response) {
+                    $.ajax({
+                        url: '@Url.Action("BusquedaArticulo", "Articulos")',
+                        type: 'GET',
+                        dataType: 'json',
+                        data: request,
+                        success: function (data) {
+                            if (!data.length) {
+                                $("#ArticuloIDAgregar").val(0);
+                            }
+                            response($.map(data, function (item) {
+                                return { label: item.Nombre, id: item.Id, cod: item.Codigo };
+                            }));
+                        },
+                    });
+                },
+                // Al seleccionar un resultado, seteamos los valores de clave y valor
+                select: function (event, ui) {
+                    $("#TerminoBusquedaArticulo").val(ui.item.label);
+                    $("#ArticuloIDAgregar").val(ui.item.id);
+                    $("#articuloID").val(ui.item.id);
+                    $("#articulo").val(ui.item.cod);
+
+
+                    return false;
+                }
+            }).autocomplete("widget").addClass("textbox-autocomplete");
+        });
+</script>
+    @*<script>
+        // AUTOCOMPLETADO ARTICULOS
+        $(function () {
+
+            $("html,body").css("overflow", "auto"); // Impide que el body modifique su tamaño al tipear en el textbox
+            $("#TerminoBusquedaArticulo").autocomplete({
+                // El source del autocomplete es una acción de controlador
+                source: function (request, response) {
+                    $.ajax({
+                        url: '@Url.Action("BusquedaArticulo", "Articulos")',
+                        type: 'GET',
+                        dataType: 'json',
+                        data: request,
+                        success: function (data) {
+                            if (!data.length) {
+                                $("#ArticuloIDAgregar").val(0);
+                            }
+                            response($.map(data, function (item) {
+                                return { label: item.Nombre, id: item.Id };
+                            }));
+                        },
+                    });
+                },
+                // Al seleccionar un resultado, seteamos los valores de clave y valor
+                select: function (event, ui) {
+                    $("#TerminoBusquedaArticulo").val(ui.item.label);
+                    $("#ArticuloIDAgregar").val(ui.item.id);
+                    Asignar(ui.item.id);
+                    //alert(ui.item.id)
+                    return false;
+                }
+            }).autocomplete("widget").addClass("textbox-autocomplete");
+        });
+    </script>*@
+}
+
+<div class="cabecera" style="margin-bottom: 20px;">
+    Asignar Stock
+</div>
+
+@*@using (Html.BeginForm("AsignarStock", "Stock", FormMethod.Post, new { id = "form-venta" }))
+    {*@
+
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+@Html.Hidden("articulo")
+<div class="row form-group">
+    <label for="TerminoBusquedaArticulo" class="control-label col-md-2">
+        Seleccionar Artículo
+    </label>
+    <div class="col-md-5">
+        <input type="text" class="form-control" placeholder="Código o Nombre del artículo" id="TerminoBusquedaArticulo" autofocus />
+        @Html.HiddenFor(model => model.ArticuloID, new { id = "ArticuloIDAgregar" })
+        @Html.ValidationMessageFor(model => model.ArticuloID, "", new { @class = "text-danger" })
+    </div>
+
+</div>
+<div class="row" id="divArticulos">
+    @{
+        if (Model.ListaArticulosAsignarStock.Count > 0)
+        {
+
+            Html.RenderPartial("_listaArticulosStock", Model.ListaArticulosAsignarStock);
+        }
+        else
+        {
+            <h4>No Existen artículos cargados para asignar.</h4>
+        }
+    }
+
+    @*<table id="tabla-articulos" class="table table-bordered table-condensed table-responsive">
+            <thead>
+                <tr style="background-color:gainsboro; font-weight:bold">
+                    <th hidden></th>
+                    <th>Artículo</th>
+                    <th>Código</th>
+                    @foreach (var suc in Model.Sucursales)
+                    {
+                        <th style="text-align:center">@Html.DisplayFor(model => suc.Nombre)</th>
+                    }
+                    <th style="text-align:center;"></th>
+
+                </tr>
+            </thead>
+            <tbody style="background-color: #f9f9f9;">
+                @for (int i = 0; i < Model.ListaArticulosAsignarStock.Count; i++)
+                {
+                    <tr>
+                        <td hidden>
+                            @Html.TextBoxFor(model => Model.ListaArticulosAsignarStock[i].ArticuloID)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(model => Model.ListaArticulosAsignarStock[i].Articulo.Nombre, new { @readonly = "" })
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(model => Model.ListaArticulosAsignarStock[i].Articulo.Id, new { @readonly = "" })
+                        </td>
+                        @{
+                            foreach (var item in Model.ListaArticulosAsignarStock[i].StockArticuloSucursal)
+                            {
+
+                                <td>
+                                    <div class="form-inline">
+                                       Actual: (@Html.DisplayFor(model => item.StockActual, new { @class = "form-control" })) / Agregar: @Html.TextBoxFor(modelItem => item.StockAgregar, new { @class = "form-control", style = "width: 100px", required = "required", type = "number", placeholder = "0", min = 0 })
+                                    </div>
+                                </td>
+                            }
+                        }
+                        <td style="text-align:center">
+                            <button type="submit" name="action:EliminarArticulo" id="btnEliminarArticulo" value="@Model.ListaArticulosAsignarStock[i].ArticuloID" onclick="Asignar(@Model.ListaArticulosAsignarStock[i].ArticuloID)" class="btn btn-danger btn-xs">
+                                <i class="glyphicon glyphicon glyphicon-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                            }
+            </tbody>
+        </table>*@
+</div>
+
+
+@*}*@
+
+@*<script>
+        function Asignar(id) {
+            $("#ArticuloIDAgregar").val("");
+            $("#ArticuloIDAgregar").val(id);
+            $('#ArticuloIDAgregar').val(id).trigger('change');
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            $(document).on("keypress", "#TerminoBusquedaArticulo", function (e) {
+                if (e.which == 13) {
+                    strSelected = $(this).val();
+                    var len = strSelected.length;
+                    var codigo = strSelected.toString().substring(0, len - 1);
+                    Commit(codigo);
+                }
+            });
+
+            $("#ArticuloIDAgregar").change(function () {
+                var strSelected = "";
+                strSelected = $(this).val();
+                Commit(strSelected);
+            });
+        });
+    </script>*@
+
+<script>
+    function AsignarCodArticulo(id) {
+
+        $("#articulo").val(id);
+
+
+    };
+
+    function Asignar(id) {
+
+        $("#ArticuloIDAgregar").val("");
+        $("#ArticuloIDAgregar").val(id);
+
+    };
+
+
+    function AsignarCodigo(id) {
+        var len = id.length;
+        var codigo = id.substring(0, len);
+        $("#ArticuloIDAgregar").val("");
+        $("#ArticuloIDAgregar").val(codigo);
+    };
+
+    function AgregarClick() {
+
+        if ($.isNumeric($("#TerminoBusquedaArticulo").val())) {
+            strSelected = $("#TerminoBusquedaArticulo").val();
+            AsignarCodArticulo(strSelected);
+        }
+        else {
+
+            strSelected = $("#articulo").val();
+        }
+        AsignarCodigo(strSelected);
+        $("#form-venta").submit();
+    };
+
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        $(document).on("keypress", "#TerminoBusquedaArticulo", function (e) {
+            if (e.which == 13) {
+
+                if ($.isNumeric($(this).val())) {
+                    strSelected = $(this).val();
+                    $("#articulo").val(strSelected);
+                    AsignarCodArticulo(strSelected);
+                }
+                else {
+
+                    strSelected = $("#articulo").val();
+                }
+                AsignarCodigo(strSelected);
+               
+                Commit(strSelected);
+
+                // $("#form-venta").submit();
+
+            }
+        });
+    });
+</script>
+
+<script>
+    function Commit(strSelected) {
+        var iurl = '@Url.Action("/AgregarArticulo")'
+        //var urlCompleta = iurl + "?articuloID=" + strSelected;
+        var urlCompleta = iurl + "?articulo=" + strSelected + "&articuloID=0";
+        $.ajax({
+            url: urlCompleta,
+            contentType: 'application/html; charset=utf-8',
+            type: 'POST',
+            dataType: 'html'
+        })
+        .success(function (result) {
+            $('#TerminoBusquedaArticulo').val("");
+            $('#divArticulos').html(result);
+        });
+    }
+</script>
+

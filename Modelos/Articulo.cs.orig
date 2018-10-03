@@ -1,0 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Modelos
+{
+    public class Articulo:Base
+    {
+        public string Nombre { get; set; }
+        public decimal PrecioActual { get; set; }
+        public int StockMinimo { get; set; }
+        public int StockMaximo { get; set; }
+        public bool Habilitado { get; set; }
+
+        public int RubroID { get; set; }
+        public virtual Rubro Rubro { get; set; }
+<<<<<<< Updated upstream
+
+        public virtual List<StockArticuloSucursal> Stock { get; set; }
+=======
+>>>>>>> Stashed changes
+        
+    }
+}

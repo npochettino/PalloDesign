@@ -1,0 +1,43 @@
+﻿@if (ViewBag.Error != null)
+{
+    <div class="mensaje">
+        <div class="alert alert-dismissible alert-danger">
+            <span class="glyphicon glyphicon-remove-sign"></span>
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            @ViewBag.Error
+        </div>
+    </div>
+}
+
+@if (ViewBag.Informacion != null)
+{
+    <div class="mensaje">
+        <div class="alert alert-dismissible alert-info">
+            <span class="glyphicon glyphicon-info-sign"></span>
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            @ViewBag.Informacion
+        </div>
+    </div>
+}
+
+@if (ViewBag.Alerta != null)
+{
+    <div class="mensaje">
+        <div class="alert alert-dismissible alert-warning">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            @ViewBag.Alerta
+        </div>
+    </div>
+
+}
+
+<script>
+    //$(document).ready(function () {
+    //    window.setTimeout(function () {
+    //        $(".alert").fadeTo(2000, 500).slideUp(500, function () {
+    //            $(".alert").alert('close');
+    //        });
+    //    }, 2000);
+    //});
+</script>

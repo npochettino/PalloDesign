@@ -1,0 +1,115 @@
+﻿@model Modelos.Venta
+@using UI.Web.Helpers
+
+@{
+    ViewBag.Title = "Sistema de Gestion Web";
+    // Layout = "~/Views/Shared/_LayoutVacio.cshtml";
+}
+
+
+<link href="~/Content/print.css" rel="stylesheet" type="text/css" media="print" />
+
+<div id="printDiv" class="printDiv">
+    <div class="cuadroCentral" style="width: 460px; margin:0 auto; text-align:center">
+        <h2> Pallo Design</h2>
+        <h3>Ticket de Venta</h3>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-12">
+                    <b>Cliente: @Model.Cliente.NombreCompleto</b> <br />
+                    <b>Venta N°: @Model.Id</b><br />
+                    <b>Fecha Venta: @Model.FechaVenta</b>
+                </div>
+                <table id="tabla-venta" class="table table-bordered table-condensed table-responsive">
+                    <thead>
+                        <tr style="background-color:gainsboro; font-weight:bold">
+                            <th>Artículo</th>
+                            <th>Cant.</th>
+                            <th>Precio $</th>
+                            <th style="text-align:center;">Desc.</th>
+                            <th>Subtotal $</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            foreach (var item in Model.VentaItem)
+                            {
+                                <tr>
+                                    <td>@item.Articulo.Nombre</td>
+                                    <td>@item.Cantidad</td>
+                                    <td>
+                                        @item.Precio.ToString("#.##")
+                                    </td>
+                                    <td>@item.Descuento %</td>
+                                    <td>
+                                        @item.TotalItem.ToString("#.##")
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <H3>Total: $@Model.Total.ToString("#.##")</H3>
+                @{ 
+                    if (Model.Total > Model.TotalVentasItem)
+                    {
+                        <h5>* Existe un RECARGO aplicado</h5>
+                    }
+                    else if (Model.Total < Model.TotalVentasItem)
+                    {
+                        <h5>* Existe un DESCUENTO aplicado</h5>
+                    }
+
+                }
+            </div>
+            @if (System.Web.HttpContext.Current.Session["SaldoAFavor"] != null)
+            {
+
+                <div class="col-md-12">
+                    @{
+                        var TotalAPagar = Model.Total - decimal.Parse(System.Web.HttpContext.Current.Session["SaldoAFavor"].ToString());
+                        if (TotalAPagar == 0)
+                        {
+                            <H3 style="color:red">Total a Pagar: $0.00</H3>
+                        }
+                        else
+                        {
+                            <H3 style="color:red">Total a Pagar: $@TotalAPagar.ToString("#.##")</H3>
+                        }
+                    }
+
+                </div>
+                            System.Web.HttpContext.Current.Session["SaldoAFavor"] = null;
+                        }
+
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                Gracias por su compra!
+            </div>
+        </div>
+    </div>
+</div>
+<div style="text-align:center" class="noPrint" id="noPrint">
+    <input type="button" class="btn btn-success btn-sm noPrint" id="btnPrint" value="Imprimir">
+    <a href=@Url.Action("Agregar", "Ventas") class="btn btn-info btn-sm noPrint">Volver</a>
+</div>
+
+<script>
+    $(function () {
+        $("#btnPrint").click(function () {
+            window.print();
+        });
+    });
+
+    $(document).ready(function () {
+        window.print();
+    });
+
+</script>

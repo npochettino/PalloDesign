@@ -1,0 +1,257 @@
+﻿@model UI.Web.ViewModels.Ventas.VentasAgregarPagoViewModel
+@using UI.Web.Helpers;
+@{
+    ViewBag.Title = "Agregar Pagos";
+}
+
+<script>
+        // AUTOCOMPLETADO Clientes
+        $(function () {
+
+            $("html,body").css("overflow", "auto"); // Impide que el body modifique su tamaño al tipear en el textbox
+            $("#TerminoBusquedaCliente").autocomplete({
+                // El source del autocomplete es una acción de controlador
+                source: function (request, response) {
+                    $.ajax({
+                        url: '@Url.Action("BusquedaClientes", "Clientes")',
+                        type: 'GET',
+                        dataType: 'json',
+                        data: request,
+                        success: function (data) {
+                            if (!data.length) {
+                                $("#ClienteIDAgregar").val(0);
+                            }
+                            response($.map(data, function (item) {
+                                return { label: item.Nombre, id: item.Id };
+                            }));
+                        },
+                    });
+                },
+                // Al seleccionar un resultado, seteamos los valores de clave y valor
+                select: function (event, ui) {
+                    $("#TerminoBusquedaCliente").val(ui.item.label);
+                    $("#ClienteIDAgregar").val(ui.item.id);
+                    //alert(ui.item.id)
+                    return false;
+                }
+            }).autocomplete("widget").addClass("textbox-autocomplete");
+        });
+
+</script>
+<div class="cabecera" style="margin-bottom: 20px;">
+    Agregar Pagos
+</div>
+
+@using (Html.BeginForm("AgregarPago", "Ventas", FormMethod.Post, new { id = "form-venta" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-2">
+                @Html.LabelFor(model => model.Cliente)
+            </div>
+            <div class="col-md-6">
+                @Html.TextBoxFor(model => model.Cliente.Nombre, new { @class = "form-control", id = "TerminoBusquedaCliente", @placeholder = "Busqueda por apellido o DNI." })
+                @Html.HiddenFor(model => model.ClienteID, new { id = "ClienteIDAgregar" })
+            </div>
+
+        </div>
+    </div>
+        <hr />
+        <div class="col-md-7">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-2">
+                        @Html.HiddenFor(model => model.Items)
+                        @Html.LabelFor(model => model.FormaDePagoID)
+                    </div>
+                    <div class="col-md-3">@Html.DropDownListFor(model => model.FormaDePagoID, Model.FormasDePago, htmlAttributes: new { @class = "form-control" })</div>
+                    <div class="col-md-3">
+                        <button type="submit" id="btnAgregarFormaPago" value="agregarFormaPago" name="action:AgregarPago" class="btn btn-success" title="Agregar Pago">
+                            <i class="glyphicon glyphicon-plus-sign"></i>
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+                <h3>
+                    <label class="control-label" style="margin-left: 20px">
+                        Total: $@Html.DisplayFor(model => model.Total)
+
+                    </label>
+                </h3>
+            </div>
+
+            <div class="row">
+                <div class="col-md-5">
+               
+                    <table id="tabla-pagos" class="table table-bordered table-condensed table-responsive">
+                        <thead>
+                            <tr style="background-color:gainsboro; font-weight:bold">
+                                <th hidden></th>
+                                <th  style="text-align:center;">Forma de Pago</th>
+                                <th  style="text-align:center;">Monto</th>
+                                <th style="text-align:center;"></th>
+
+                            </tr>
+                        </thead>
+                        <tbody style="background-color: #f9f9f9;">
+                            @for (int i = 0; i < Model.Pagos.Count; i++)
+                            {
+                                <tr>
+                                    <td hidden>
+                                        @Html.TextBoxFor(item => Model.Pagos[i].FormaDePagoID)
+                                        @Html.TextBoxFor(item => Model.Pagos[i].FormaDePago.Nombre)                            
+                                        @Html.TextBoxFor(item => Model.Pagos[i].FormaDePago.Recargo)
+                                    </td>
+                                    <td style="text-align:center; width:250px">
+                                        @Html.DisplayFor(item => Model.Pagos[i].FormaDePago.NombreRecargo, new { @readonly = "", @style = "border: 0px none; background-color: transparent;" })
+                                     
+                                    </td>
+                                    <td class="acciones-fila-tabla form-inline" style="text-align:center; width:250px">
+                                        @{
+                                            if (Model.Pagos[i].FormaDePago.Recargo != 0 && Model.Pagos[i].FormaDePago.Recargo != 1)
+                                            {
+                                                @Html.DecimalFor(item => Model.Pagos[i].Monto, Model.Pagos[i].Monto, new { @id = @Model.Pagos[i].FormaDePagoID + "_" + @Model.Pagos[i].FormaDePago.Recargo, @class = "form-control monto recargo", style = "width: 100px", required = "required", placeholder = "$", min = 0 })
+                                                <br />
+                                            <text>Sub: </text>    @Html.Label(" ", new { id = @Model.Pagos[i].FormaDePagoID })
+
+                                            }
+                                            else
+                                            {
+                                                @Html.DecimalFor(item => Model.Pagos[i].Monto, Model.Pagos[i].Monto, new { @id = Model.Pagos[i].FormaDePagoID, @class = "form-control monto", style = "width: 100px", required = "required", placeholder = "$", min = 0 })
+                                            }
+                                        }
+                                      
+                                    </td>
+                                    <td style="text-align:center">
+                                        <a href="#" class="btn btn-danger btn-xs" onclick="AsignarID(@Model.Pagos[i].FormaDePagoID)" >
+                                            <span class="glyphicon glyphicon glyphicon-trash"></span>
+                                        </a>
+                                        <button type="submit" style="visibility:hidden" name="action:EliminarFormaPago" id="btnEliminarFormaPago" value="@Model.Pagos[i].FormaDePagoID" class="btn btn-danger btn-xs">
+                                            <i class="glyphicon glyphicon glyphicon-trash"></i>
+                                        </button>
+                                      
+                                    </td>
+                                </tr>
+                            }
+                            @*@Html.Hidden("ArticuloIDEliminar","", new { id = "ArticuloIDEliminar", name= "ArticuloIDEliminar" })*@
+                            @Html.HiddenFor(model => Model.FormaPagoIDEliminar, new { id = "FormaPagoIDEliminar" })
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <table id="tabla-articulos" class="table table-bordered table-condensed table-responsive">
+                    <caption><h4>Detalle</h4></caption>
+                    <thead>
+                        <tr style="background-color:gainsboro; font-weight:bold">
+                            <th hidden></th>
+                            <th>Art.</th>
+                            <th>Cód.</th>
+                            <th>Cant.</th>
+                            <th style="text-align:center;">$</th>
+                            <th style="text-align:center;">Desc.</th>
+                            <th>Sub. $</th>
+                        </tr>
+                    </thead>
+                    <tbody style="background-color: #f9f9f9;">
+                        @for (int i = 0; i < Model.Items.Count; i++)
+                {
+                            <tr>
+                                <td hidden>
+                                    @Html.DisplayFor(item => Model.Items[i].ArticuloID)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => Model.Items[i].Articulo.Nombre)
+                                </td>
+                                <td>
+                                    -
+                                </td>
+                                <td style="text-align:center; width:20px">
+                                    @Html.DisplayFor(item => Model.Items[i].Cantidad)
+
+                                </td>
+                                <td style="text-align:center; width:150px">
+                                    @Html.DisplayFor(item => Model.Items[i].Precio)
+                                </td>
+
+                                <td class="acciones-fila-tabla form-inline" style="text-align:center; width:150px">
+                                    @Html.DisplayFor(item => Model.Items[i].Descuento)
+
+                                </td>
+                                <td style="text-align:center; width:150px">
+                                    @Html.DisplayFor(item => Model.Items[i].TotalItem)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+}
+<div class="col-md-8">
+    <div class="row form-inline">
+        <button onclick="ValidarMonto()" class="btn btn-success" name="ConfirmarVenta" title="Confirmar Venta">
+            <i class="glyphicon glyphicon-print"></i> Imprimir Ticket
+        </button>
+
+        @*<a href="@Url.Action("AgregarArticulo", "Ventas")" class="btn btn-primary">
+                <span class="glyphicon glyphicon-backward"> Volver </span>
+            </a>*@
+      
+        @using (Html.BeginForm("NuevaVenta", "Ventas", FormMethod.Post, new { id = "form-venta", @style = "margin-top:5px" }))
+        {
+            @Html.AntiForgeryToken()
+            <button type="submit" id="btnAgregarArticulo" value="agregarArticulo" name="action:AgregarArticulo" class="btn btn-primary" title="Volver">
+                <i class="glyphicon glyphicon-backward"> Volver</i>
+            </button>
+        }
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function AsignarID(id) {
+        $("#FormaPagoIDEliminar").val("");
+        $("#FormaPagoIDEliminar").val(id);
+        $("#btnEliminarFormaPago").click();
+    };
+
+    function ValidarMonto() {
+        var sum = 0;
+        var total = "@Model.Total.ToString("#.##")";
+        var res = total.replace(",", ".");
+        $('.monto').each(function () {
+            sum += parseFloat(this.value);
+
+        });
+
+        if (sum == res) {
+            $('#form-venta').attr('action', '@Url.Action("ConfirmarVenta", "Ventas")').submit();
+            return true;
+        }
+        else {
+
+            swal("Oops...", "Los montos de los pagos no coinciden con el Total de la venta.", "error");
+            return false;
+        }
+    };
+
+    $(".recargo").blur(function () {
+        var monto = $(this).val();
+        var id = $(this).attr('id');
+        var arrayID = id.toString().split('_');
+        var inc = arrayID[1].replace(',', '.');
+        var labelID = "#" + arrayID[0];
+        var total = monto * inc;
+        $(labelID).text(total);   
+    });
+
+</script>

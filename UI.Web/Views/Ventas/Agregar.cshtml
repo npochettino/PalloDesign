@@ -1,0 +1,240 @@
+﻿@model UI.Web.ViewModels.Ventas.VentasAgregarViewModel
+@using UI.Web.Helpers;
+
+@{
+    ViewBag.Title = "Nueva Venta";
+}
+
+@section Scripts{
+    <script>
+        // AUTOCOMPLETADO ARTICULOS
+        $(function () {
+
+            $("html,body").css("overflow", "auto"); // Impide que el body modifique su tamaño al tipear en el textbox
+            $("#TerminoBusquedaArticulo").autocomplete({
+                // El source del autocomplete es una acción de controlador
+                source: function (request, response) {
+                    $.ajax({
+                        url: '@Url.Action("BusquedaArticulo", "Articulos")',
+                        type: 'GET',
+                        dataType: 'json',
+                        data: request,
+                        success: function (data) {
+                            if (!data.length) {
+                                $("#ArticuloIDAgregar").val(0);
+                            }
+                            response($.map(data, function (item) {
+                                return { label: item.Nombre, id: item.Id, cod: item.Codigo };
+                            }));
+                        },
+                    });
+                },
+                // Al seleccionar un resultado, seteamos los valores de clave y valor
+                select: function (event, ui) {
+                    $("#TerminoBusquedaArticulo").val(ui.item.label);
+                    $("#ArticuloIDAgregar").val(ui.item.id);
+                    $("#articulo").val(ui.item.cod);
+                   
+                    
+                    return false;
+                }
+            }).autocomplete("widget").addClass("textbox-autocomplete");
+        });
+    </script>
+}
+
+<div class="cabecera" style="margin-bottom: 20px;">
+    Nueva Venta
+</div>
+
+@using (Html.BeginForm("NuevaVenta", "Ventas", FormMethod.Post, new { id = "form-venta" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="row form-group">
+        <label for="TerminoBusquedaArticulo" class="control-label col-md-2">
+            Agregar Artículo
+        </label>
+        <div class="col-md-5">
+            <input type="text" class="form-control" placeholder="Código o Nombre del artículo" id="TerminoBusquedaArticulo" autofocus />
+            @Html.HiddenFor(model => model.ArticuloIdAgregar, new { id = "ArticuloIDAgregar" })
+            @Html.Hidden("articulo")
+            @Html.ValidationMessageFor(model => model.ArticuloIdAgregar, "", new { @class = "text-danger" })
+        </div>
+        <button type="submit" id="btnAgregarArticulo" onclick="AgregarClick()"  value="agregarArticulo" name="action:AgregarArticulo" class="btn btn-success" title="Agregar Artículo">
+            <i class="glyphicon glyphicon-plus-sign"></i>
+        </button>
+        @if (Model.SaldoAFavor != 0)
+        {
+            <div style="color:red; font-size:20px;">
+                @Html.DisplayNameFor(model => model.SaldoAFavor)
+                @Html.DisplayFor(model => model.SaldoAFavor)
+                @Html.HiddenFor(model => model.SaldoAFavor)
+            </div>
+        }
+        
+        
+
+    </div>
+    <div class="row">
+        <table id="tabla-articulos" class="table table-bordered table-condensed table-responsive">
+            <thead>
+                <tr style="background-color:gainsboro; font-weight:bold">
+                    <th hidden></th>
+                    <th style="text-align:center;">Artículo</th>
+                    <th style="text-align:center;">Código</th>
+                    <th style="text-align:center;">Cantidad</th>
+                    <th style="text-align:center;">Precio $</th>
+                    <th style="text-align:center;">Descuento</th>
+                    <th style="text-align:center;">Subtotal $</th>
+                    <th style="text-align:center;"></th>
+                    <th style="text-align:center;"></th>
+
+                </tr>
+            </thead>
+            <tbody style="background-color: #f9f9f9;">
+                @{
+                    try
+                    {
+                        for (int i = 0; i < Model.Items.Count; i++)
+                        {
+                            <tr>
+                                <td hidden>
+                                    @Html.TextBoxFor(item => Model.Items[i].ArticuloID)
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(item => Model.Items[i].Articulo.Nombre, new { @readonly = "", @style = "border: 0px none; background-color: transparent;" })
+                                </td>
+
+                                <td style="text-align:center; width:120px">
+                                    @Html.TextBoxFor(item => Model.Items[i].Articulo.Codigo, new { @readonly = "", @style = "border: 0px none; background-color: transparent;width:120px;" })
+                                </td>
+                                <td style="text-align:center; width:70px">
+                                    @Html.TextBoxFor(item => Model.Items[i].Cantidad, new { @readonly = "", @style = "border: 0px none; background-color: transparent; width:20px;" })
+
+                                </td>
+                                <td style="text-align:center; width:70px">
+                                    @Html.DecimalFor(item => Model.Items[i].Precio, Model.Items[i].Precio, new { @readonly = "", @style = "border: 0px none; background-color: transparent;width:70px;" })
+                                </td>
+
+                                <td class="acciones-fila-tabla form-inline" style="text-align:center; width:200px">
+                                    @Html.TextBoxFor(item => Model.Items[i].Descuento, new { @class = "form-control", style = "width: 80px", required = "required", type = "number", placeholder = "%", min = 0 })
+                                    <button type="submit" name="action:AplicarDescuento" title="Calcular Descuento" id="btnDescuento" value="" class="btn btn-warning btn-xs">
+                                        <i style="font-weight: bold">%</i>
+                                    </button>
+                                </td>
+                                <td style="text-align:center; width:150px">
+                                    @Html.DecimalFor(item => Model.Items[i].TotalItem, Model.Items[i].TotalItem, new { @readonly = "", @style = "border: 0px none; background-color: transparent;width:80px;" })
+                                </td>
+                                <td class="acciones-fila-tabla" style="text-align:center; width:150px">
+                                    <button type="submit" name="action:AgregarArticulo" id="btnSumarArticulo" value="@Model.Items[i].ArticuloID" onclick="Asignar(@Model.Items[i].ArticuloID)" class="btn btn-primary btn-xs">
+                                        <i class="glyphicon glyphicon glyphicon-plus"></i>
+                                    </button>
+
+                                    <button type="submit" name="action:RestarArticulo" id="btnRestarArticulo" value="@Model.Items[i].ArticuloID" onclick="Asignar(@Model.Items[i].ArticuloID)" class="btn btn-primary btn-xs">
+                                        <i class="glyphicon glyphicon glyphicon-minus"></i>
+                                    </button>
+
+                                </td>
+                                <td style="text-align:center">
+                                    <button type="submit" name="action:EliminarArticulo" id="btnEliminarArticulo" value="@Model.Items[i].ArticuloID" onclick="Asignar(@Model.Items[i].ArticuloID)" class="btn btn-danger btn-xs">
+                                        <i class="glyphicon glyphicon glyphicon-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    catch
+                    {
+
+                    }
+
+                }
+                    
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <h3>
+                <label class="control-label" style="margin-left: 20px">
+                    Total: $@Html.DisplayFor(model => model.Total)
+
+                </label>
+            </h3>
+            @{
+                if (Model.Total > 0)
+                {
+                    <button id="btnPagos" value="Pagos" name="action:AgregarPago" class="btn btn-success" title="Agregar Pagos">
+                        <i class="glyphicon glyphicon-usd"></i> Agregar Pago
+                    </button>
+                }
+            }
+        </div>
+    </div>
+
+                }
+
+<script>
+    function AsignarCodArticulo(id) {
+               
+        $("#articulo").val(id);
+       
+    };
+  
+    function Asignar(id) {
+
+        $("#ArticuloIDAgregar").val("");
+        $("#ArticuloIDAgregar").val(id);
+
+    };
+
+
+    function AsignarCodigo(id) {
+        var len = id.length;
+        var codigo = id.substring(0, len);
+        $("#ArticuloIDAgregar").val("");
+        $("#ArticuloIDAgregar").val(codigo);
+    };
+    
+    function AgregarClick() {
+       
+        if ($.isNumeric($("#TerminoBusquedaArticulo").val())) {
+            strSelected = $("#TerminoBusquedaArticulo").val();
+            AsignarCodArticulo(strSelected);
+        }
+        else {
+            
+            strSelected = $("#articulo").val();
+        }
+        AsignarCodigo(strSelected);
+        $("#form-venta").submit();
+    };
+
+</script>
+
+<script>
+    $(document).ready(function () {       
+
+        $(document).on("keypress", "#TerminoBusquedaArticulo", function (e) {
+            if (e.which == 13) {
+               
+                if($.isNumeric($(this).val()))
+                {                    
+                    strSelected = $(this).val();
+                    AsignarCodArticulo(strSelected);
+                }
+                else
+                {
+                   
+                    strSelected = $("#articulo").val();                 
+                }                             
+                AsignarCodigo(strSelected);
+                
+               
+                $("#form-venta").submit();
+                
+            }
+        });       
+    });
+</script>

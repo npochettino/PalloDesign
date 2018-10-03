@@ -1,0 +1,80 @@
+﻿@model List<UI.Web.ViewModels.CierreCaja.CierreCajaIndexViewModel>
+
+@{
+    ViewBag.Title = "Cierres de Caja";
+}
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#cierres').DataTable({
+                "sDom":
+                    '<"toolbar">frtip',
+                stateSave: true,
+                "language":
+                {
+                    "url": '@Url.Content("~/Content/JSON/Spanish.json")'
+                },
+
+                "columnDefs":
+                    [{
+                        bSortable: false,
+                        aTargets: [-1]
+                    }],
+                "initComplete":
+                    function (settings, json) {
+                        $("div.toolbar").html(
+                            '<a href="@Url.Action("Agregar", "CierreCaja")" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span> Nuevo Cierre</a>');
+                    }
+            })
+        }
+        );
+    </script>
+}
+
+<div class="cabecera" style="margin-bottom: 20px;">
+    Cierres de Caja
+</div>
+
+<div class="grilla-listados">
+    <table id="cierres" class="table table-bordered table-condensed table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Total Mañana</th>
+                <th>Total Tarde</th>
+                <th>Total</th>
+                <th>Sucursal</th>
+                <th>Usuario</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    @Html.HiddenFor(modelItem => item.CierreCajaID)
+                    <td data-order="[unixTimestamp]" data-field-type="date" data-sort="[unixTimestamp]">@item.FechaCierre.ToShortDateString()</td>
+                    <td>$@Html.DisplayFor(modelItem => item.TotalMañana)</td>
+                    <td>$@Html.DisplayFor(modelItem => item.TotalTarde)</td>
+                    <td>$@Html.DisplayFor(modelItem => item.Total)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Sucursal)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Usuario)</td>
+
+                    <td style="text-align:center">
+                        <a href="@Url.Action("Detalles", "CierreCaja", new { id = item.CierreCajaID })" class="btn btn-primary btn-xs">
+                            <span class="glyphicon glyphicon-eye-open"></span>
+                        </a>                   
+                    </td>
+                </tr>
+            }
+
+
+        </tbody>
+
+
+    </table>
+</div>
+

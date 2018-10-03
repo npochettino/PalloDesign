@@ -1,0 +1,107 @@
+﻿@model UI.Web.ViewModels.Articulos.ArticuloIndexViewModel
+@{
+    ViewBag.Title = "Articulos";
+}
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#articulos').DataTable({
+                "sDom":
+                    '<"toolbar">frtip',
+                stateSave: true,
+
+                "language":
+                {
+                    "url": '@Url.Content("~/Content/JSON/Spanish.json")'
+                },
+                "columnDefs":
+                    [{
+                        bSortable: false,
+                        aTargets: [-1]
+                    }],
+                "initComplete":
+                    function (settings, json) {
+                        $("div.toolbar").html(
+                            '<a href="@Url.Action("Agregar", "Articulos")" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-edit"></span> Agregar</a>   <a href="@Url.Action("ActualizarPorRubro", "Precios")" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-calendar"></span> Actualizar Precios</a>');
+                    },
+            })
+        }
+        );
+    </script>
+}
+<div class="cabecera" style="margin-bottom: 20px;">
+    Artículos
+</div>
+@using (Html.BeginForm("Index", "Articulos", FormMethod.Post, new { @class = "formulario form-horizontal" }))
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Buscar Artículos</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row form-group">
+                <div class="col-md-2">
+                    @Html.Label("Artículo: ", new { @class= "form-cpntrol col-md-12" })
+                </div>
+                <div class="col-md-8">
+                    @Html.TextBoxFor(model => Model.Filtro, new { @class = "form-control", @placeholder = "Buscar por nombre de artículo...", @minlength = "3", @required = "" })
+
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary">Buscar</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
+<div class="grilla-listados">
+    <table id="articulos" class="table table-bordered table-condensed table-hover table-striped">
+        <thead>
+            <tr style="text-align:center">
+                <th>Nombre</th>
+                <th>Rubro</th>
+                <th>Precio</th>
+                <th>Stock Mínimo</th>
+                <th>Stock Máximo</th>
+                @foreach (var suc in Model.Sucursales)
+                {
+                    <th style="text-align:center">@Html.DisplayFor(modelItem => suc.Nombre)</th>
+                }
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Articulos)
+            {
+                <tr style="text-align:center">
+                    <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Rubro.Nombre)</td>
+                    <td>@Html.DisplayFor(modelItem => item.PrecioActualVenta)</td>
+                    <td>@Html.DisplayFor(modelItem => item.StockMinimo)</td>
+                    <td>@Html.DisplayFor(modelItem => item.StockMaximo)</td>
+                    @for (var i = 0; i < Model.Sucursales.Count; i++)
+                    {
+                        <td>@Html.DisplayFor(modelItem => item.Stock[i].StockActual)</td>
+                    }
+                    <td style="text-align:center">
+                        @*<a href="@Url.Action("Detalles", "Articulos", new { id = item.Id })" class="btn btn-primary btn-xs">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                            </a>*@
+                        <a href="@Url.Action("GenerarEtiquetas", "Articulos", new { id = item.Id })" class="btn btn-primary btn-xs">
+                            <span class="glyphicon glyphicon-tag"></span>
+                        </a>
+                        <a href="@Url.Action("Editar", "Articulos", new { id = item.Id })" class="btn btn-primary btn-xs">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                        <a href="@Url.Action("Eliminar", "Articulos", new { id = item.Id })" class="btn btn-danger btn-xs">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </a>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
