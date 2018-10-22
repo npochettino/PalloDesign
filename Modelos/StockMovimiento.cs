@@ -6,7 +6,7 @@ namespace Modelos
     public class StockMovimiento:Base
     {
         public DateTime Fecha { get; set; }
-        public int Cantidad { get; set; }
+        public decimal Cantidad { get; set; }
 
         public int TipoMovimientoStockID { get; set; }
         public virtual TipoMovimientoStock Motivo { get; set; }
@@ -20,6 +20,6 @@ namespace Modelos
         public int UsuarioID { get; set; }
         public virtual Usuario Usuario { get; set; }
 
-        public int StockActual { get; set; }
+        public decimal StockActual { get; set; }
     }
 }

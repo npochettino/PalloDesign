@@ -22,11 +22,11 @@ namespace Modelos
         public int SucursalID { get; set; }
         public virtual Sucursal Sucursal { get; set; }
 
-        public int CantidadItems
+        public decimal CantidadItems
         {
             get
             {
-                var total = 0;
+                decimal total = 0;
                 try
                 {
                     total = VentaItem.Sum(a => a.Cantidad);

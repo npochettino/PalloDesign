@@ -49,7 +49,7 @@ namespace Servicios
             return _stockArticuloSucursalRepositorio.DescontarStock(venta);
         }
 
-        public int GetStock(Int64 articuloIdAgregar, int sucID)
+        public decimal GetStock(Int64 articuloIdAgregar, int sucID)
         {
             try
             {
@@ -62,7 +62,7 @@ namespace Servicios
             }
         }
 
-        public bool DescontarStockDeposito(int art, int cant)
+        public bool DescontarStockDeposito(int art, decimal cant)
         {
             try
             {

@@ -14,5 +14,6 @@
         public string Telefono { get; set; }
         public string Email { get; set; }
         public bool Habilitado { get; set; }
+        public string Referencia { get; set; }
     }
 }

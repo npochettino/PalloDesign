@@ -109,8 +109,8 @@
                                 <td style="text-align:center; width:120px">
                                     @Html.TextBoxFor(item => Model.Items[i].Articulo.Codigo, new { @readonly = "", @style = "border: 0px none; background-color: transparent;width:120px;" })
                                 </td>
-                                <td style="text-align:center; width:70px">
-                                    @Html.TextBoxFor(item => Model.Items[i].Cantidad, new { @readonly = "", @style = "border: 0px none; background-color: transparent; width:20px;" })
+                                <td class="acciones-fila-tabla form-inline" style="text-align:center; width:200px">
+                                    @Html.TextBoxFor(item => Model.Items[i].Cantidad, new { @class = "form-control", @style = "border: 0px none; width:80px;", type = "number", min = 0.1 })
 
                                 </td>
                                 <td style="text-align:center; width:70px">

@@ -40,12 +40,12 @@ namespace UI.Web.ViewModels.Articulos
 
         [Display(Name = "Stock Mínimo")]
         [Required(ErrorMessage = "Stock Mínimo es Requerido")]
-        public int StockMinimo { get; set; }
+        public decimal StockMinimo { get; set; }
 
         [Display(Name = "Stock Máximo")]
         [Required(ErrorMessage = "Stock Máximo es Requerido")]
         [GreaterThan("StockMinimo", ErrorMessage = "El Stock Máximo debe ser mayor al Stock Mínimo")]
-        public int StockMaximo { get; set; }
+        public decimal StockMaximo { get; set; }
 
         [Display(Name = "Precio de Compra")]
         [Required(ErrorMessage = "Precio de Compra es Requerido")]

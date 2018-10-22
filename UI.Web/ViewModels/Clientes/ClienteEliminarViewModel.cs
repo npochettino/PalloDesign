@@ -22,6 +22,7 @@ namespace UI.Web.ViewModels.Clientes
             Dpto = cliente.Dpto;
             Telefono = cliente.Telefono;
             Email = cliente.Email;
+            Referencia = cliente.Referencia;
         }
 
         public int Id { get; set; }
@@ -35,6 +36,7 @@ namespace UI.Web.ViewModels.Clientes
         public string Dpto { get; set; }
         public string Telefono { get; set; }
         public string Email { get; set; }
+        public string Referencia { get; set; }
 
         [Display(Name = "Apellido y Nombre")]
         public string NombreCompleto

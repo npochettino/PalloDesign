@@ -84,7 +84,7 @@ namespace Servicios
             return false;
         }
 
-        private bool ModificarStock(int articuloID, int cantidad, int sucursalID)
+        private bool ModificarStock(int articuloID, decimal cantidad, int sucursalID)
         {
             try
             {

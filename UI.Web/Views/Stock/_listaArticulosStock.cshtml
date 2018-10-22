@@ -41,7 +41,7 @@
                                     @{
                                         var agregar = "Agregar_" + @Html.Raw(item.ArticuloID.ToString()) + "_" + Html.Raw(item.SucursalID.ToString());
                                     }
-                                    Actual: <b>(@Html.DisplayFor(model => item.StockActual, new { @class = "form-control" }))</b> / Agregar: @Html.TextBoxFor(model => item.StockAgregar, new { @class = "form-control validar", id = agregar, style = "width: 100px", required = "required", type = "number", placeholder = "0"})
+                                    Actual: <b>(@Html.DisplayFor(model => item.StockActual, new { @class = "form-control" }))</b> / Agregar: @Html.TextBoxFor(model => item.StockAgregar, new { @class = "form-control validar", id = agregar, style = "width: 100px", required = "required", type = "number", step = ".01", placeholder = "0"})
                                     @{
                                         var actual = "Actual_" + @Html.Raw(item.ArticuloID.ToString()) + "_" + Html.Raw(item.SucursalID.ToString());
                                     }

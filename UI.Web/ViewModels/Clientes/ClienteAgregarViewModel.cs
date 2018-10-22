@@ -16,15 +16,15 @@ namespace UI.Web.ViewModels.Clientes
         public string Nombre { get; set; }
 
         [Display(Name = "DNI")]
-        [Required(ErrorMessage = "DNI es Requerido")]
+        //[Required(ErrorMessage = "DNI es Requerido")]
         public string DNI { get; set; }
 
         [Display(Name = "Calle")]
-        [RequiredIfNotEmpty("Numero", ErrorMessage = "Calle es Requerido si Número no está vacío")]
+        //[RequiredIfNotEmpty("Numero", ErrorMessage = "Calle es Requerido si Número no está vacío")]
         public string Calle { get; set; }
 
         [Display(Name = "Número")]
-        [RequiredIfNotEmpty("Calle", ErrorMessage = "Número es Requerido si Calle no está vacío")]
+        //[RequiredIfNotEmpty("Calle", ErrorMessage = "Número es Requerido si Calle no está vacío")]
         public string Numero { get; set; }
 
         public bool Bis { get; set; }
@@ -33,11 +33,13 @@ namespace UI.Web.ViewModels.Clientes
 
         public string Dpto { get; set; }
 
+        public string Referencia { get; set; }
+
         [Display(Name = "Teléfono")]
-        [Required(ErrorMessage = "Teléfono es Requerido")]
+        //[Required(ErrorMessage = "Teléfono es Requerido")]
         public string Telefono { get; set; }
 
-        [EmailAddress(ErrorMessage = "Email debe ser una dirección de corre electrónico válida")]
+        //[EmailAddress(ErrorMessage = "Email debe ser una dirección de corre electrónico válida")]
         public string Email { get; set; }
 
         public Cliente Mapear()
@@ -55,6 +57,7 @@ namespace UI.Web.ViewModels.Clientes
             Cliente.Telefono = Telefono;
             Cliente.Email = Email;
             Cliente.Habilitado = true;
+            Cliente.Referencia = Referencia;
 
             return Cliente;
         }

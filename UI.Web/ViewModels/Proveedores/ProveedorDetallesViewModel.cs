@@ -22,6 +22,7 @@ namespace UI.Web.ViewModels.Proveedores
             Dpto = proveedor.Dpto;
             Telefono = proveedor.Telefono;
             Email = proveedor.Email;
+            Referencia = proveedor.Referencia;
         }
 
         public string RazonSocial { get; set; }
@@ -35,6 +36,7 @@ namespace UI.Web.ViewModels.Proveedores
         public string Dpto { get; set; }
         public string Telefono { get; set; }
         public string Email { get; set; }
+        public string Referencia { get; set; }
 
         [Display(Name = "Apellido y Nombre")]
         public string NombreCompleto

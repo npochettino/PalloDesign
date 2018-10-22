@@ -9,6 +9,7 @@ namespace DAL.Contexto
         public DbSet<Articulo> Articulos { get; set; }
         public DbSet<CierreCaja> CierresCaja { get; set; }
         public DbSet<Cliente> Clientes { get; set; }
+        public DbSet<Cheque> Cheques { get; set; }
         public DbSet<MovimientoEfectivo> MovimientosEfectivo { get; set; }
         public DbSet<FormaDePago> FormasDePago { get; set; }
         public DbSet<HistoricoPrecio> HistoricosPrecios { get; set; }
@@ -44,6 +45,7 @@ namespace DAL.Contexto
             modelBuilder.Entity<Articulo>().ToTable("Articulos");
             modelBuilder.Entity<CierreCaja>().ToTable("CierresCaja");
             modelBuilder.Entity<Cliente>().ToTable("Clientes");
+            modelBuilder.Entity<Cheque>().ToTable("Cheques");
             modelBuilder.Entity<MovimientoEfectivo>().ToTable("MovimientosEfectivo");
             modelBuilder.Entity<FormaDePago>().ToTable("FormasDePago");
             modelBuilder.Entity<HistoricoPrecio>().ToTable("HistoricosPrecios");

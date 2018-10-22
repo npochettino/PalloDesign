@@ -20,8 +20,8 @@ namespace UI.Web.ViewModels.Articulos
 
         public int Id { get; set; }
         public string Nombre { get; set; }
-        public int StockMinimo { get; set; }
-        public int StockMaximo { get; set; }
+        public decimal StockMinimo { get; set; }
+        public decimal StockMaximo { get; set; }
         [Display(Name = "Rubro")]
         public string NombreRubro { get; set; }
         public bool Habilitado { get; set; }

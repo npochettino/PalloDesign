@@ -289,7 +289,7 @@ namespace UI.Web.Controllers
             {
                 var art = int.Parse(articulos[i].ToString());
                 var suc = int.Parse(sucursales[i].ToString());
-                var cant = int.Parse(cantidades[i].ToString());
+                var cant = decimal.Parse(cantidades[i].ToString());
                 if (cant != 0)
                 {
                     StockMovimiento sm = new StockMovimiento();

@@ -6,6 +6,6 @@
         public virtual Articulo Articulo { get; set; }
         public int SucursalID { get; set; }
         public virtual Sucursal Sucursal { get; set; }
-        public int StockActual { get; set; }
+        public decimal StockActual { get; set; }
     }
 }

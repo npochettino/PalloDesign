@@ -39,11 +39,14 @@ namespace UI.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var sucursal = _sucursalesServicios.GetOne(suc.SucursalIDAgregar);
-                var usuarioRoles = _usuariosServicios.GetSucursalesByUsuario(usr.Id);        
-                System.Web.HttpContext.Current.Session["SucursalActual"] = suc.SucursalIDAgregar;
+                //var sucursal = _sucursalesServicios.GetOne(suc.SucursalIDAgregar);
+                var sucursal = _sucursalesServicios.GetOne(2);
+                var usuarioRoles = _usuariosServicios.GetSucursalesByUsuario(usr.Id);
+                //System.Web.HttpContext.Current.Session["SucursalActual"] = suc.SucursalIDAgregar;
+                System.Web.HttpContext.Current.Session["SucursalActual"] = 2;
                 try {
-                    var rol = usuarioRoles.Where(a => a.UsuarioID == usr.Id && a.SucursalID == suc.SucursalIDAgregar).FirstOrDefault().Rol.Nombre;
+                    //var rol = usuarioRoles.Where(a => a.UsuarioID == usr.Id && a.SucursalID == suc.SucursalIDAgregar).FirstOrDefault().Rol.Nombre;
+                    var rol = usuarioRoles.Where(a => a.UsuarioID == usr.Id && a.SucursalID == 2).FirstOrDefault().Rol.Nombre;
                     System.Web.HttpContext.Current.Session["DatosSucursalActual"] = " | Rol: " + rol + " (" + sucursal.Nombre + ")";
                 }
                 catch {

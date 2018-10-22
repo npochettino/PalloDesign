@@ -8,17 +8,17 @@ namespace UI.Web.ViewModels.Ventas
     public class ReportePorRubroDetalleViewModel
     {
         public string Nombre { get; set; }
-        public int Cantidad { get; set; }
+        public decimal Cantidad { get; set; }
 
-        public int Total { get; set; }
+        public decimal Total { get; set; }
 
         public string Porcentaje
         {
             get
             {
-                int current = Cantidad;
-                int maximum = Total;
-                var percent = ((double)(current) / maximum);
+                decimal current = Cantidad;
+                decimal maximum = Total;
+                var percent = ((decimal)(current) / maximum);
                 return percent.ToString("0.0%");
             }
         }

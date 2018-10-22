@@ -30,7 +30,7 @@ namespace UI.Web.Controllers
             _stockMovimientosServicios = new StockMovimientosServicios();
             _usuariosRolesServicios = new UsuariosRolesServicios();
             usr = (Usuario)System.Web.HttpContext.Current.Session["UsuarioActual"];
-            sucID = (int)System.Web.HttpContext.Current.Session["SucursalActual"];
+            sucID = 2;// (int)System.Web.HttpContext.Current.Session["SucursalActual"];
         }
 
         public ActionResult ReportePorRubro()
@@ -332,7 +332,7 @@ namespace UI.Web.Controllers
                 }
                 else
                 {
-                    int cantStock = _stockArticuloSucursalServicios.GetStock(aVM.ArticuloIdAgregar, sucID);
+                    decimal cantStock = _stockArticuloSucursalServicios.GetStock(aVM.ArticuloIdAgregar, sucID);
                     if (cantStock > 0)
                     {
                         if (aVM.Items.Any(a => a.ArticuloID == aVM.ArticuloIdAgregar))

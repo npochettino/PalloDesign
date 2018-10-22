@@ -68,6 +68,7 @@
                 <tr>
                     <th class="centrado">Nro.</th>
                     <th>Cliente</th>
+                    <th>Forma de Pago</th>
                     <th>Total</th>
                     <th>Fecha</th>
                     <th class="centrado">Cant. Art.</th>
@@ -79,26 +80,27 @@
 
                 @foreach (var item in Model.Ventas)
                 {
-                    <tr>
-                        <td class="centrado">@Html.DisplayFor(modelItem => item.Id)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Cliente.NombreCompleto)</td>
-                        @*<td>$@Html.DisplayFor(modelItem => item.Total)</td>*@
-                        <td>$@Html.DisplayFor(modelItem => item.TotalVenta)</td>
-                        <td>@Html.DisplayFor(modelItem => item.FechaVenta)</td>
-                        <td class="centrado">@Html.DisplayFor(modelItem => item.CantidadItems)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Vendedor.NombreCompleto)</td>
-                        <td style="text-align:center">
-                            <a href="@Url.Action("Detalles", "Ventas", new { id = item.Id })" class="btn btn-primary btn-xs">
-                                <span class="glyphicon glyphicon-eye-open"></span>
-                            </a>
-                            @*<a href="@Url.Action("Editar", "Ventas", new { id = item.Id })" class="btn btn-primary btn-xs">
-                                    <span class="glyphicon glyphicon-pencil"></span>
-                                </a>
-                                <a href="@Url.Action("Eliminar", "Ventas", new { id = item.Id })" class="btn btn-danger btn-xs">
-                                    <span class="glyphicon glyphicon-trash"></span>
-                                </a>*@
-                        </td>
-                    </tr>
+                <tr>
+                    <td class="centrado">@Html.DisplayFor(modelItem => item.Id)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Cliente.NombreCompleto)</td>
+                    @*<td>$@Html.DisplayFor(modelItem => item.Total)</td>*@
+                    <td>@Html.DisplayFor(modelItem => item.Pagos[0].FormaDePago.Nombre)</td>
+                    <td>$@Html.DisplayFor(modelItem => item.TotalVenta)</td>
+                    <td>@Html.DisplayFor(modelItem => item.FechaVenta)</td>
+                    <td class="centrado">@Html.DisplayFor(modelItem => item.CantidadItems)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Vendedor.NombreCompleto)</td>
+                    <td style="text-align:center">
+                        <a href="@Url.Action("Detalles", "Ventas", new { id = item.Id })" class="btn btn-primary btn-xs">
+                            <span class="glyphicon glyphicon-eye-open"></span>
+                        </a>
+                        @*<a href="@Url.Action("Editar", "Ventas", new { id = item.Id })" class="btn btn-primary btn-xs">
+                <span class="glyphicon glyphicon-pencil"></span>
+            </a>
+            <a href="@Url.Action("Eliminar", "Ventas", new { id = item.Id })" class="btn btn-danger btn-xs">
+                <span class="glyphicon glyphicon-trash"></span>
+            </a>*@
+                    </td>
+                </tr>
                 }
 
 

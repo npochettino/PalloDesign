@@ -1,4 +1,5 @@
-﻿using Servicios;
+﻿using Modelos;
+using Servicios;
 using System.Linq;
 using System.Web.Mvc;
 using UI.Web.ViewModels.Login;
@@ -37,7 +38,7 @@ namespace UI.Web.Controllers
 
             if (!_configServicios.IsPeriodoDePrueba())
             {
-                ViewBag.Error = "Período de prueba finalizado, para continuar utilizando el sistema contactarse con AllIn IT. Muchas gracias!";
+                ViewBag.Error = "Período de prueba finalizado, para continuar utilizando el sistema contactarse con ADWEB. Muchas gracias!";
                 return View();
             }
 
@@ -47,7 +48,38 @@ namespace UI.Web.Controllers
                 System.Web.HttpContext.Current.Session["UsuarioActual"] = usuarioEnBase;
                 System.Web.HttpContext.Current.Session["DatosUsuario"] = usuarioEnBase.NombreCompleto;
                 System.Web.HttpContext.Current.Session["DatosSucursalActual"] = "";
-                return RedirectToAction("SeleccionarSucursal", "Home");
+                System.Web.HttpContext.Current.Session["SucursalIDAgregar"] = 2;
+                System.Web.HttpContext.Current.Session["SucursalActual"] = 2;
+
+
+                /*Redirect to New Venta*/
+                int rolAdministrador = 1, rolResponsable = 2, rolAdmStock = 4;
+                int sucID = (int)System.Web.HttpContext.Current.Session["SucursalActual"];
+                string rolActual = "";
+
+                UsuarioRol UsuarioRol = usuarioEnBase.Roles.Where(x => x.RolID == rolAdministrador && x.SucursalID == sucID).FirstOrDefault();
+                
+                if (UsuarioRol != null) rolActual = "administrador";
+                else
+                {
+                    UsuarioRol = usuarioEnBase.Roles.Where(x => x.RolID == rolResponsable && x.SucursalID == sucID).FirstOrDefault();
+                    if (UsuarioRol != null) rolActual = "responsable";
+                    else
+                    {
+                        UsuarioRol = usuarioEnBase.Roles.Where(x => x.RolID == rolAdmStock && x.SucursalID == sucID).FirstOrDefault();
+                        if (UsuarioRol != null) rolActual = "adm. de stock";
+                        else
+                        {
+                            rolActual = "vendedor";
+                        }
+                    }
+                }
+
+                System.Web.HttpContext.Current.Session["RolActual"] = rolActual;
+
+
+                //RedirectToAction("SeleccionarSucursal", "Home");
+                return RedirectToAction("Agregar", "Ventas");
             }
             else
             {

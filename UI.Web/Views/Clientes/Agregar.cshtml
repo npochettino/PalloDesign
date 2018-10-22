@@ -132,7 +132,20 @@
                 </div>
             </div>
         </fieldset>
-
+       
+        <fieldset>
+            <legend>Datos Adicionales</legend>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Referencia, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="">
+                            @Html.TextAreaFor(Model => Model.Referencia, 3, 50, new { htmlhtmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
 
         @*Botones Aceptar y Cancelar*@
         <div class="row">

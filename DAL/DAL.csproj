@@ -31,12 +31,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -64,6 +62,26 @@
     <Compile Include="Migrations\201610182245108_StockActualEnMovimientoDeStock.cs" />
     <Compile Include="Migrations\201610182245108_StockActualEnMovimientoDeStock.Designer.cs">
       <DependentUpon>201610182245108_StockActualEnMovimientoDeStock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810181836086_AddDecimalQuantity.cs" />
+    <Compile Include="Migrations\201810181836086_AddDecimalQuantity.Designer.cs">
+      <DependentUpon>201810181836086_AddDecimalQuantity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810211157409_AddChques_Referencias.cs" />
+    <Compile Include="Migrations\201810211157409_AddChques_Referencias.Designer.cs">
+      <DependentUpon>201810211157409_AddChques_Referencias.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810211231341_AddCheqes.cs" />
+    <Compile Include="Migrations\201810211231341_AddCheqes.Designer.cs">
+      <DependentUpon>201810211231341_AddCheqes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810211248101_Add_Chequs_v2.cs" />
+    <Compile Include="Migrations\201810211248101_Add_Chequs_v2.Designer.cs">
+      <DependentUpon>201810211248101_Add_Chequs_v2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810212126411_StockMinimo_StockMax_ToDecimal.cs" />
+    <Compile Include="Migrations\201810212126411_StockMinimo_StockMax_ToDecimal.Designer.cs">
+      <DependentUpon>201810212126411_StockMinimo_StockMax_ToDecimal.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -117,6 +135,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610182245108_StockActualEnMovimientoDeStock.resx">
       <DependentUpon>201610182245108_StockActualEnMovimientoDeStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810181836086_AddDecimalQuantity.resx">
+      <DependentUpon>201810181836086_AddDecimalQuantity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810211157409_AddChques_Referencias.resx">
+      <DependentUpon>201810211157409_AddChques_Referencias.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810211231341_AddCheqes.resx">
+      <DependentUpon>201810211231341_AddCheqes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810211248101_Add_Chequs_v2.resx">
+      <DependentUpon>201810211248101_Add_Chequs_v2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810212126411_StockMinimo_StockMax_ToDecimal.resx">
+      <DependentUpon>201810212126411_StockMinimo_StockMax_ToDecimal.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

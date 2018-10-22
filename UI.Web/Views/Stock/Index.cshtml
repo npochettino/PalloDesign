@@ -87,7 +87,7 @@
             {
                 if (Model.MostrarSoloAlertas)
                 {
-                    if (!(Model.TotalesStock[cont] > item.StockMinimo * 1.2))
+                    if (!(Model.TotalesStock[cont] > item.StockMinimo * 120 / 100))
                     {
                         <tr style="text-align:center">
                             <td>@Html.DisplayFor(modelItem => item.Nombre)</td>

@@ -16,8 +16,8 @@ namespace DAL.Migrations
                         NombreEtiqueta = c.String(),
                         PrecioActualCompra = c.Decimal(nullable: false, precision: 18, scale: 2),
                         PrecioActualVenta = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        StockMinimo = c.Int(nullable: false),
-                        StockMaximo = c.Int(nullable: false),
+                        StockMinimo = c.Decimal(nullable: false),
+                        StockMaximo = c.Decimal(nullable: false),
                         Habilitado = c.Boolean(nullable: false),
                         RubroID = c.Int(nullable: false),
                     })
@@ -43,7 +43,7 @@ namespace DAL.Migrations
                         Id = c.Int(nullable: false, identity: true),
                         ArticuloID = c.Int(nullable: false),
                         SucursalID = c.Int(nullable: false),
-                        StockActual = c.Int(nullable: false),
+                        StockActual = c.Decimal(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Articulos", t => t.ArticuloID)
@@ -156,10 +156,11 @@ namespace DAL.Migrations
                         Numero = c.String(),
                         Piso = c.String(),
                         Dpto = c.String(),
-                        Bis = c.Boolean(nullable: false),
+                        Bis = c.Boolean(),
                         Telefono = c.String(),
                         Email = c.String(),
                         Habilitado = c.Boolean(nullable: false),
+                        Referencia = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -276,7 +277,24 @@ namespace DAL.Migrations
                 .ForeignKey("dbo.Ventas", t => t.VentaID)
                 .Index(t => t.FormaDePagoID)
                 .Index(t => t.VentaID);
-            
+
+            /*CreateTable(
+                "dbo.Cheques",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Numero = c.String(),
+                    Banco = c.String(),
+                    ClienteId = c.Int(nullable: false),
+                    FechaVencimiento = c.DateTime(),
+                    Monto = c.Decimal(precision: 18, scale: 2),
+                    Firmante = c.String(),
+                    Cobrado = c.Boolean(nullable: false),
+                })
+            .PrimaryKey(t => t.Id)
+            .ForeignKey("dbo.Clientes", t => t.ClienteId)
+            .Index(t => t.ClienteId);
+            */
             CreateTable(
                 "dbo.Ventas",
                 c => new
@@ -296,18 +314,18 @@ namespace DAL.Migrations
                 .Index(t => t.UsuarioID)
                 .Index(t => t.ClienteID)
                 .Index(t => t.SucursalID);
-            
+
             CreateTable(
                 "dbo.VentaItems",
                 c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Precio = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        Cantidad = c.Int(nullable: false),
-                        Descuento = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        Devuelto = c.Boolean(nullable: false),
-                        VentaID = c.Int(nullable: false),
-                        ArticuloID = c.Int(nullable: false),
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Precio = c.Decimal(nullable: false, precision: 18, scale: 2),
+                    Cantidad = c.Decimal(nullable: false, precision: 18, scale: 2),// c.Int(nullable: false),
+                    Descuento = c.Decimal(nullable: false, precision: 18, scale: 2),
+                    Devuelto = c.Boolean(nullable: false),
+                    VentaID = c.Int(nullable: false),
+                    ArticuloID = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Articulos", t => t.ArticuloID)
@@ -328,11 +346,13 @@ namespace DAL.Migrations
                         Numero = c.String(),
                         Piso = c.String(),
                         Dpto = c.String(),
-                        Bis = c.Boolean(nullable: false),
+                        //Bis = c.Boolean(nullable: false),
+                        Bis = c.Boolean(),
                         Telefono = c.String(),
                         Email = c.String(),
                         Habilitado = c.Boolean(nullable: false),
-                    })
+                        Referencia = c.String(),
+                })
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
@@ -341,7 +361,7 @@ namespace DAL.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Fecha = c.DateTime(nullable: false),
-                        Cantidad = c.Int(nullable: false),
+                        Cantidad = c.Decimal(nullable: false),
                         TipoMovimientoStockID = c.Int(nullable: false),
                         ArticuloID = c.Int(nullable: false),
                         SucursalID = c.Int(nullable: false),

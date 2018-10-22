@@ -9,8 +9,8 @@ namespace Modelos
         public string NombreEtiqueta { get; set; }
         public decimal PrecioActualCompra { get; set; }
         public decimal PrecioActualVenta { get; set; }
-        public int StockMinimo { get; set; }
-        public int StockMaximo { get; set; }
+        public decimal StockMinimo { get; set; }
+        public decimal StockMaximo { get; set; }
         public bool Habilitado { get; set; }
 
         public int RubroID { get; set; }

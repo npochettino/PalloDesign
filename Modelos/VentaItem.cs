@@ -5,7 +5,7 @@ namespace Modelos
     public class VentaItem:Base
     {
         public decimal Precio { get; set; }
-        public int Cantidad { get; set; }
+        public decimal Cantidad { get; set; }
 
         [DefaultValue(0)]         
         public decimal Descuento { get; set; }

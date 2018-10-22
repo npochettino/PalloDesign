@@ -32,7 +32,7 @@ namespace UI.Web.Helpers
             return MvcHtmlString.Create(strong.ToString());
         }
 
-        public static MvcHtmlString MovimientoStock(this HtmlHelper helper, int stock)
+        public static MvcHtmlString MovimientoStock(this HtmlHelper helper, decimal stock)
         {
             var strong = new TagBuilder("strong");
 
@@ -146,7 +146,7 @@ namespace UI.Web.Helpers
             return Decimal(htmlHelper, name, valorDecimal, htmlAttributes);
         }
 
-        public static MvcHtmlString DisplayStock(this HtmlHelper helper, int total, int stockMinimo)
+        public static MvcHtmlString DisplayStock(this HtmlHelper helper, decimal total, decimal stockMinimo)
         {
             var strong = new TagBuilder("strong");
 
@@ -156,13 +156,13 @@ namespace UI.Web.Helpers
                 strong.SetInnerText(String.Format("{0}", total));
             }
 
-            if (total > stockMinimo && total <= stockMinimo * 1.2)
+            if (total > stockMinimo && total <= stockMinimo * 120 / 100)
             {
                 strong.Attributes["style"] = "color: orange";
                 strong.SetInnerText(String.Format("{0}", total));
             }
 
-            if (total > stockMinimo * 1.2)
+            if (total > stockMinimo * 120 / 100)
             {
                 strong.Attributes["style"] = "color: green";
                 strong.SetInnerText(String.Format("{0}", total));

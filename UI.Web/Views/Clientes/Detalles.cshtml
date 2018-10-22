@@ -11,9 +11,9 @@
     <fieldset>
         <legend>Información General</legend>
         @*<dl class="dl-horizontal">
-            <dt>@Html.DisplayNameFor(model => model.RazonSocial)</dt>
-            <dd>@Html.DisplayFor(model => model.RazonSocial)</dd>
-        </dl>*@
+                <dt>@Html.DisplayNameFor(model => model.RazonSocial)</dt>
+                <dd>@Html.DisplayFor(model => model.RazonSocial)</dd>
+            </dl>*@
         <dl class="dl-horizontal">
             <dt>@Html.DisplayNameFor(model => model.NombreCompleto)</dt>
             <dd>@Html.DisplayFor(model => model.NombreCompleto)</dd>
@@ -41,6 +41,14 @@
         <dl class="dl-horizontal">
             <dt>@Html.DisplayNameFor(model => model.Email)</dt>
             <dd>@Html.DisplayFor(model => model.Email)</dd>
+        </dl>
+    </fieldset>
+
+    <fieldset>
+        <legend>Datos Adicionales</legend>
+        <dl class="dl-horizontal">
+            <dt>@Html.DisplayNameFor(model => model.Referencia)</dt>
+            <dd>@Html.DisplayFor(model => model.Referencia)</dd>
         </dl>
     </fieldset>
 

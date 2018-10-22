@@ -8,7 +8,7 @@ namespace UI.Web.ViewModels.Devoluciones
         {
         }
 
-        public DevolucionItemViewModel(int articuloID, int ventaItemID,string nombreArticulo, string codigoArticulo, int cantidadVendida, decimal precioDeVenta)
+        public DevolucionItemViewModel(int articuloID, int ventaItemID,string nombreArticulo, string codigoArticulo, decimal cantidadVendida, decimal precioDeVenta)
         {
             ArticuloID = articuloID;
             VentaItemID = ventaItemID;
@@ -33,7 +33,7 @@ namespace UI.Web.ViewModels.Devoluciones
 
         public string CodigoArticulo { get; set; }
 
-        public int CantidadVendida { get; set; }
+        public decimal CantidadVendida { get; set; }
 
         public decimal PrecioDeVenta { get; set; }
 
