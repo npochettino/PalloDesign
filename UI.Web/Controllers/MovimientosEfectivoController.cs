@@ -9,12 +9,14 @@ namespace UI.Web.Controllers
     {
         private MovimientosEfectivoServicios _movimientosServicios;
         private TipoMovimientosEfectivoServicios _tipoMovimientosServicios;
+        private FormasDePagoServicios _formasDePagoServicios;
         //private Usuario usr;
 
         public MovimientosEfectivoController()
         {
             _movimientosServicios = new MovimientosEfectivoServicios();
             _tipoMovimientosServicios = new TipoMovimientosEfectivoServicios();
+            _formasDePagoServicios = new FormasDePagoServicios();
             usr = (Usuario)System.Web.HttpContext.Current.Session["UsuarioActual"];
         }
 
@@ -41,6 +43,7 @@ namespace UI.Web.Controllers
 
             MovimientoEfectivoAgregarViewModel MovimientoVM = new MovimientoEfectivoAgregarViewModel();
             ViewBag.TiposMovimientos = _tipoMovimientosServicios.GetAll();
+            ViewBag.FormasDePago = _formasDePagoServicios.GetAll();
             return View(MovimientoVM);
         }
 
@@ -71,5 +74,38 @@ namespace UI.Web.Controllers
 
         }
 
+        public ActionResult Eliminar(int id)
+        {
+            ViewBag.Alert = "Se eliminara el Movimiento Efectivo";
+            MovimientoEfectivoEliminarViewModel MovimientoVM = new MovimientoEfectivoEliminarViewModel(_movimientosServicios.GetOne(id));
+            return View(MovimientoVM);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Eliminar(MovimientoEfectivoEliminarViewModel movimientoVM)
+        {
+            if (movimientoVM != null)
+            {
+                bool bandera = _movimientosServicios.Delete(_movimientosServicios.GetOne(movimientoVM.Id));
+                if (bandera)
+                {
+                    var mensaje = "El Movimiento fue eliminado correctamente";
+                    return RedirectToAction("Index", new { msj = mensaje });
+                }
+                else
+                {
+                    ViewBag.Error = "No se ha podido eliminar el movimiento, por favor vuelva a intentar.";
+                    MovimientoEfectivoEliminarViewModel mVM = new MovimientoEfectivoEliminarViewModel(_movimientosServicios.GetOne(movimientoVM.Id));
+                    return View();
+                }
+            }
+            else
+            {
+                ViewBag.Error = "No se ha podido eliminar el movimiento, por favor vuelva a intentar.";
+                MovimientoEfectivoEliminarViewModel mVM = new MovimientoEfectivoEliminarViewModel(_movimientosServicios.GetOne(movimientoVM.Id));
+                return View();
+            }
+        }
     }
 }

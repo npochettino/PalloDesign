@@ -1,0 +1,123 @@
+﻿@model UI.Web.ViewModels.Cheques.ChequeAgregarViewModel
+
+@{
+    ViewBag.Title = "Agregar Cheque";
+}
+
+<script src="~/Scripts/jquery.datetimepicker.js"></script>
+<link href="~/Content/jquery.datetimepicker.css" rel="stylesheet" />
+
+<div class="cabecera">
+    Agregar Cheque
+</div>
+
+@using (Html.BeginForm("Agregar", "Cheques", FormMethod.Post, new { @class = "formulario form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="container">
+        <fieldset>
+            <legend>Información del Cheque</legend>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Numero, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.Numero, new { htmlAttributes = new { @class = "form-control", autofocus = "" } })
+                            @Html.ValidationMessageFor(model => model.Numero, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Banco, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.Banco, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Banco, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FechaVencimiento, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(model => model.FechaVencimiento, "{0:dd/MM/yyyy}", new { @class = "form-control datetimepicker fecha", id = "fechaVencimiento", @maxlength = 10 })
+                            @Html.ValidationMessageFor(model => model.FechaVencimiento, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Monto, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.Monto, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Monto, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Firmante, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.Firmante, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Firmante, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Cobrado, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            <div class="checkbox">
+                                @Html.EditorFor(model => model.Cobrado)
+                                @Html.ValidationMessageFor(model => model.Cobrado, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+
+        @*Botones Aceptar y Cancelar*@
+        <div class="row">
+            <div class="form-group col-md-12">
+                <button type="submit" class="btn btn-primary">Aceptar</button>
+                <a href="@Url.Action("Index", "Cheques")" class="btn btn-default">Cancelar</a>
+            </div>
+        </div>
+    </div>
+}
+<script>
+    $(function () {
+        $('.fecha').datetimepicker({
+            lang: 'es',
+            i18n: {
+                de: {
+                    months: [
+                        'Enero', 'Febrero', 'Marzo', 'Abril',
+                        'Mayo', 'Junio', 'Julio', 'Agosto',
+                        'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
+                    ],
+                    dayOfWeek: [
+                        "Do", "Lu", "Ma", "Mi",
+                        "Ju", "Vi", "Sa",
+                    ]
+                }
+            },
+            closeOnDateSelect: true,
+            timepicker: false,
+            format: 'd/m/Y'
+        });
+
+    });
+
+</script>
+
+
+

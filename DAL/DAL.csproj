@@ -83,11 +83,20 @@
     <Compile Include="Migrations\201810212126411_StockMinimo_StockMax_ToDecimal.Designer.cs">
       <DependentUpon>201810212126411_StockMinimo_StockMax_ToDecimal.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201810230037001_delete_cheque_clientID.cs" />
+    <Compile Include="Migrations\201810230037001_delete_cheque_clientID.Designer.cs">
+      <DependentUpon>201810230037001_delete_cheque_clientID.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810281822018_add modalidadPago to MovimientoEfectivo.cs" />
+    <Compile Include="Migrations\201810281822018_add modalidadPago to MovimientoEfectivo.Designer.cs">
+      <DependentUpon>201810281822018_add modalidadPago to MovimientoEfectivo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositorio\ArticulosRepositorio.cs" />
     <Compile Include="Repositorio\Base.cs" />
     <Compile Include="Repositorio\CategoriasTiposMovimientosEfectivoRepositorio.cs" />
+    <Compile Include="Repositorio\ChequesRepositorio.cs" />
     <Compile Include="Repositorio\CierresCajaRepositorio.cs" />
     <Compile Include="Repositorio\ClientesRepositorio.cs" />
     <Compile Include="Repositorio\ConfiguracionRepositorio.cs" />
@@ -150,6 +159,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201810212126411_StockMinimo_StockMax_ToDecimal.resx">
       <DependentUpon>201810212126411_StockMinimo_StockMax_ToDecimal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810230037001_delete_cheque_clientID.resx">
+      <DependentUpon>201810230037001_delete_cheque_clientID.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810281822018_add modalidadPago to MovimientoEfectivo.resx">
+      <DependentUpon>201810281822018_add modalidadPago to MovimientoEfectivo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

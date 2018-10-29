@@ -47,6 +47,7 @@
     <Compile Include="ArticulosServicios.cs" />
     <Compile Include="CategoriasTiposMovimientosEfectivoServicios.cs" />
     <Compile Include="CierresCajasServicios.cs" />
+    <Compile Include="ChequesServicios.cs" />
     <Compile Include="ClientesServicios.cs" />
     <Compile Include="ConfiguracionServicios.cs" />
     <Compile Include="DevolucionesSinTicketServicios.cs" />

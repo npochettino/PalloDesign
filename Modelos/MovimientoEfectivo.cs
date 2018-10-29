@@ -17,5 +17,8 @@ namespace Modelos
         public int SucursalID { get; set; }
         public virtual Sucursal Sucursal { get; set; }
 
+        public int FormaDePagoID { get; set; }
+        public virtual FormaDePago FormaDePago { get; set; }
+
     }
 }

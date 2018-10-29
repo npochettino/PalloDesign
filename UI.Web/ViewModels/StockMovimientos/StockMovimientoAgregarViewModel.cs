@@ -10,7 +10,7 @@ namespace UI.Web.ViewModels.StockMovimientos
     {
         [Display(Name = "Cantidad")]
         [Required(ErrorMessage = "Cantidad es Requerido")]
-        public int Cantidad { get; set; }
+        public decimal Cantidad { get; set; }
 
         [Display(Name = "Motivo")]
         [Required(ErrorMessage = "Motivo es Requerido")]

@@ -1,0 +1,47 @@
+﻿@model UI.Web.ViewModels.MovimientosEfectivo.MovimientoEfectivoEliminarViewModel
+
+@{
+    ViewBag.Title = "Eliminar Movimiento Efectivo";
+}
+
+<div class="cabecera">
+    Eliminar Movimiento Efectivo
+</div>
+
+<div class="container">
+    <fieldset>
+        <dl class="dl-horizontal">
+            <dt>@Html.DisplayNameFor(model => model.Descripcion)</dt>
+            <dd>@Html.DisplayFor(model => model.Descripcion)</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>@Html.DisplayNameFor(model => model.Monto)</dt>
+            <dd>@Html.DisplayFor(model => model.Monto)</dd>
+        </dl>
+    </fieldset>
+
+    <fieldset>
+        <dl class="dl-horizontal">
+            <dt>Tipo de Movimiento</dt>
+            <dd>@Html.DisplayFor(model => model.NombreTipoMovimiento)</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Forma de Pago</dt>
+            <dd>@Html.DisplayFor(model => model.NombreFormaPago)</dd>
+        </dl>
+    </fieldset>
+
+
+    <div class="row">
+        <div class="form-group col-md-12">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <button type="submit" name="Delete" value="Delete" class="btn btn-primary">Eliminar</button>
+                <a href="@Url.Action("Index", "MovimientosEfectivo")" class="btn btn-default">Volver</a>
+            }
+        </div>
+    </div>
+</div>
+

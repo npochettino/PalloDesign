@@ -49,5 +49,9 @@ namespace Servicios
             return _movimientosRepositorio.Update(movimiento);
         }
 
+        public bool Delete(MovimientoEfectivo movimientoEfectivo)
+        {
+            return _movimientosRepositorio.Delete(movimientoEfectivo);
+        }
     }
 }

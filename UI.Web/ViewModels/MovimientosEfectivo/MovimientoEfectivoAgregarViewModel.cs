@@ -1,6 +1,8 @@
 ﻿using Modelos;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace UI.Web.ViewModels.MovimientosEfectivo
 
@@ -20,6 +22,10 @@ namespace UI.Web.ViewModels.MovimientosEfectivo
         [Range(1.00, 100000000.00, ErrorMessage = "Monto Incorrecto. Por favor ingrese un monto válido.")]
         public decimal Monto { get; set; }
 
+        [Display(Name = "Forma de Pago")]
+        public int FormaDePagoID { get; set; }
+        public SelectList FormasDePago { get; set; }
+
         public MovimientoEfectivo Mapear()
         {
             MovimientoEfectivo Movimiento = new MovimientoEfectivo();
@@ -31,6 +37,7 @@ namespace UI.Web.ViewModels.MovimientosEfectivo
             var usuario = (Usuario)System.Web.HttpContext.Current.Session["UsuarioActual"];
             Movimiento.UsuarioID = usuario.Id;
             Movimiento.SucursalID = (int)System.Web.HttpContext.Current.Session["SucursalActual"];
+            Movimiento.FormaDePagoID = FormaDePagoID;
 
             return Movimiento;
         }

@@ -131,6 +131,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ArticulosController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\ChequesController.cs" />
     <Compile Include="Controllers\CierreCajaController.cs" />
     <Compile Include="Controllers\ClientesController.cs" />
     <Compile Include="Controllers\DevolucionesController.cs" />
@@ -163,6 +164,11 @@
     <Compile Include="ViewModels\Articulos\ArticuloIndexViewModel.cs" />
     <Compile Include="ViewModels\Articulos\ReporteViewModel.cs" />
     <Compile Include="ViewModels\Articulos\SucursalReporteViewModel.cs" />
+    <Compile Include="ViewModels\Cheques\ChequeAgregarViewModel.cs" />
+    <Compile Include="ViewModels\Cheques\ChequeDetallesViewModel.cs" />
+    <Compile Include="ViewModels\Cheques\ChequeEditarViewModel.cs" />
+    <Compile Include="ViewModels\Cheques\ChequeEliminarViewModel.cs" />
+    <Compile Include="ViewModels\Cheques\ChequeIndexViewModel.cs" />
     <Compile Include="ViewModels\CierreCaja\CierreCajaAgregarViewModel.cs" />
     <Compile Include="ViewModels\CierreCaja\CierreCajaDetallesViewModel.cs" />
     <Compile Include="ViewModels\CierreCaja\CierreCajaIndexViewModel.cs" />
@@ -182,6 +188,7 @@
     <Compile Include="ViewModels\Devoluciones\DevolucionItemViewModel.cs" />
     <Compile Include="ViewModels\Login\LoginViewModel.cs" />
     <Compile Include="ViewModels\MovimientosEfectivo\MovimientoEfectivoAgregarViewModel.cs" />
+    <Compile Include="ViewModels\MovimientosEfectivo\MovimientoEfectivoEliminarViewModel.cs" />
     <Compile Include="ViewModels\MovimientosEfectivo\MovimientoEfectivoIndexViewModel.cs" />
     <Compile Include="ViewModels\Precios\PrecioActualizarPorRubroViewModel.cs" />
     <Compile Include="ViewModels\Proveedores\ProveedorAgregarViewModel.cs" />
@@ -557,6 +564,12 @@
     <Content Include="Views\Ventas\ReportePorRubro.cshtml" />
     <Content Include="Views\Sueldos\Index.cshtml" />
     <Content Include="Views\Sueldos\Editar.cshtml" />
+    <Content Include="Views\Cheques\Index.cshtml" />
+    <Content Include="Views\Cheques\Agregar.cshtml" />
+    <Content Include="Views\Cheques\Eliminar.cshtml" />
+    <Content Include="Views\Cheques\Editar.cshtml" />
+    <Content Include="Views\Cheques\Detalles.cshtml" />
+    <Content Include="Views\MovimientosEfectivo\Eliminar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

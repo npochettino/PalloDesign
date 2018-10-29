@@ -1,0 +1,83 @@
+﻿@model UI.Web.ViewModels.Cheques.ChequeIndexViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<script src="~/Scripts/jquery.datetimepicker.js"></script>
+<link href="~/Content/jquery.datetimepicker.css" rel="stylesheet" />
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#cheques').DataTable({
+                "sDom":
+                    '<"toolbar">frtip',
+                stateSave: true,
+                "language":
+                {
+                    "url": '@Url.Content("~/Content/JSON/Spanish.json")'
+                },
+                "columnDefs":
+                    [{
+                        bSortable: false,
+                        aTargets: [-1]
+                    }],
+                "initComplete":
+                    function (settings, json) {
+                        $("div.toolbar").html(
+                            '<a href="@Url.Action("Agregar", "Cheques")" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span> Agregar</a>');
+                    }
+            })
+        }
+        );
+    </script>
+}
+
+<div class="cabecera" style="margin-bottom: 20px;">
+    Cheques
+</div>
+
+<div class="grilla-listados">
+    <table id="cheques" class="table table-bordered table-condensed table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Numero</th>
+                <th>Banco</th>
+                <th>Vencimiento</th>
+                <th>Monto</th>
+                <th>Firmante</th>
+                <th>Cobrado</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model.Cheques)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Numero)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Banco)</td>
+                    <td>@Html.DisplayFor(modelItem => item.FechaVencimiento, "{0:dd/MM/yyyy}")</td>
+                    <td>@Html.DisplayFor(modelItem => item.Monto)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Firmante)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Cobrado)</td>
+                    <td style="text-align:center">
+                        <a href="@Url.Action("Detalles", "Cheques", new { id = item.Id })" class="btn btn-primary btn-xs">
+                            <span class="glyphicon glyphicon-eye-open"></span>
+                        </a>
+                        <a href="@Url.Action("Editar", "Cheques", new { id = item.Id })" class="btn btn-primary btn-xs">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                        <a href="@Url.Action("Eliminar", "Cheques", new { id = item.Id })" class="btn btn-danger btn-xs">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </a>
+                    </td>
+                </tr>
+            }
+
+
+        </tbody>
+
+    </table>
+</div>

@@ -56,6 +56,20 @@ namespace DAL.Repositorio
             return _applicationDbContext.MovimientosEfectivo.Where(x => x.SucursalID == sucID && x.Fecha >= fechaDesde && x.Fecha <= fechaHasta).ToList();
         }
 
+        public bool Delete(MovimientoEfectivo movimientoEfectivo)
+        {
+            try
+            {
+                _applicationDbContext.MovimientosEfectivo.Remove(movimientoEfectivo);
+                Guardar();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
         public bool Update(MovimientoEfectivo movimiento)
         {
             try

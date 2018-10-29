@@ -41,6 +41,7 @@
                 <th>Tipo</th>
                 <th>Fecha y Hora</th>
                 <th>Usuario</th>
+                <th>Forma de Pago</th>
                 <th>Descripción</th>
                 <th>Monto</th>
                 <th></th>
@@ -54,16 +55,17 @@
                     <td>@Html.DisplayFor(modelItem => item.TipoMovimiento.Nombre)</td>
                     <td>@Html.DisplayFor(modelItem => item.Fecha)</td>
                     <td>@Html.DisplayFor(modelItem => item.Usuario.DNI)</td>
+                    <td>@Html.DisplayFor(modelItem => item.FormaDePago.Nombre)</td>
                     <td>@Html.DisplayFor(modelItem => item.Descripcion)</td>
                     <td>@Html.DisplayFor(modelItem => item.Monto)</td>
 
                     <td style="text-align:center">
-                        <a href="@Url.Action("Detalles", "MovimientosEfectivo", new { id = item.Id })" class="btn btn-primary btn-xs">
+                            @*<a href="@Url.Action("Detalles", "MovimientosEfectivo", new { id = item.Id })" class="btn btn-primary btn-xs">
                                 <span class="glyphicon glyphicon-eye-open"></span>
                             </a>
                             <a href="@Url.Action("Editar", "MovimientosEfectivo", new { id = item.Id })" class="btn btn-primary btn-xs">
                                 <span class="glyphicon glyphicon-pencil"></span>
-                            </a>
+                            </a>*@
                             <a href="@Url.Action("Eliminar", "MovimientosEfectivo", new { id = item.Id })" class="btn btn-danger btn-xs">
                                 <span class="glyphicon glyphicon-trash"></span>
                             </a>

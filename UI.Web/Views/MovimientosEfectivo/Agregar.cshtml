@@ -26,6 +26,18 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
+                        @Html.LabelFor(model => model.FormaDePagoID, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.DropDownListFor(model => model.FormaDePagoID, new SelectList(ViewBag.FormasDePago, "Id", "Nombre"), "Seleccionar...", htmlAttributes: new { @class = "form-control", autofocus = "" })
+                            @Html.HiddenFor(model => model.FormaDePagoID)
+                            @Html.ValidationMessageFor(model => model.FormaDePagoID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
                         @Html.LabelFor(model => model.Descripcion, htmlAttributes: new { @class = "control-label col-md-4" })
                         <div class="col-md-8">
                             @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control" } })
