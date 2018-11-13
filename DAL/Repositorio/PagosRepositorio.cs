@@ -60,7 +60,12 @@ namespace DAL.Repositorio
         {
             try
             {
-                _applicationDbContext.Entry(pago).State = EntityState.Modified;
+                //_applicationDbContext.Entry(pago).State = EntityState.Modified;
+                var PagoBD = GetOne(pago.Id);
+                PagoBD.Id = pago.Id;
+                PagoBD.Monto = pago.Monto;
+                PagoBD.FormaDePagoID = pago.FormaDePagoID;
+                PagoBD.VentaID = pago.VentaID;
                 Guardar();
                 return true;
             }

@@ -30,9 +30,9 @@ namespace Servicios
             return _ventasRepositorio.Add(venta);
         }
 
-        public bool Delete(Venta venta)
+        public bool Delete(int id)
         {
-            return _ventasRepositorio.Delete(venta);
+            return _ventasRepositorio.Delete(id);
         }
 
         public bool Update(Venta venta)

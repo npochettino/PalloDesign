@@ -129,16 +129,22 @@
                     <tr>
                         <th>Gastos</th>
                         <th>Sueldos</th>
-                        <th>Ventas</th>
+                        <th>Ingresos</th>
+                        <th>Ventas Efectivo</th>
+                        <th>Ventas CC</th>
+                        <th>Ventas Cheque</th>
                         <th>Tarjetas</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="text-align:center">@Html.DisplayFor(model => Model.Resumen.TotalGastos)</td>
-                        <td style="text-align:center">@Html.DisplayFor(model => Model.Resumen.TotalSueldos)</td>
-                        <td style="text-align:center">@Html.DisplayFor(model => Model.Resumen.TotalVentasEfectivo)</td>
-                        <td style="text-align:center">@Html.DisplayFor(model => Model.Resumen.TotalIngresosPorTarjeta)</td>
+                        <td>@Html.DisplayFor(model => Model.Resumen.TotalGastos)</td>
+                        <td>@Html.DisplayFor(model => Model.Resumen.TotalSueldos)</td>
+                        <th>@Html.DisplayFor(model => Model.Resumen.TotalIngresos)</th>
+                        <th>@Html.DisplayFor(model => Model.Resumen.TotalVentasEfectivo)</th>
+                        <td>@Html.DisplayFor(model => Model.Resumen.TotalVentasCC)</td>
+                        <td>@Html.DisplayFor(model => Model.Resumen.TotalVentasCheque)</td>
+                        <td>@Html.DisplayFor(model => Model.Resumen.TotalIngresosPorTarjeta)</td>
                     </tr>
                 </tbody>
             </table>

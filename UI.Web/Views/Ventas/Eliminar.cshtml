@@ -1,0 +1,130 @@
+﻿@model UI.Web.ViewModels.Ventas.VentasEliminarViewModel
+@{
+    ViewBag.Title = "Detalle de la Venta";
+}
+
+<div class="cabecera">
+    Cliente
+</div>
+<div class="row">
+    <h3>@Html.DisplayFor(model => model.Cliente.NombreCompleto)</h3>
+</div>
+<div class="cabecera" style="margin-bottom: 20px;">
+    Detalle de Venta
+</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Id)
+    <div class="row">
+        <table id="tabla-articulos" class="table table-bordered table-condensed table-responsive">
+            <thead>
+                <tr style="background-color:gainsboro; font-weight:bold">
+                    <th hidden></th>
+                    <th>Artículo</th>
+                    <th>Código</th>
+                    <th>Cantidad</th>
+                    <th>Precio $</th>
+                    <th style="text-align:center;">Descuento</th>
+                    <th>Subtotal $</th>
+                    <th style="text-align:center;">Devuelto</th>
+
+
+                </tr>
+            </thead>
+            <tbody style="background-color: #f9f9f9;">
+                @for (int i = 0; i < Model.Items.Count; i++)
+                {
+                    <tr>
+                        <td hidden>
+                            @Html.TextBoxFor(item => Model.Items[i].ArticuloID)
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(item => Model.Items[i].Articulo.Nombre, new { @readonly = "" })
+                        </td>
+                        <td>
+                            -
+                        </td>
+                        <td style="text-align:center; width:20px">
+                            @Html.TextBoxFor(item => Model.Items[i].Cantidad, new { @readonly = "" })
+
+                        </td>
+                        <td style="text-align:center; width:150px">
+                            @Html.TextBoxFor(item => Model.Items[i].Precio, new { @readonly = "" })
+                        </td>
+
+                        <td class="acciones-fila-tabla form-inline" style="text-align:center; width:150px">
+                            @Html.TextBoxFor(item => Model.Items[i].Descuento, new { @class = "form-control", style = "width: 80px", @readonly = "" })
+
+                        </td>
+                        <td style="text-align:center; width:150px">
+                            @Html.TextBoxFor(item => Model.Items[i].TotalItem, "{0:0.00}", new { @readonly = "" })
+
+                        </td>
+                        <td style="text-align:center; width:150px">
+                            @if (Model.Items[i].Devuelto == true)
+                            {
+                                @Html.Label("Si");
+                            }
+                            else
+                            {
+                                @Html.Label("No");
+                            }
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="cabecera" style="margin-bottom: 20px;">
+        Formas de Pago
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <table id="tabla-pagos" class="table table-bordered table-condensed table-responsive">
+                <thead>
+                    <tr style="background-color:gainsboro; font-weight:bold">
+                        <th>Forma de Pago</th>
+                        <th>Monto</th>
+
+                    </tr>
+                </thead>
+                <tbody style="background-color: #f9f9f9;">
+                    @for (int i = 0; i < Model.Pagos.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                @Html.TextBoxFor(item => Model.Pagos[i].FormaDePago.Nombre, new { @readonly = "" })
+                            </td>
+                            <td class="acciones-fila-tabla form-inline" style="text-align:center; width:150px">
+                                @Html.TextBoxFor(item => Model.Pagos[i].Monto, "{0:0.00}", new { @class = "form-control monto", style = "width: 100px", @readonly = "" })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="form-group">
+            <h3>
+                <label class="control-label" style="margin-left: 20px">
+                    Total: $@Html.DisplayFor(model => model.Total)
+
+                </label>
+            </h3>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-12">
+            <button type="submit" name="Delete" value="Delete" class="btn btn-primary">Eliminar</button>
+            <a href=@Url.Action("Index", "Ventas") class="btn btn-info">Volver</a>
+        </div>
+    </div>
+}
+

@@ -45,15 +45,22 @@ namespace DAL.Repositorio
             }
         }
 
-        public bool Delete(Venta venta)
+        public bool Delete(int id)
         {
             try
             {
+                var venta = _applicationDbContext.Ventas.Include(a => a.Cliente).Where(a => a.Id == id).FirstOrDefault();
+                var ventaItem = _applicationDbContext.VentaItems.Where(a => a.VentaID == id).FirstOrDefault();
+                var pagos = _applicationDbContext.Pagos.Where(a => a.VentaID == id).FirstOrDefault();
+
+                _applicationDbContext.Pagos.Remove(pagos);
+                _applicationDbContext.VentaItems.Remove(ventaItem);
                 _applicationDbContext.Ventas.Remove(venta);
+
                 Guardar();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
                 return false;
             }
@@ -64,6 +71,7 @@ namespace DAL.Repositorio
             try
             {
                 _applicationDbContext.Entry(venta).State = EntityState.Modified;
+                
                 Guardar();
                 return true;
             }
@@ -77,7 +85,7 @@ namespace DAL.Repositorio
         public List<Venta> GetByDate(DateTime desde, DateTime hasta)
         {
             var d = desde.Date;
-            var h = hasta.Date.AddDays(1);
+            var h = hasta.Date;
             return _applicationDbContext.Ventas.Where(a => a.FechaVenta >= d && a.FechaVenta <= h).ToList();
         }
 

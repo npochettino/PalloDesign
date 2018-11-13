@@ -258,7 +258,7 @@
 </script>
 
 <script>
-    function Commit(strSelected) {
+    @*function Commit(strSelected) {
         var iurl = '@Url.Action("/AgregarArticulo")'
         //var urlCompleta = iurl + "?articuloID=" + strSelected;
         var urlCompleta = iurl + "?articulo=" + strSelected + "&articuloID=0";
@@ -272,6 +272,21 @@
             $('#TerminoBusquedaArticulo').val("");
             $('#divArticulos').html(result);
         });
+    }*@
+    function Commit(strSelected) {
+        var iurl = '@Url.Action("/AgregarArticulo")'
+        //var urlCompleta = iurl + "?articuloID=" + strSelected;
+        var urlCompleta = iurl + "?articulo=" + strSelected + "&articuloID=0";
+        $.ajax({
+            url: urlCompleta,
+            contentType: 'application/html; charset=utf-8',
+            type: 'POST',
+            dataType: 'html',
+            success: function (result) {
+                $('#TerminoBusquedaArticulo').val("");
+                $('#divArticulos').html(result);
+            }
+         });
     }
 </script>
 

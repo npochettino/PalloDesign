@@ -54,6 +54,7 @@
             <div class="col-md-6">
                 @Html.TextBoxFor(model => model.Cliente.Nombre, new { @class = "form-control", id = "TerminoBusquedaCliente", @placeholder = "Busqueda por apellido o DNI." })
                 @Html.HiddenFor(model => model.ClienteID, new { id = "ClienteIDAgregar" })
+                @Html.ValidationMessageFor(model => model.Cliente, "", new { @class = "text-danger" })
             </div>
 
         </div>
@@ -232,6 +233,11 @@
             sum += parseFloat(this.value);
 
         });
+
+        if ($('#ClienteIDAgregar').val() == 0) {
+            swal("Oops...", "El Cliente no puede esta vacio.", "error");
+            return false;
+        }
 
         if (sum == res) {
             $('#form-venta').attr('action', '@Url.Action("ConfirmarVenta", "Ventas")').submit();

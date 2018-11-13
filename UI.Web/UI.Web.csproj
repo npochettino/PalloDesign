@@ -227,6 +227,8 @@
     <Compile Include="ViewModels\Ventas\VentasAgregarPagoViewModel.cs" />
     <Compile Include="ViewModels\Ventas\VentasAgregarViewModel.cs" />
     <Compile Include="ViewModels\Ventas\VentasDetallesViewModel.cs" />
+    <Compile Include="ViewModels\Ventas\VentasEditarViewModel.cs" />
+    <Compile Include="ViewModels\Ventas\VentasEliminarViewModel.cs" />
     <Compile Include="ViewModels\Ventas\VentasIndexViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -570,6 +572,8 @@
     <Content Include="Views\Cheques\Editar.cshtml" />
     <Content Include="Views\Cheques\Detalles.cshtml" />
     <Content Include="Views\MovimientosEfectivo\Eliminar.cshtml" />
+    <Content Include="Views\Ventas\Editar.cshtml" />
+    <Content Include="Views\Ventas\Eliminar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

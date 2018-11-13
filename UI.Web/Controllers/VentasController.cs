@@ -3,6 +3,7 @@ using Servicios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using UI.Web.ViewModels.Ventas;
 
@@ -17,6 +18,7 @@ namespace UI.Web.Controllers
         private StockArticuloSucursalServicios _stockArticuloSucursalServicios;
         private StockMovimientosServicios _stockMovimientosServicios;
         private UsuariosRolesServicios _usuariosRolesServicios;
+        private PagosServicios _pagosServicios;
         //private Usuario usr;
         //private int sucID;
 
@@ -29,6 +31,7 @@ namespace UI.Web.Controllers
             _stockArticuloSucursalServicios = new StockArticuloSucursalServicios();
             _stockMovimientosServicios = new StockMovimientosServicios();
             _usuariosRolesServicios = new UsuariosRolesServicios();
+            _pagosServicios = new PagosServicios();
             usr = (Usuario)System.Web.HttpContext.Current.Session["UsuarioActual"];
             sucID = 2;// (int)System.Web.HttpContext.Current.Session["SucursalActual"];
         }
@@ -40,7 +43,7 @@ namespace UI.Web.Controllers
             ReportePorRubroViewModel vVM = new ReportePorRubroViewModel();
             vVM.FechaDesde = DateTime.Now;
             vVM.FechaHasta = DateTime.Now;
-            var ventas = _ventasServicios.GetByDate(vVM.FechaDesde, vVM.FechaHasta);         
+            var ventas = _ventasServicios.GetByDate(vVM.FechaDesde, vVM.FechaHasta);
             vVM.Detalles = ArmarDetalleReportePorRubro(ventas);
             vVM.CabeceraReporte = String.Format("Reporte por Rubro de {0} a {1}", vVM.FechaDesde.ToShortDateString(), vVM.FechaHasta.ToShortDateString());
             return View(vVM);
@@ -61,7 +64,7 @@ namespace UI.Web.Controllers
                 vm.Nombre = i.Key;
                 vm.Cantidad = i.Sum(a => a.Cantidad);
                 vm.Total = items.Sum(a => a.Cantidad);
-            
+
                 detalles.Add(vm);
             }
 
@@ -73,7 +76,7 @@ namespace UI.Web.Controllers
         {
             if (!ValidarUsuario(1, 2)) return RedirectToAction("ErrorPermisos", "Base");
 
-            var ventas = _ventasServicios.GetByDate(vVM.FechaDesde, vVM.FechaHasta);         
+            var ventas = _ventasServicios.GetByDate(vVM.FechaDesde, vVM.FechaHasta);
             vVM.Detalles = ArmarDetalleReportePorRubro(ventas);
             vVM.CabeceraReporte = String.Format("Reporte por Rubro de {0} a {1}", vVM.FechaDesde.ToShortDateString(), vVM.FechaHasta.ToShortDateString());
             return View(vVM);
@@ -132,9 +135,10 @@ namespace UI.Web.Controllers
             if (!ValidarUsuario(1)) return RedirectToAction("ErrorPermisos", "Base");
 
             VentasIndexViewModel vVM = new VentasIndexViewModel();
-            vVM.FechaDesde = DateTime.Now;
-            vVM.FechaHasta = DateTime.Now;
-            var ventas = _ventasServicios.GetByDate(vVM.FechaDesde, vVM.FechaHasta);
+            vVM.FechaDesde = DateTime.Today;
+            vVM.FechaHasta = DateTime.Today;
+            //var ventas = _ventasServicios.GetByDate(vVM.FechaDesde, vVM.FechaHasta);
+            var ventas = _ventasServicios.GetAll().OrderByDescending(a => a.FechaVenta);
             vVM.Ventas = ventas.Where(a => a.SucursalID == sucID).ToList();
             return View(vVM);
         }
@@ -484,6 +488,103 @@ namespace UI.Web.Controllers
             {
                 ViewBag.Error = "No se pudo ingresar a la venta, vuelva a intentarlo.";
                 return View("Index");
+            }
+        }
+
+        [HttpGet]
+        public ActionResult Editar(int Id)
+        {
+            if (Id != 0)
+            {
+                var venta = _ventasServicios.GetOne(Id);
+                ViewBag.FormasDePago = _formasDePagoServicios.GetAll();
+
+                VentasEditarViewModel eVM = new VentasEditarViewModel(venta);
+                return View(eVM);
+            }
+            else
+            {
+                ViewBag.Error = "No se pudo ingresar a la venta, vuelva a intentarlo.";
+                return View("Index");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Editar(VentasEditarViewModel eVM)
+        {
+            if (eVM != null && ModelState.IsValid)
+            {
+                bool bandera = false;
+                foreach (var item in eVM.Pagos)
+                {
+                    item.VentaID = eVM.Id;
+                    bandera = _pagosServicios.Update(item);
+                    System.Diagnostics.Debug.WriteLine(bandera);
+                }
+
+                if (bandera)
+                {
+                    var mensaje = "La Forma de Pago se ha actualizado correctamente!";
+                    return RedirectToAction("Index", new { msj = mensaje });
+                }
+                else
+                {
+                    ViewBag.Error = "La forma de Pago no se ha actualizado, vuelva a intentarlo.";
+                    ViewBag.FormasDePago = _formasDePagoServicios.GetAll();
+                    System.Diagnostics.Debug.WriteLine(bandera);
+                    return View("Editar", eVM);
+                }
+            }
+            else
+            {
+                ViewBag.Error = "La forma de Pago no se ha actualizado, vuelva a intentarlo.";
+                ViewBag.FormasDePago = _formasDePagoServicios.GetAll();
+                System.Diagnostics.Debug.WriteLine("Ultimo");
+                return View("Editar", eVM);
+            }
+        }
+
+        public ActionResult Eliminar(int Id)
+        {
+            if (Id != 0)
+            {
+                ViewBag.Alerta = "Se eliminará la venta";
+                var venta = _ventasServicios.GetOne(Id);
+                
+                VentasEliminarViewModel eVM = new VentasEliminarViewModel(venta);
+                return View(eVM);
+            }
+            else
+            {
+                ViewBag.Error = "No se pudo ingresar a la venta, vuelva a intentarlo.";
+                return View("Index");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Eliminar(VentasEliminarViewModel ventaVM)
+        {
+            if (ventaVM.Id != 0)
+            {
+                var bandera = _ventasServicios.Delete(ventaVM.Id);
+                if (bandera)
+                {
+                    var mensaje = "La Venta se ha eliminado correctamente!";
+                    return RedirectToAction("Index", new { msj = mensaje });
+                }
+                else
+                {
+                    ViewBag.Error = "La Venta no se ha eliminado, vuelva a intentarlo.";
+                    VentasEliminarViewModel aVM = new VentasEliminarViewModel(_ventasServicios.GetOne(ventaVM.Id));
+                    return View(aVM);
+                }
+            }
+            else
+            {
+                ViewBag.Error = "La Venta no se ha eliminado, vuelva a intentarlo.";
+                VentasEliminarViewModel aVM = new VentasEliminarViewModel(_ventasServicios.GetOne(ventaVM.Id));
+                return View(aVM);
             }
         }
 

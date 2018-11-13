@@ -13,8 +13,13 @@ namespace UI.Web.ViewModels.Ventas
         public int FormaDePagoID { get; set; }
         public SelectList FormasDePago { get; set; }
 
+        [Display(Name = "Cliente")]
+        [Required(ErrorMessage = "Cliente es requerido")]
         public Cliente Cliente { get; set; }
+
+        [Required(ErrorMessage = "Cliente es requerido")]
         public int ClienteID { get; set; }
+
         public int FormaPagoIDEliminar { get; set; }
         public List<Pago> Pagos { get; set; }
 

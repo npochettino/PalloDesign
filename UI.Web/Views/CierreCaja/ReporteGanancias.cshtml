@@ -62,20 +62,26 @@
         <table id="resumen" class="table table-bordered table-condensed table-hover table-striped">
             <caption><h4>Resumen</h4></caption>
             <thead>
-                <tr>                 
+                <tr>
                     <th>Gastos</th>
                     <th>Sueldos</th>
-                    <th>Ventas</th>
+                    <th>Ingresos</th>
+                    <th>Ventas Efectivo</th>
+                    <th>Ventas CC</th>
+                    <th>Ventas Cheque</th>
                     <th>Tarjetas</th>
                 </tr>
             </thead>
             <tbody>             
-                    <tr>                        
-                        <td>@Html.DisplayFor(model => Model.Resumen.TotalGastos)</td>
-                        <td>@Html.DisplayFor(model => Model.Resumen.TotalSueldos)</td>
-                        <td>@Html.DisplayFor(model => Model.Resumen.TotalVentasEfectivo)</td>
-                        <td>@Html.DisplayFor(model => Model.Resumen.TotalIngresosPorTarjeta)</td>
-                    </tr>           
+                <tr>
+                    <td>@Html.DisplayFor(model => Model.Resumen.TotalGastos)</td>
+                    <td>@Html.DisplayFor(model => Model.Resumen.TotalSueldos)</td>
+                    <th>@Html.DisplayFor(model => Model.Resumen.TotalIngresos)</th>
+                    <th>@Html.DisplayFor(model => Model.Resumen.TotalVentasEfectivo)</th>
+                    <td>@Html.DisplayFor(model => Model.Resumen.TotalVentasCC)</td>
+                    <td>@Html.DisplayFor(model => Model.Resumen.TotalVentasCheque)</td>
+                    <td>@Html.DisplayFor(model => Model.Resumen.TotalIngresosPorTarjeta)</td>
+                </tr>           
             </tbody>           
         </table>
     </div>

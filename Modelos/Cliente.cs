@@ -17,7 +17,14 @@
 
         public string NombreCompleto
         {
-            get { return Apellido + ", " + Nombre; }
+            get
+            {
+                if (Id == 1)
+                {
+                    return "Consumidor Final"; 
+                }
+                else return Apellido + ", " + Nombre;
+            }
         }
     }
 }

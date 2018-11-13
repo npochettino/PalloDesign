@@ -404,9 +404,13 @@ namespace UI.Web.Controllers
         {
             ReporteGananciasResumenViewModel vm = new ReporteGananciasResumenViewModel();
 
-            vm.TotalGastos = movimientosDeEfectivoDelPeriodo.Where(x => x.TipoMovimiento.Categoria.Nombre == "Proveedores" || x.TipoMovimiento.Categoria.Nombre == "Varios" && x.TipoMovimiento.Suma == false).Sum(x => x.Monto);
+            //vm.TotalGastos = movimientosDeEfectivoDelPeriodo.Where(x => x.TipoMovimiento.Categoria.Nombre == "Proveedores" || x.TipoMovimiento.Categoria.Nombre == "Varios" && x.TipoMovimiento.Suma == false).Sum(x => x.Monto);
+            vm.TotalGastos = movimientosDeEfectivoDelPeriodo.Where(x => x.TipoMovimiento.Suma == false && x.TipoMovimiento.Categoria.Nombre != "Sueldos").Sum(x => x.Monto);
+            vm.TotalIngresos = movimientosDeEfectivoDelPeriodo.Where(x => x.TipoMovimiento.Suma == true).Sum(x => x.Monto);
             vm.TotalSueldos = movimientosDeEfectivoDelPeriodo.Where(x => x.TipoMovimiento.Categoria.Nombre == "Sueldos").Sum(x => x.Monto);
             vm.TotalVentasEfectivo = pagosDelPeriodo.Where(x => x.FormaDePago.Nombre == "Efectivo").Sum(x => x.Monto);
+            vm.TotalVentasCC = pagosDelPeriodo.Where(x => x.FormaDePago.Nombre == "Cuenta Corriente").Sum(x => x.Monto);
+            vm.TotalVentasCheque = pagosDelPeriodo.Where(x => x.FormaDePago.Nombre == "Cheque").Sum(x => x.Monto);
             vm.TotalIngresosPorTarjeta = pagosDelPeriodo.Where(x => x.FormaDePago.Nombre.Contains("Tarjeta")).Sum(x => x.Monto);
 
             return vm;
