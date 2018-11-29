@@ -79,6 +79,9 @@ namespace DAL.Repositorio
             }
         }
 
-        
+        public List<Articulo> GetAllArticulos()
+        {
+            return _applicationDbContext.Articulos.ToList();
+        }
     }
 }

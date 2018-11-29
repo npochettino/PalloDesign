@@ -15,12 +15,12 @@ namespace DAL.Repositorio
 
         public List<Pago> GetAll()
         {
-            return _applicationDbContext.Pagos.ToList();
+            return _applicationDbContext.Pagos.Where(x => x.Venta.Anulado == false).ToList();
         }
 
         public List<Pago> GetAllBySucursalRangoFechas(int sucID, DateTime fechaDesde, DateTime fechaHasta)
         {
-            return _applicationDbContext.Pagos.Where(x => x.Venta.SucursalID == sucID && x.Venta.FechaVenta >= fechaDesde && x.Venta.FechaVenta <= fechaHasta).ToList();
+            return _applicationDbContext.Pagos.Where(x => x.Venta.SucursalID == sucID && x.Venta.FechaVenta >= fechaDesde && x.Venta.FechaVenta <= fechaHasta && x.Venta.Anulado == false).ToList();
         }
 
         public Pago GetOne(int id)

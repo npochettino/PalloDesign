@@ -139,7 +139,7 @@ namespace UI.Web.Controllers
             vVM.FechaHasta = DateTime.Today;
             //var ventas = _ventasServicios.GetByDate(vVM.FechaDesde, vVM.FechaHasta);
             var ventas = _ventasServicios.GetAll().OrderByDescending(a => a.FechaVenta);
-            vVM.Ventas = ventas.Where(a => a.SucursalID == sucID).ToList();
+            vVM.Ventas = ventas.Where(a => a.SucursalID == sucID && a.Anulado == false).ToList();
             return View(vVM);
         }
 
@@ -150,7 +150,7 @@ namespace UI.Web.Controllers
             if (ModelState.IsValid)
             {
                 var ventas = _ventasServicios.GetByDate(vVM.FechaDesde, vVM.FechaHasta);
-                vVM.Ventas = ventas.Where(a => a.SucursalID == sucID).ToList();
+                vVM.Ventas = ventas.Where(a => a.SucursalID == sucID && a.Anulado == false).ToList();
             }
             else
             {
@@ -567,7 +567,9 @@ namespace UI.Web.Controllers
         {
             if (ventaVM.Id != 0)
             {
-                var bandera = _ventasServicios.Delete(ventaVM.Id);
+                var venta = _ventasServicios.GetOne(ventaVM.Id);
+                venta.Anulado = true;
+                var bandera = _ventasServicios.Update(venta);
                 if (bandera)
                 {
                     var mensaje = "La Venta se ha eliminado correctamente!";

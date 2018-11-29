@@ -71,6 +71,11 @@ namespace Servicios
 
         }
 
+        public List<Articulo> GetAllArticulos()
+        {
+            return _articulosRepositorio.GetAllArticulos();
+        }
+
         public bool Delete(Articulo articulo)
         {
             return _articulosRepositorio.Delete(articulo);

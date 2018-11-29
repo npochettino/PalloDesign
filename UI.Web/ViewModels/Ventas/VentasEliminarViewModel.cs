@@ -18,6 +18,7 @@ namespace UI.Web.ViewModels.Ventas
         public List<VentaItem> Items { get; set; }
 
         public int Id { get; set; }
+        public bool Anulado { get; set; }
 
         public Cliente Cliente { get; set; }
         public int ClienteID { get; set; }

@@ -2,6 +2,7 @@
 using System.Web.Optimization;
 using System.Web.Routing;
 using UI.Web.ModelsBinder;
+using System.Web.Http;
 
 namespace UI.Web
 {
@@ -10,6 +11,8 @@ namespace UI.Web
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
+
+            WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);

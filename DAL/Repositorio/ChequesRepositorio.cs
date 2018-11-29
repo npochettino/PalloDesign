@@ -36,7 +36,7 @@ namespace DAL.Repositorio
                 Guardar();
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 return false;
