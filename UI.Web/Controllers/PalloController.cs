@@ -50,7 +50,7 @@ namespace UI.Web.Controllers
         public IHttpActionResult GetAllPagos() {
             IList<Pago> pagos = null;
 
-            pagos = _pagosServicios.GetAll().ToList();
+            pagos = _pagosServicios.GetAll().Where(x => x.Venta.Anulado == false).ToList();
             if (pagos.Count == 0)
             {
                 return NotFound();
@@ -80,7 +80,7 @@ namespace UI.Web.Controllers
         {
             IList<Venta> ventas = null;
             ventas = _ventasServicios.GetAll().Where(a => a.Anulado == false).ToList();
-            ventas = ventas.Where(v => v.Id == 9897).ToList();
+
             if (ventas.Count == 0)
             {
                 return NotFound();
@@ -111,7 +111,7 @@ namespace UI.Web.Controllers
             ReporteGananciasViewModel vm = new ReporteGananciasViewModel();
 
             var MovimientosDeEfectivoDelPeriodo = _movimientosEfectivoServicios.GetAll();
-            var PagosDelPeriodo = _pagosServicios.GetAll();
+            var PagosDelPeriodo = _pagosServicios.GetAll().Where(x => x.Venta.Anulado == false).ToList();
 
             vm.Detalles = ArmarDetalleGanancias(MovimientosDeEfectivoDelPeriodo, PagosDelPeriodo);
             vm.Resumen = ArmarResumenGanancias(MovimientosDeEfectivoDelPeriodo, PagosDelPeriodo);
@@ -127,10 +127,10 @@ namespace UI.Web.Controllers
             vm.TotalGastos = movimientosDeEfectivoDelPeriodo.Where(x => x.TipoMovimiento.Suma == false && x.TipoMovimiento.Categoria.Nombre != "Sueldos").Sum(x => x.Monto);
             vm.TotalIngresos = movimientosDeEfectivoDelPeriodo.Where(x => x.TipoMovimiento.Suma == true).Sum(x => x.Monto);
             vm.TotalSueldos = movimientosDeEfectivoDelPeriodo.Where(x => x.TipoMovimiento.Categoria.Nombre == "Sueldos").Sum(x => x.Monto);
-            vm.TotalVentasEfectivo = pagosDelPeriodo.Where(x => x.FormaDePago.Nombre == "Efectivo").Sum(x => x.Monto);
-            vm.TotalVentasCC = pagosDelPeriodo.Where(x => x.FormaDePago.Nombre == "Cuenta Corriente").Sum(x => x.Monto);
-            vm.TotalVentasCheque = pagosDelPeriodo.Where(x => x.FormaDePago.Nombre == "Cheque").Sum(x => x.Monto);
-            vm.TotalIngresosPorTarjeta = pagosDelPeriodo.Where(x => x.FormaDePago.Nombre.Contains("Tarjeta")).Sum(x => x.Monto);
+            vm.TotalVentasEfectivo = pagosDelPeriodo.Where(x => x.FormaDePago.Nombre == "Efectivo" && x.Venta.Id != 0).Sum(x => x.Monto);
+            vm.TotalVentasCC = pagosDelPeriodo.Where(x => x.FormaDePago.Nombre == "Cuenta Corriente" && x.Venta.Id != 0).Sum(x => x.Monto);
+            vm.TotalVentasCheque = pagosDelPeriodo.Where(x => x.FormaDePago.Nombre == "Cheque" && x.Venta.Id != 0).Sum(x => x.Monto);
+            vm.TotalIngresosPorTarjeta = pagosDelPeriodo.Where(x => x.FormaDePago.Nombre.Contains("Tarjeta") && x.Venta.Id != 0).Sum(x => x.Monto);
 
             return vm;
         }
