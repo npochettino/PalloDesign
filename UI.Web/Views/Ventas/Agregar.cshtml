@@ -47,7 +47,7 @@
     Nueva Venta
 </div>
 
-@using (Html.BeginForm("NuevaVenta", "Ventas", FormMethod.Post, new { id = "form-venta" }))
+@using (Html.BeginForm("Agregar", "Ventas", FormMethod.Post, new { id = "form-venta" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })

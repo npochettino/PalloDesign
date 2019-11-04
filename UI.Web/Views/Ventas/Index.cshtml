@@ -90,6 +90,9 @@
                     <td class="centrado">@Html.DisplayFor(modelItem => item.CantidadItems)</td>
                     <td>@Html.DisplayFor(modelItem => item.Vendedor.NombreCompleto)</td>
                     <td style="text-align:center">
+                        <a href="@Url.Action("PrintVenta", "Ventas", new { id = item.Id })" class="btn btn-primary btn-xs">
+                            <span class="glyphicon glyphicon-print"></span>
+                        </a>
                         <a href="@Url.Action("Detalles", "Ventas", new { id = item.Id })" class="btn btn-primary btn-xs">
                             <span class="glyphicon glyphicon-eye-open"></span>
                         </a>

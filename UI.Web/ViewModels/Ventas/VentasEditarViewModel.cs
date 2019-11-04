@@ -27,6 +27,7 @@ namespace UI.Web.ViewModels.Ventas
         }
         public int Id { get; set; }
 
+
         public int FormaDePagoID { get; set; }
         public SelectList FormasDePago { get; set; }
 
@@ -45,7 +46,7 @@ namespace UI.Web.ViewModels.Ventas
 
         public decimal TotalVentaItems { get; set; }
 
-        public decimal Total { get; set; }
+     
         
     }
 }

@@ -522,6 +522,17 @@ namespace UI.Web.Controllers
                     System.Diagnostics.Debug.WriteLine(bandera);
                 }
 
+                decimal TotalVenta = 0;
+                foreach (var item in eVM.Pagos)
+                {
+                    TotalVenta = TotalVenta + item.Monto;
+                }
+
+                var ventaActual = _ventasServicios.GetOne(eVM.Id);
+                ventaActual.TotalVenta = TotalVenta;
+
+                bandera = _ventasServicios.Update(ventaActual);
+
                 if (bandera)
                 {
                     var mensaje = "La Forma de Pago se ha actualizado correctamente!";
@@ -588,6 +599,12 @@ namespace UI.Web.Controllers
                 VentasEliminarViewModel aVM = new VentasEliminarViewModel(_ventasServicios.GetOne(ventaVM.Id));
                 return View(aVM);
             }
+        }
+
+        
+        public ActionResult PrintVenta (int id) {
+            var venta = _ventasServicios.GetOne(id);
+            return View("PrintVenta", venta);
         }
 
     }

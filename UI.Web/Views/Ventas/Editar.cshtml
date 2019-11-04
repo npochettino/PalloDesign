@@ -35,18 +35,21 @@
                 <tbody style="background-color: #f9f9f9;">
                     @for (int i = 0; i < Model.Pagos.Count; i++)
                     {
-                        <tr>
-                            <td>
-                                @Html.TextBoxFor(item => Model.Pagos[i].FormaDePago.Nombre, new { @readonly = "" })
-                            </td>
-                            <td>
-                                @Html.HiddenFor(model => model.Pagos[i].Id, new { @readonly = "" })
-                                @Html.DropDownListFor(model => model.Pagos[i].FormaDePagoID, new SelectList(ViewBag.FormasDePago, "Id", "Nombre"), "Seleccionar...", htmlAttributes: new { @class = "form-control", autofocus = "", passive = true })
-                            </td>
-                            <td class="acciones-fila-tabla form-inline" style="text-align:center; width:150px">
-                                @Html.TextBoxFor(item => Model.Pagos[i].Monto, "{0:0.00}", new { @class = "form-control monto", style = "width: 100px", @readonly = "" })
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>
+                            @Html.TextBoxFor(item => Model.Pagos[i].FormaDePago.Nombre, new { @readonly = "" })
+                        </td>
+                        <td>
+                            @Html.HiddenFor(model => model.Pagos[i].Id, new { @readonly = "" })
+                            @Html.DropDownListFor(model => model.Pagos[i].FormaDePagoID, new SelectList(ViewBag.FormasDePago, "Id", "Nombre"), "Seleccionar...", htmlAttributes: new { @class = "form-control", autofocus = "", passive = true })
+                        </td>
+                        @*<td class="acciones-fila-tabla form-inline" style="text-align:center; width:150px">
+                            @Html.TextBoxFor(item => Model.Pagos[i].Monto, "{0:0.00}", new { @class = "form-control monto", style = "width: 100px", @readonly = "" })
+                        </td>*@
+                        <td>
+                            @Html.DecimalFor(item => Model.Pagos[i].Monto, Model.Pagos[i].Monto, new { @id = Model.Pagos[i].FormaDePagoID, @class = "form-control monto", style = "width: 100px", required = "required", placeholder = "$", min = 0 })
+                        </td>
+                    </tr>
                     }
                 </tbody>
             </table>
